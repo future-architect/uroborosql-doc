@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+    
+    <entry>
+      <title><![CDATA[Getting Started]]></title>
+      <url>./getting_started/</url>
+      <content type="html"><![CDATA[<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">Connection connection = DriverManager.getConnetion(<span class="string">"jdbc:derby:target/productdb"</span>; user=test; password=test);</div><div class="line"></div><div class="line"><span class="comment">// SQLクラスの初期化</span></div><div class="line">SqlManager sqlManager = <span class="keyword">new</span> SqlManagerImpl(<span class="keyword">new</span> SqlLoaderImpl());</div><div class="line">sqlManager.initialize();</div><div class="line"></div><div class="line">SqlFilterManager sqlFilterManager = <span class="keyword">new</span> SqlFilterManagerImpl();</div><div class="line"></div><div class="line">SqlContextFactory sqlContextFactory = <span class="keyword">new</span> SqlContextFactoryImpl();</div><div class="line">sqlContextFactory.setSqlFilterManager(sqlFilterManager);</div><div class="line">sqlContextFactory.initialize();</div><div class="line">SqlAgentFactory agentFactory = <span class="keyword">new</span> SqlAgentFactoryImpl(<span class="keyword">new</span> DefaultConnectionSupplierImpl(connection), </div><div class="line">                                                       sqlManager, sqlFilterManager);</div><div class="line"></div><div class="line">SqlAgent sqlAgent = agentFactory.createSqlAgent();</div><div class="line">SqlContext sqlContext = sqlContextFactory.createSqlContext();</div><div class="line"></div><div class="line"><span class="comment">// 検索</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.select"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">String productId = <span class="string">"0010"</span>;</div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, productId); <span class="comment">// WHERE句の条件記入</span></div><div class="line">ResultSet resultSet = sqlAgent.executeQuery(sqlContext);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 挿入</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.insert"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"note-A"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 更新</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.update"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"note-B"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext); </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 削除</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.delete"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext);</div></pre></td></tr></table></figure>
+<div style="font-size:130%; font-weight:bold;"><br><a href="/setup/" style="float:right">事前準備 &#62;&#62;</a><br></div>]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[事前準備]]></title>
+      <url>./setup/</url>
+      <content type="html"><![CDATA[<hr>
+<ul>
+<li><a href="#環境設定">環境設定</a><ul>
+<li><a href="#ビルドツールの設定">ビルドツールの設定</a></li>
+<li><a href="#サンプルプロジェクトの構成">サンプルプロジェクトの構成</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="環境設定"><a href="#環境設定" class="headerlink" title="環境設定"></a>環境設定</h2><h3 id="ビルドツールの設定"><a href="#ビルドツールの設定" class="headerlink" title="ビルドツールの設定"></a>ビルドツールの設定</h3><p>uroboroSQLをMavenプロジェクトに組み込むには、<strong>pom.xml</strong>に以下の記述を加えて下さい。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>jp.co.future<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>uroborosql/artifactId&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>Gradleプロジェクトの場合は、<strong>build.gradle</strong>のdependencies内に以下の記述を加えて下さい。<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">compile</span> <span class="keyword">group</span>: jp.co.future, name: uroborosql, version: <span class="number">1.0</span>.<span class="number">0</span></div></pre></td></tr></table></figure></p>
+<h2 id="サンプルプロジェクトの構成"><a href="#サンプルプロジェクトの構成" class="headerlink" title="サンプルプロジェクトの構成"></a>サンプルプロジェクトの構成</h2><p>uroboroSQLを実行するプロジェクトのサンプルを以下に示します。</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">src</div><div class="line">|<span class="emphasis">___</span>main</div><div class="line"><span class="code">    |___ java</span></div><div class="line"><span class="code">    |    |___ main.java</span></div><div class="line"><span class="code">    |___ resources</span></div><div class="line"><span class="code">          |___ sql</span></div><div class="line"><span class="code">               |___ product</span></div><div class="line"><span class="code">                    |___ selectparam.sql</span></div><div class="line"><span class="code">                    |___ selecttwoparams.sql</span></div><div class="line"><span class="code">                    |___ insert.sql</span></div></pre></td></tr></table></figure>
+<div style="font-size:130%; font-weight:bold;"><br><a href="/getting_started/" style="float:left">&#60;&#60; Getting_started</a><a href="/basics/" style="float:right">基本操作 &#62;&#62;</a><br></div>]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[基本操作]]></title>
+      <url>./basics/</url>
+      <content type="html"><![CDATA[<hr>
+<ul>
+<li><a href="#検索">検索</a></li>
+<li><a href="#挿入と更新と削除">挿入と更新と削除</a></li>
+<li><a href="#動的SQLの構築">動的SQLの構築</a></li>
+</ul>
+<hr>
+<p>ここでは、uroboroSQLの基本操作をまとめています。</p>
+<h2 id="検索"><a href="#検索" class="headerlink" title="検索"></a>検索</h2><p>SELECT文を実行する際は、<code>executeQuery</code>メソッドを使用します。</p>
+<h3 id="パラメーターをバインドする場合"><a href="#パラメーターをバインドする場合" class="headerlink" title="パラメーターをバインドする場合"></a>パラメーターをバインドする場合</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span></div><div class="line">    product_id = <span class="comment">/* product_id */</span><span class="string">'0010'</span></div></pre></td></tr></table></figure>
+<p>パラメーターのバインドを行う場合は、<code>addParam</code>メソッドを用います。<code>addParam</code>メソッドは引数に<code>(パラメーター名, バインドするパラメーターの値)</code>を設定します。上記SQLを実行するには以下のように記述します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sqlContext.setSqlName(<span class="string">"product.selectaparam"</span>);</div><div class="line"></div><div class="line">String productId = <span class="string">"0010"</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, productId);</div><div class="line"></div><div class="line">ResultSet resultSet = sqlAgent.executeQuery(sqlContext);</div></pre></td></tr></table></figure></p>
+<h3 id="複数のパラメーターをバインドする場合"><a href="#複数のパラメーターをバインドする場合" class="headerlink" title="複数のパラメーターをバインドする場合"></a>複数のパラメーターをバインドする場合</h3><p>また、以下のようなSQLに対し、複数のパラメーターをバインドすることも可能です。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> * </div><div class="line"><span class="keyword">from</span> </div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> </div><div class="line">    product_price = <span class="comment">/* product_price */</span><span class="number">120</span> </div><div class="line"><span class="keyword">and</span> product_category = <span class="comment">/* product_category_id */</span><span class="string">'07'</span></div></pre></td></tr></table></figure></p>
+<p>この場合も以下の様に、<code>addParam</code>メソッドを使用することでバインドが完了します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sqlContext.setSqlName(<span class="string">"product.selecttwoparams"</span>);</div><div class="line"></div><div class="line"><span class="keyword">int</span> productPrice = <span class="number">120</span>;</div><div class="line">String productCategoryId = <span class="string">"07"</span>;</div><div class="line">sqlContext.addParam(<span class="string">"product_price"</span>, productPrice);</div><div class="line">sqlContext.addParam(<span class="string">"product_category_id"</span>, productCategoryId);</div><div class="line"></div><div class="line">ResultSet resultSet = sqlAgent.executeQuery(sqlContext);</div></pre></td></tr></table></figure></p>
+<p>バインド出来るパラメーターのデータ型については、<a href="/advanced/#バインド出来るパラメーターの型">高度な操作&gt;バインド出来るパラメーターの型</a>を参照して下さい。</p>
+<h2 id="挿入と更新と削除"><a href="#挿入と更新と削除" class="headerlink" title="挿入と更新と削除"></a>挿入と更新と削除</h2><p>INSERT・UPDATE・DELETE文を実行する際は、<code>executeUpdate</code>メソッドを使用します。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">values</span> (</div><div class="line">    <span class="comment">/* product_id */</span><span class="string">'1234567890123'</span>,</div><div class="line">    <span class="comment">/* product_name */</span><span class="string">'note-A'</span></div><div class="line">)</div></pre></td></tr></table></figure></p>
+<p>例えば挿入の場合、上記SQLを実行するには以下のように記述します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sqlContext.setSqlName(<span class="string">"product.insert"</span>);</div><div class="line"></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"note-A"</span>);</div><div class="line"></div><div class="line">sqlAgent.executeUpdate(sqlContext);</div></pre></td></tr></table></figure></p>
+<p>更新、削除の場合も同じ要領で記述します。</p>
+<h2 id="動的SQLの構築"><a href="#動的SQLの構築" class="headerlink" title="動的SQLの構築"></a>動的SQLの構築</h2><p>SQLに対し条件分岐/ループ等の動的な制御を行いたい場合、コメント形式で記述することが可能です。</p>
+<h3 id="条件分岐"><a href="#条件分岐" class="headerlink" title="条件分岐"></a>条件分岐</h3><p>条件分岐の制御はSQLコメント<code>/*IF 条件式*/</code>、<code>/*END*/</code>、<code>/*ELSEIF 条件式*/</code>、<code>/*ELSE*/</code>を用いて記述します。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="comment">/*IF  product_category_id ==  "07"*/</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">120</span></div><div class="line"><span class="comment">/*ELSEIF product_category_id == "08"*/</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">200</span></div><div class="line"><span class="comment">/*ELSE*/</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">250</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure></p>
+<p>上のSQLでは、パラメーター<code>product_category_id</code>の値によって動的にSQLの処理が制御されています。<br>つまり、<code>product_category_id</code>が”07”である場合、<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">120</span></div></pre></td></tr></table></figure></p>
+<p>“08”ならば<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">200</span></div></pre></td></tr></table></figure></p>
+<p>それ以外の場合は<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">250</span></div></pre></td></tr></table></figure></p>
+<p>との処理が実行されます。</p>
+<h3 id="範囲の有効-無効の設定"><a href="#範囲の有効-無効の設定" class="headerlink" title="範囲の有効/無効の設定"></a>範囲の有効/無効の設定</h3><p>例えば、以下の条件分岐の制御をかけたSQLの実行を考えてみます。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span></div><div class="line"><span class="comment">/*IF product_category_id == "07"*/</span></div><div class="line">    product_price = <span class="number">120</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure></p>
+<p>この時、<code>product_category_id</code>として”08”をバインドした場合、このSQLは<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span></div></pre></td></tr></table></figure></p>
+<p>となり、<code>where</code>句に入る条件式が不在なため不正なSQLとなってしまいます。<br>この問題に対しては、<code>where</code>句を<code>BEGIN</code>コメントと<code>END</code>コメントで囲むことで対処出来ます。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="comment">/*BEGIN*/</span></div><div class="line"><span class="keyword">where</span></div><div class="line"><span class="comment">/*IF product_category_id == "07"*/</span></div><div class="line">    product_price = <span class="number">120</span></div><div class="line"><span class="comment">/*END*/</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure></p>
+<p><code>product_category_id</code>が”08”である場合、このSQLは<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div></pre></td></tr></table></figure></p>
+<p>と、<code>BEGIN</code>と<code>END</code>に囲まれた<code>IF</code>の条件式が<code>false</code>になるため、囲まれた<code>where</code>句そのものが削除される処理が実行されます。</p>
+<div style="font-size:130%; font-weight:bold;"><br><a href="/setup/" style="float:left">&#60;&#60; 事前準備</a><a href="/advanced/" style="float:right">高度な操作 &#62;&#62;</a><br></div>]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[高度な操作]]></title>
+      <url>./advanced/</url>
+      <content type="html"><![CDATA[<hr>
+<ul>
+<li><a href="#バインド出来るパラメーターの型">バインド出来るパラメーターの型</a></li>
+<li><a href="#バッチ実行">バッチ実行</a></li>
+<li><a href="#ストアドプロシージャの実行">ストアドプロシージャの実行</a></li>
+<li><a href="#トランザクション">トランザクション</a></li>
+<li><a href="#エラーハンドリング">エラーハンドリング </a></li>
+<li><a href="#ストリームAPI">ストリームAPI</a></li>
+<li><a href="#ログ">ログ</a></li>
+<li><a href="#式言語">式言語</a></li>
+</ul>
+<hr>
+<h2 id="バインド出来るパラメーターの型"><a href="#バインド出来るパラメーターの型" class="headerlink" title="バインド出来るパラメーターの型"></a>バインド出来るパラメーターの型</h2><p>uroboroSQLでバインド出来るパラメーターの型は、下記の通りです。</p>
+<ul>
+<li>プリミティブ型とそのラッパー型（ただし char と java.lang.Character は除く）</li>
+<li>java.math.BigDecimal</li>
+<li>java.math.BigInteger</li>
+<li>java.lang.String</li>
+<li>byte[ ]</li>
+<li>java.sql.Date</li>
+<li>java.sql.Time</li>
+<li>java.sql.Timestamp</li>
+<li>java.sql.Array</li>
+<li>java.sql.Ref</li>
+<li>java.sql.Blob</li>
+<li>java.sql.Clob</li>
+<li>java.sql.SQLXML</li>
+<li>java.sql.Struct</li>
+<li>列挙型(enum)</li>
+<li>java.util.Date</li>
+<li>java.util.Optional</li>
+<li>java.util.OptionalInt</li>
+<li>java.util.OptionalLong</li>
+<li>java.util.OptionalDouble</li>
+<li>java.time.LocalDateTime</li>
+<li>java.time.OffsetDateTime</li>
+<li>java.time.ZonedDateTime</li>
+<li>java.time.LocalDate</li>
+<li>java.time.LocalTime</li>
+<li>java.time.OffsetTime</li>
+<li>java.time.Year</li>
+<li>java.time.YearMonth</li>
+<li>java.time.MonthDay</li>
+<li>java.time.Month</li>
+<li>java.time.DayOfWeek</li>
+</ul>
+<h2 id="バッチ実行"><a href="#バッチ実行" class="headerlink" title="バッチ実行"></a>バッチ実行</h2><p>複数の挿入/更新/削除処理を実行する場合、<code>addBatch</code>と<code>executeBatch</code>メソッドを使用することでバッチ更新を行うことが出来ます。<br>例として、以下のSQLを実行するケースを考えてみます。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">values</span>(</div><div class="line">    <span class="comment">/* product_id */</span><span class="string">'0040'</span>,</div><div class="line">    <span class="comment">/* product_category_id */</span><span class="string">'09'</span>,</div><div class="line">    <span class="comment">/* product_name */</span><span class="string">'コーラ'</span>,</div><div class="line">    <span class="comment">/* product_price */</span><span class="number">120</span></div><div class="line">)</div></pre></td></tr></table></figure></p>
+<p>挿入処理を行いたいデータが複数存在する場合、以下の様に記述をすることでバッチ更新が実行されます。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"0040"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_category_id"</span>, <span class="string">"09"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"コーラ"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_price"</span>, <span class="number">120</span>);</div><div class="line">sqlContext.addBatch();</div><div class="line"></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"0041"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_category_id"</span>, <span class="string">"09"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"サイダー"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_price"</span>, <span class="number">120</span>);</div><div class="line">sqlContext.addBatch();</div><div class="line"></div><div class="line">sqlAgent.executeBatch(sqlContext);</div></pre></td></tr></table></figure></p>
+<h2 id="ストアドプロシージャの実行"><a href="#ストアドプロシージャの実行" class="headerlink" title="ストアドプロシージャの実行"></a>ストアドプロシージャの実行</h2><p><code>executeProcedure</code>メソッドを利用することで、ストアドプロシージャを実行することが出来ます。<br>例えば、<code>product_id</code>で商品の有無を確認するストアドプロシージャ<code>product_id_exists_check</code>を実行する以下SQLを考えます。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">call</span> product_id_exists_check(<span class="comment">/*product_id*/</span><span class="string">'0010'</span>, <span class="comment">/*check_out*/</span>)</div></pre></td></tr></table></figure></p>
+<p>この時には、以下の様に記述をすることでストアドプロシージャを実行することが出来ます。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>,<span class="string">"0010"</span> );</div><div class="line">sqlContext.addOutParam(<span class="string">"check_out"</span>,Types.NUMERIC);</div><div class="line"></div><div class="line">Map&lt;String, Object&gt; result = sqlAgent.executeProcedure(sqlContext);</div></pre></td></tr></table></figure></p>
+<p><code>addOutParam</code>メソッドにより、<code>check_out</code>を戻り値として返されるパラメーターとして設定をしています。このプロシージャの実行結果は<code>result.get(&quot;check_out&quot;)</code>により取得が可能です。</p>
+<h2 id="トランザクション"><a href="#トランザクション" class="headerlink" title="トランザクション"></a>トランザクション</h2><h2 id="エラーハンドリング"><a href="#エラーハンドリング" class="headerlink" title="エラーハンドリング"></a>エラーハンドリング</h2><p>エラーが発生した際、エラーコードの種類によるリトライを設定することが出来ます。<br>リトライするエラーコード、最大リトライ回数、リトライ時の待機時間を下記のように指定します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">List&lt;String&gt; sqlRetryCodeList = <span class="keyword">new</span> ArrayList&lt;String&gt;();</div><div class="line">sqlRetryCodeList.add(<span class="string">"54"</span>);</div><div class="line">sqlRetryCodeList.add(<span class="string">"60"</span>);</div><div class="line">agentFactory.setSqlRetryCodeList(sqlRetryCodeList); <span class="comment">// リトライ対象とするSQLエラーコード。デフォルトは指定なし。</span></div><div class="line"></div><div class="line">agentFactory.setDefaultMaxRetryCount(<span class="number">3</span>); <span class="comment">// 最大リトライ回数。デフォルトは0。</span></div><div class="line"></div><div class="line">agentFactory.setDefaultSqlRetryWaitTime(<span class="number">1000</span>); <span class="comment">// リトライ時の待機時間(ms)。デフォルトは0。</span></div></pre></td></tr></table></figure></p>
+<h2 id="ストリームAPI"><a href="#ストリームAPI" class="headerlink" title="ストリームAPI"></a>ストリームAPI</h2><p>実行したSQLの結果を取得したい際には、ストリームAPIを利用することが出来ます。  </p>
+<h2 id="ログ"><a href="#ログ" class="headerlink" title="ログ"></a>ログ</h2><p>uroboroSQLではログ出力ライブラリとしてLogbackを使用しています。Logbackの詳細は<a href="http://logback.qos.ch/manual/index_ja.html" target="_blank" rel="external">公式のドキュメント</a>を参照して下さい。<br>クラス毎で出力されるログ内容は以下表の通りです。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">クラス名</th>
+<th style="text-align:center">TRACE</th>
+<th style="text-align:center">DEBUG</th>
+<th style="text-align:center">INFO</th>
+<th style="text-align:center">WARN</th>
+<th style="text-align:center">ERROR</th>
+<th style="text-align:center">FATAL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">AbstractAgent</td>
+<td style="text-align:center">変換前SQL</td>
+<td style="text-align:center">実行時SQL</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">DebugSqlFilter</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">パラメーター/<br\>対象データ数/<br\>実行結果</br\></br\></td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">IfNode</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">評価式/<br\>判定結果/<br\>パラメーター</br\></br\></td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">Parameter</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">パラメーターの設定</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">サブパラメーター値にNULLを設定</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">SecretColumnSqlFilter</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">バッチ処理追加件数/<br\>ストアドプロシージャ出力パラメーター</br\></td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">SqlAgent</td>
+<td style="text-align:center">ステートメントのクローズ</td>
+<td style="text-align:center">処理実行アナウンス/<br\>リトライ実行アナウンス/<br\>SQL実行時間</br\></br\></td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">エラーメッセージ</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">SqlContext</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">バッチ処理追加件数/<br\>ストアドプロシージャ出力パラメーター</br\></td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">SqlContextFactory</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">定数パラメーター</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">定数名の重複</td>
+<td style="text-align:center">エラーメッセージ</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">SqlLoader</td>
+<td style="text-align:center">SQL定義ファイルの読み込み完了</td>
+<td style="text-align:center">SQL定義ファイルの読み込み開始/読み込み中</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">デフォルトファイルパスの設定/<br\>デフォルト拡張子/<br\>空のSQLキャッシュの返却</br\></br\></td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h2 id="式言語"><a href="#式言語" class="headerlink" title="式言語"></a>式言語</h2><h3 id="リテラル"><a href="#リテラル" class="headerlink" title="リテラル"></a>リテラル</h3><p>以下のリテラルが使用できます。</p>
+<ul>
+<li>“a”(java.lang.String)</li>
+<li>‘a’(char)</li>
+<li>1(int)</li>
+<li>1L(long)</li>
+<li>0.1F(float)</li>
+<li>0.1D(double)</li>
+<li>0.1B(java.math.BigDecimal)</li>
+<li>1H(java.math.BigInteger)</li>
+<li>true, false(Boolean)</li>
+<li>null</li>
+</ul>
+<h3 id="演算子"><a href="#演算子" class="headerlink" title="演算子"></a>演算子</h3><p>以下の演算子が使用できます。</p>
+<h4 id="算術演算子"><a href="#算術演算子" class="headerlink" title="算術演算子"></a>算術演算子</h4><ul>
+<li>e1 + e2(足し算)</li>
+<li>e1 - e2 (引き算)</li>
+<li>e1 * e2 (掛け算)</li>
+<li>e1 / e2 (割り算)</li>
+<li>e1 % e2 (余り)</li>
+</ul>
+<h4 id="比較演算子"><a href="#比較演算子" class="headerlink" title="比較演算子"></a>比較演算子</h4><ul>
+<li>e1 eq e2, e1 == e2 (等しい)<br>→ e1・e2のいずれかがnullの場合、両方ともnullの時のみe1とe2は等しい。<br>→ e1・e2が同じオブジェクトの場合、またはequals()メソッドにより等しいと判断される場合、e1とe2は等しい。<br>→ e1・e2が数値の場合、倍精度浮動小数点数が等しい時のみe1とe2は等しい。<br>→ その以外の場合、e1とe2は等しくない。</li>
+<li>e1 neq e2, e1 != e2 (等しくない)</li>
+<li>e1 lt e2, e1 &lt; e2 (小なり)</li>
+<li>e1 lte e2, e1 &lt;= e2 (小なりイコール)</li>
+<li>e1 gt e2, e1 &gt; e2 (大なり)</li>
+<li>e1 gte e2, e1 &gt;= e2 (大なりイコール)</li>
+</ul>
+<h4 id="論理演算子"><a href="#論理演算子" class="headerlink" title="論理演算子"></a>論理演算子</h4><ul>
+<li>e1 or e2, e1 || e2 (論理和)</li>
+<li>e1 and e2, e1 &amp;&amp; e2 (論理積)</li>
+<li>not e, ! e (論理否定)</li>
+</ul>
+<h4 id="連結演算子"><a href="#連結演算子" class="headerlink" title="連結演算子"></a>連結演算子</h4><ul>
+<li>e1 + e2 (文字列連結)</li>
+</ul>
+<h3 id="メソッド・フィールドの呼び出し"><a href="#メソッド・フィールドの呼び出し" class="headerlink" title="メソッド・フィールドの呼び出し"></a>メソッド・フィールドの呼び出し</h3><p>以下のようにメソッド・フィールドの呼び出しができます。</p>
+<ul>
+<li>e.method(args) (メソッドの呼び出し)</li>
+<li>e.property (フィールドの呼び出し)</li>
+</ul>
+<div style="font-size:130%; font-weight:bold;"><br><a href="/basics/" style="float:left">&#60;&#60; 基本操作</a><a href="/developer_guide/" style="float:right">開発者ガイド &#62;&#62;</a><br></div>]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[開発者ガイド]]></title>
+      <url>./developer_guide/</url>
+      <content type="html"><![CDATA[<hr>
+<ul>
+<li>コネクションの切り替え</li>
+<li>操作のフィルタリング</li>
+<li>SQLファイルのキャッシュ</li>
+<li>springフレームワークとの統合</li>
+</ul>
+<hr>
+<div style="font-size:130%; font-weight:bold;"><br><a href="/advanced/" style="float:left">&#60;&#60; 高度な操作</a><a href="/about_uroborosql/" style="float:right">uroboroSQLについて &#62;&#62;</a><br></div>]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[uroboroSQLについて]]></title>
+      <url>./about_uroborosql/</url>
+      <content type="html"><![CDATA[<hr>
+<ul>
+<li>リリースノート</li>
+<li>FAQ</li>
+</ul>
+<hr>
+<div style="font-size:130%; font-weight:bold;"><br><a href="/developer_guide/" style="float:left">&#60;&#60; 開発者ガイド</a><br></div>]]></content>
+      
+        
+    </entry>
+    
+  
+  
+    
+  
+</search>

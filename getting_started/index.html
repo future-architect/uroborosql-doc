@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--Description-->
+    
+        <meta name="description" content="123456789101112131415161718192021222324252627282930313233343536373839404142Connection connection = DriverManager.getConnetion(&quot;jdbc:derby:target/produ">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Future Architect">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Getting Started"/>
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="uroboroSQL"/>
+
+    <!--Page Cover-->
+    
+        <meta property="og:image" content="undefined"/>
+    
+
+    <!-- Title -->
+    
+    <title>Getting Started - uroboroSQL</title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!--[if lt IE 8]>
+        <script src="/js/ie/html5shiv.js"></script>
+    <![endif]-->
+
+    <!--[if lt IE 8]>
+        <link rel="stylesheet" href="/sass/ie8.css">
+    <![endif]-->
+
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="/sass/ie9.css">
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.rawgit.com/noelboss/featherlight/1.3.5/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+    <body>
+        <div id="wrapper">
+            <!-- Menu -->
+            <!-- Header -->
+<header id="header">
+    <div class="inner">
+        <!-- Logo -->
+        <a href="/" class="logo">
+            <span class="symbol"><img src="/images/logo.png" alt="" /></span>
+        </a>
+        <!-- Nav -->
+        <nav>
+            <ul>
+                <li><a href="#menu">Menu</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<!-- Menu -->
+<nav id="menu">
+    <h2>Menu</h2>
+    <form id="search-form">
+        <input type="text" id="local-search-input" name="q" results="0" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off"/>
+        <i class="fa fa-times" onclick="resetSearch()"></i>
+    </form>
+    <div id="local-search-result"></div>
+    <p class='no-result'>No results found</p>
+    <script type="text/javascript"
+    src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script src="/js/search.js"></script>
+    <script>
+    var path = "/search.xml";
+    searchFunc(path, 'local-search-input', 'local-search-result');
+    </script>
+    <ul id="menu-agenda">
+        <li><a href="/getting_started/">Getting Started</a></li>
+        <li><a href="/setup/">事前準備</a></li>
+        <li><a href="/basics/">基本操作</a></li>
+        <li><a href="/advanced/">高度な操作</a></li>
+        <li><a href="/developer_guide/">開発者ガイド</a></li>
+        <li><a href="/about_uroborosql/">uroboroSQLについて</a></li>
+    </ul>
+</nav>
+                <div id="main">
+                    <div class="inner">
+                        <!-- Main Content -->
+                        
+
+    <h1>Getting Started</h1>
+
+
+
+<!-- Gallery -->
+
+
+<!-- Content -->
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">Connection connection = DriverManager.getConnetion(<span class="string">"jdbc:derby:target/productdb"</span>; user=test; password=test);</div><div class="line"></div><div class="line"><span class="comment">// SQLクラスの初期化</span></div><div class="line">SqlManager sqlManager = <span class="keyword">new</span> SqlManagerImpl(<span class="keyword">new</span> SqlLoaderImpl());</div><div class="line">sqlManager.initialize();</div><div class="line"></div><div class="line">SqlFilterManager sqlFilterManager = <span class="keyword">new</span> SqlFilterManagerImpl();</div><div class="line"></div><div class="line">SqlContextFactory sqlContextFactory = <span class="keyword">new</span> SqlContextFactoryImpl();</div><div class="line">sqlContextFactory.setSqlFilterManager(sqlFilterManager);</div><div class="line">sqlContextFactory.initialize();</div><div class="line">SqlAgentFactory agentFactory = <span class="keyword">new</span> SqlAgentFactoryImpl(<span class="keyword">new</span> DefaultConnectionSupplierImpl(connection), </div><div class="line">                                                       sqlManager, sqlFilterManager);</div><div class="line"></div><div class="line">SqlAgent sqlAgent = agentFactory.createSqlAgent();</div><div class="line">SqlContext sqlContext = sqlContextFactory.createSqlContext();</div><div class="line"></div><div class="line"><span class="comment">// 検索</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.select"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">String productId = <span class="string">"0010"</span>;</div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, productId); <span class="comment">// WHERE句の条件記入</span></div><div class="line">ResultSet resultSet = sqlAgent.executeQuery(sqlContext);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 挿入</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.insert"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"note-A"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 更新</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.update"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"note-B"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext); </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 削除</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.delete"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext);</div></pre></td></tr></table></figure>
+<div style="font-size:130%; font-weight:bold;"><br><a href="/setup/" style="float:right">事前準備 &#62;&#62;</a><br></div>
+
+<!-- Tags -->
+
+
+
+<div class="tags">
+    
+</div>
+
+
+
+<!-- Comments -->
+<div>
+    
+
+
+</div>
+
+
+                    </div>
+                </div>
+                <!-- Footer -->
+<footer id="footer">
+  <div class="inner">
+      <section>
+          <h2>About</h2>
+          <div>
+              経営とITをデザインする、フューチャーアーキテクトの技術ブログです<br><a href="http://www.future.co.jp/">http://www.future.co.jp/</a>
+          </div>
+      </section>
+      <section>
+          <h2>Contact</h2>
+                  東京都品川区大崎<br>
+                  1-2-2<br>
+                  アートヴィレッジ大崎セントラルタワー<br>
+                  Phone: 03-5740-5721<br>
+                  Email: techblog@future.co.jp<br>
+      </section>
+      <section>
+          <h2>Follow</h2>
+          <ul class="icons">
+              
+                  <li><a href="https://twitter.com/future_techblog" class="icon style2 fa-twitter" target="_blank" ><span class="label">Twitter</span></a></li>
+              
+              
+                  <li><a href="https://www.facebook.com/future.saiyo" class="icon style2 fa-facebook" target="_blank" ><span class="label">Facebook</span></a></li>
+              
+              
+                  <li><a href="https://github.com/future-architect" class="icon style2 fa-github" target="_blank" ><span class="label">GitHub</span></a></li>
+              
+              
+                  <li><a href="http://qiita.com/organizations/future" class="icon style2 fa-pencil" target="_blank" ><span class="label">Qiita</span></a></li>
+              
+              
+                 <li><a href="https://future-architect.github.io/" class="icon style2 fa-pencil-square-o" target="_blank" ><span class="label">Tech Blog</span></a></li>
+              
+          </ul>
+      </section>
+      <br>
+      <ul class="copyright">
+          <li>&copy; Future Architect. All rights reserved</li>
+          <li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
+          <li>Hexo: <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></li>
+      </ul>
+  </div>
+</footer>
+        </div>
+        <!-- After footer scripts -->
+        
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- skel -->
+<script src="/js/skel.min.js"></script>
+
+<!-- Custom Code -->
+<script src="/js/util.js"></script>
+
+<!--[if lte IE 8]>
+<script src="/js/ie/respond.min.js"></script>
+<![endif]-->
+
+<!-- Custom Code -->
+<script src="/js/main.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.rawgit.com/noelboss/featherlight/1.3.5/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+    </body>
+
+</html>

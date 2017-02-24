@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja">
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--Description-->
+    
+        <meta name="description" content="環境設定
+ビルドツールの設定
+サンプルプロジェクトの構成
+
+
+
+
+環境設定ビルドツールの設定uroboroSQLをMavenプロジェクトに組み込むには、pom.xmlに以下の記述を加えて下さい。12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;jp.co.futur">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Future Architect">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="事前準備"/>
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="uroboroSQL"/>
+
+    <!--Page Cover-->
+    
+        <meta property="og:image" content="undefined"/>
+    
+
+    <!-- Title -->
+    
+    <title>事前準備 - uroboroSQL</title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!--[if lt IE 8]>
+        <script src="/js/ie/html5shiv.js"></script>
+    <![endif]-->
+
+    <!--[if lt IE 8]>
+        <link rel="stylesheet" href="/sass/ie8.css">
+    <![endif]-->
+
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="/sass/ie9.css">
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.rawgit.com/noelboss/featherlight/1.3.5/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+    <body>
+        <div id="wrapper">
+            <!-- Menu -->
+            <!-- Header -->
+<header id="header">
+    <div class="inner">
+        <!-- Logo -->
+        <a href="/" class="logo">
+            <span class="symbol"><img src="/images/logo.png" alt="" /></span>
+        </a>
+        <!-- Nav -->
+        <nav>
+            <ul>
+                <li><a href="#menu">Menu</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<!-- Menu -->
+<nav id="menu">
+    <h2>Menu</h2>
+    <form id="search-form">
+        <input type="text" id="local-search-input" name="q" results="0" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off"/>
+        <i class="fa fa-times" onclick="resetSearch()"></i>
+    </form>
+    <div id="local-search-result"></div>
+    <p class='no-result'>No results found</p>
+    <script type="text/javascript"
+    src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script src="/js/search.js"></script>
+    <script>
+    var path = "/search.xml";
+    searchFunc(path, 'local-search-input', 'local-search-result');
+    </script>
+    <ul id="menu-agenda">
+        <li><a href="/getting_started/">Getting Started</a></li>
+        <li><a href="/setup/">事前準備</a></li>
+        <li><a href="/basics/">基本操作</a></li>
+        <li><a href="/advanced/">高度な操作</a></li>
+        <li><a href="/developer_guide/">開発者ガイド</a></li>
+        <li><a href="/about_uroborosql/">uroboroSQLについて</a></li>
+    </ul>
+</nav>
+                <div id="main">
+                    <div class="inner">
+                        <!-- Main Content -->
+                        
+
+    <h1>事前準備</h1>
+
+
+
+<!-- Gallery -->
+
+
+<!-- Content -->
+<hr>
+<ul>
+<li><a href="#環境設定">環境設定</a><ul>
+<li><a href="#ビルドツールの設定">ビルドツールの設定</a></li>
+<li><a href="#サンプルプロジェクトの構成">サンプルプロジェクトの構成</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="環境設定"><a href="#環境設定" class="headerlink" title="環境設定"></a>環境設定</h2><h3 id="ビルドツールの設定"><a href="#ビルドツールの設定" class="headerlink" title="ビルドツールの設定"></a>ビルドツールの設定</h3><p>uroboroSQLをMavenプロジェクトに組み込むには、<strong>pom.xml</strong>に以下の記述を加えて下さい。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>jp.co.future<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>uroborosql/artifactId&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>Gradleプロジェクトの場合は、<strong>build.gradle</strong>のdependencies内に以下の記述を加えて下さい。<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">compile</span> <span class="keyword">group</span>: jp.co.future, name: uroborosql, version: <span class="number">1.0</span>.<span class="number">0</span></div></pre></td></tr></table></figure></p>
+<h2 id="サンプルプロジェクトの構成"><a href="#サンプルプロジェクトの構成" class="headerlink" title="サンプルプロジェクトの構成"></a>サンプルプロジェクトの構成</h2><p>uroboroSQLを実行するプロジェクトのサンプルを以下に示します。</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">src</div><div class="line">|<span class="emphasis">___</span>main</div><div class="line"><span class="code">    |___ java</span></div><div class="line"><span class="code">    |    |___ main.java</span></div><div class="line"><span class="code">    |___ resources</span></div><div class="line"><span class="code">          |___ sql</span></div><div class="line"><span class="code">               |___ product</span></div><div class="line"><span class="code">                    |___ selectparam.sql</span></div><div class="line"><span class="code">                    |___ selecttwoparams.sql</span></div><div class="line"><span class="code">                    |___ insert.sql</span></div></pre></td></tr></table></figure>
+<div style="font-size:130%; font-weight:bold;"><br><a href="/getting_started/" style="float:left">&#60;&#60; Getting_started</a><a href="/basics/" style="float:right">基本操作 &#62;&#62;</a><br></div>
+
+<!-- Tags -->
+
+
+
+<div class="tags">
+    
+</div>
+
+
+
+<!-- Comments -->
+<div>
+    
+
+
+</div>
+
+
+                    </div>
+                </div>
+                <!-- Footer -->
+<footer id="footer">
+  <div class="inner">
+      <section>
+          <h2>About</h2>
+          <div>
+              経営とITをデザインする、フューチャーアーキテクトの技術ブログです<br><a href="http://www.future.co.jp/">http://www.future.co.jp/</a>
+          </div>
+      </section>
+      <section>
+          <h2>Contact</h2>
+                  東京都品川区大崎<br>
+                  1-2-2<br>
+                  アートヴィレッジ大崎セントラルタワー<br>
+                  Phone: 03-5740-5721<br>
+                  Email: techblog@future.co.jp<br>
+      </section>
+      <section>
+          <h2>Follow</h2>
+          <ul class="icons">
+              
+                  <li><a href="https://twitter.com/future_techblog" class="icon style2 fa-twitter" target="_blank" ><span class="label">Twitter</span></a></li>
+              
+              
+                  <li><a href="https://www.facebook.com/future.saiyo" class="icon style2 fa-facebook" target="_blank" ><span class="label">Facebook</span></a></li>
+              
+              
+                  <li><a href="https://github.com/future-architect" class="icon style2 fa-github" target="_blank" ><span class="label">GitHub</span></a></li>
+              
+              
+                  <li><a href="http://qiita.com/organizations/future" class="icon style2 fa-pencil" target="_blank" ><span class="label">Qiita</span></a></li>
+              
+              
+                 <li><a href="https://future-architect.github.io/" class="icon style2 fa-pencil-square-o" target="_blank" ><span class="label">Tech Blog</span></a></li>
+              
+          </ul>
+      </section>
+      <br>
+      <ul class="copyright">
+          <li>&copy; Future Architect. All rights reserved</li>
+          <li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
+          <li>Hexo: <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></li>
+      </ul>
+  </div>
+</footer>
+        </div>
+        <!-- After footer scripts -->
+        
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- skel -->
+<script src="/js/skel.min.js"></script>
+
+<!-- Custom Code -->
+<script src="/js/util.js"></script>
+
+<!--[if lte IE 8]>
+<script src="/js/ie/respond.min.js"></script>
+<![endif]-->
+
+<!-- Custom Code -->
+<script src="/js/main.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.rawgit.com/noelboss/featherlight/1.3.5/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+    </body>
+
+</html>

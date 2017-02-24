@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--Description-->
+    
+        <meta name="description" content="検索
+挿入と更新と削除
+動的SQLの構築
+
+
+ここでは、uroboroSQLの基本操作をまとめています。
+検索SELECT文を実行する際は、executeQueryメソッドを使用します。
+パラメーターをバインドする場合123456select    *from    ms_productswhere">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Future Architect">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="基本操作"/>
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="uroboroSQL"/>
+
+    <!--Page Cover-->
+    
+        <meta property="og:image" content="undefined"/>
+    
+
+    <!-- Title -->
+    
+    <title>基本操作 - uroboroSQL</title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!--[if lt IE 8]>
+        <script src="/js/ie/html5shiv.js"></script>
+    <![endif]-->
+
+    <!--[if lt IE 8]>
+        <link rel="stylesheet" href="/sass/ie8.css">
+    <![endif]-->
+
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="/sass/ie9.css">
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdn.rawgit.com/noelboss/featherlight/1.3.5/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+    <body>
+        <div id="wrapper">
+            <!-- Menu -->
+            <!-- Header -->
+<header id="header">
+    <div class="inner">
+        <!-- Logo -->
+        <a href="/" class="logo">
+            <span class="symbol"><img src="/images/logo.png" alt="" /></span>
+        </a>
+        <!-- Nav -->
+        <nav>
+            <ul>
+                <li><a href="#menu">Menu</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<!-- Menu -->
+<nav id="menu">
+    <h2>Menu</h2>
+    <form id="search-form">
+        <input type="text" id="local-search-input" name="q" results="0" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off"/>
+        <i class="fa fa-times" onclick="resetSearch()"></i>
+    </form>
+    <div id="local-search-result"></div>
+    <p class='no-result'>No results found</p>
+    <script type="text/javascript"
+    src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script src="/js/search.js"></script>
+    <script>
+    var path = "/search.xml";
+    searchFunc(path, 'local-search-input', 'local-search-result');
+    </script>
+    <ul id="menu-agenda">
+        <li><a href="/getting_started/">Getting Started</a></li>
+        <li><a href="/setup/">事前準備</a></li>
+        <li><a href="/basics/">基本操作</a></li>
+        <li><a href="/advanced/">高度な操作</a></li>
+        <li><a href="/developer_guide/">開発者ガイド</a></li>
+        <li><a href="/about_uroborosql/">uroboroSQLについて</a></li>
+    </ul>
+</nav>
+                <div id="main">
+                    <div class="inner">
+                        <!-- Main Content -->
+                        
+
+    <h1>基本操作</h1>
+
+
+
+<!-- Gallery -->
+
+
+<!-- Content -->
+<hr>
+<ul>
+<li><a href="#検索">検索</a></li>
+<li><a href="#挿入と更新と削除">挿入と更新と削除</a></li>
+<li><a href="#動的SQLの構築">動的SQLの構築</a></li>
+</ul>
+<hr>
+<p>ここでは、uroboroSQLの基本操作をまとめています。</p>
+<h2 id="検索"><a href="#検索" class="headerlink" title="検索"></a>検索</h2><p>SELECT文を実行する際は、<code>executeQuery</code>メソッドを使用します。</p>
+<h3 id="パラメーターをバインドする場合"><a href="#パラメーターをバインドする場合" class="headerlink" title="パラメーターをバインドする場合"></a>パラメーターをバインドする場合</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span></div><div class="line">    product_id = <span class="comment">/* product_id */</span><span class="string">'0010'</span></div></pre></td></tr></table></figure>
+<p>パラメーターのバインドを行う場合は、<code>addParam</code>メソッドを用います。<code>addParam</code>メソッドは引数に<code>(パラメーター名, バインドするパラメーターの値)</code>を設定します。上記SQLを実行するには以下のように記述します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sqlContext.setSqlName(<span class="string">"product.selectaparam"</span>);</div><div class="line"></div><div class="line">String productId = <span class="string">"0010"</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, productId);</div><div class="line"></div><div class="line">ResultSet resultSet = sqlAgent.executeQuery(sqlContext);</div></pre></td></tr></table></figure></p>
+<h3 id="複数のパラメーターをバインドする場合"><a href="#複数のパラメーターをバインドする場合" class="headerlink" title="複数のパラメーターをバインドする場合"></a>複数のパラメーターをバインドする場合</h3><p>また、以下のようなSQLに対し、複数のパラメーターをバインドすることも可能です。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> * </div><div class="line"><span class="keyword">from</span> </div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> </div><div class="line">    product_price = <span class="comment">/* product_price */</span><span class="number">120</span> </div><div class="line"><span class="keyword">and</span> product_category = <span class="comment">/* product_category_id */</span><span class="string">'07'</span></div></pre></td></tr></table></figure></p>
+<p>この場合も以下の様に、<code>addParam</code>メソッドを使用することでバインドが完了します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sqlContext.setSqlName(<span class="string">"product.selecttwoparams"</span>);</div><div class="line"></div><div class="line"><span class="keyword">int</span> productPrice = <span class="number">120</span>;</div><div class="line">String productCategoryId = <span class="string">"07"</span>;</div><div class="line">sqlContext.addParam(<span class="string">"product_price"</span>, productPrice);</div><div class="line">sqlContext.addParam(<span class="string">"product_category_id"</span>, productCategoryId);</div><div class="line"></div><div class="line">ResultSet resultSet = sqlAgent.executeQuery(sqlContext);</div></pre></td></tr></table></figure></p>
+<p>バインド出来るパラメーターのデータ型については、<a href="/advanced/#バインド出来るパラメーターの型">高度な操作&gt;バインド出来るパラメーターの型</a>を参照して下さい。</p>
+<h2 id="挿入と更新と削除"><a href="#挿入と更新と削除" class="headerlink" title="挿入と更新と削除"></a>挿入と更新と削除</h2><p>INSERT・UPDATE・DELETE文を実行する際は、<code>executeUpdate</code>メソッドを使用します。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">values</span> (</div><div class="line">    <span class="comment">/* product_id */</span><span class="string">'1234567890123'</span>,</div><div class="line">    <span class="comment">/* product_name */</span><span class="string">'note-A'</span></div><div class="line">)</div></pre></td></tr></table></figure></p>
+<p>例えば挿入の場合、上記SQLを実行するには以下のように記述します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sqlContext.setSqlName(<span class="string">"product.insert"</span>);</div><div class="line"></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"note-A"</span>);</div><div class="line"></div><div class="line">sqlAgent.executeUpdate(sqlContext);</div></pre></td></tr></table></figure></p>
+<p>更新、削除の場合も同じ要領で記述します。</p>
+<h2 id="動的SQLの構築"><a href="#動的SQLの構築" class="headerlink" title="動的SQLの構築"></a>動的SQLの構築</h2><p>SQLに対し条件分岐/ループ等の動的な制御を行いたい場合、コメント形式で記述することが可能です。</p>
+<h3 id="条件分岐"><a href="#条件分岐" class="headerlink" title="条件分岐"></a>条件分岐</h3><p>条件分岐の制御はSQLコメント<code>/*IF 条件式*/</code>、<code>/*END*/</code>、<code>/*ELSEIF 条件式*/</code>、<code>/*ELSE*/</code>を用いて記述します。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="comment">/*IF  product_category_id ==  "07"*/</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">120</span></div><div class="line"><span class="comment">/*ELSEIF product_category_id == "08"*/</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">200</span></div><div class="line"><span class="comment">/*ELSE*/</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">250</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure></p>
+<p>上のSQLでは、パラメーター<code>product_category_id</code>の値によって動的にSQLの処理が制御されています。<br>つまり、<code>product_category_id</code>が”07”である場合、<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">120</span></div></pre></td></tr></table></figure></p>
+<p>“08”ならば<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">200</span></div></pre></td></tr></table></figure></p>
+<p>それ以外の場合は<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">250</span></div></pre></td></tr></table></figure></p>
+<p>との処理が実行されます。</p>
+<h3 id="範囲の有効-無効の設定"><a href="#範囲の有効-無効の設定" class="headerlink" title="範囲の有効/無効の設定"></a>範囲の有効/無効の設定</h3><p>例えば、以下の条件分岐の制御をかけたSQLの実行を考えてみます。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span></div><div class="line"><span class="comment">/*IF product_category_id == "07"*/</span></div><div class="line">    product_price = <span class="number">120</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure></p>
+<p>この時、<code>product_category_id</code>として”08”をバインドした場合、このSQLは<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span></div></pre></td></tr></table></figure></p>
+<p>となり、<code>where</code>句に入る条件式が不在なため不正なSQLとなってしまいます。<br>この問題に対しては、<code>where</code>句を<code>BEGIN</code>コメントと<code>END</code>コメントで囲むことで対処出来ます。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="comment">/*BEGIN*/</span></div><div class="line"><span class="keyword">where</span></div><div class="line"><span class="comment">/*IF product_category_id == "07"*/</span></div><div class="line">    product_price = <span class="number">120</span></div><div class="line"><span class="comment">/*END*/</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure></p>
+<p><code>product_category_id</code>が”08”である場合、このSQLは<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div></pre></td></tr></table></figure></p>
+<p>と、<code>BEGIN</code>と<code>END</code>に囲まれた<code>IF</code>の条件式が<code>false</code>になるため、囲まれた<code>where</code>句そのものが削除される処理が実行されます。</p>
+<div style="font-size:130%; font-weight:bold;"><br><a href="/setup/" style="float:left">&#60;&#60; 事前準備</a><a href="/advanced/" style="float:right">高度な操作 &#62;&#62;</a><br></div>
+
+<!-- Tags -->
+
+
+
+<div class="tags">
+    
+</div>
+
+
+
+<!-- Comments -->
+<div>
+    
+
+
+</div>
+
+
+                    </div>
+                </div>
+                <!-- Footer -->
+<footer id="footer">
+  <div class="inner">
+      <section>
+          <h2>About</h2>
+          <div>
+              経営とITをデザインする、フューチャーアーキテクトの技術ブログです<br><a href="http://www.future.co.jp/">http://www.future.co.jp/</a>
+          </div>
+      </section>
+      <section>
+          <h2>Contact</h2>
+                  東京都品川区大崎<br>
+                  1-2-2<br>
+                  アートヴィレッジ大崎セントラルタワー<br>
+                  Phone: 03-5740-5721<br>
+                  Email: techblog@future.co.jp<br>
+      </section>
+      <section>
+          <h2>Follow</h2>
+          <ul class="icons">
+              
+                  <li><a href="https://twitter.com/future_techblog" class="icon style2 fa-twitter" target="_blank" ><span class="label">Twitter</span></a></li>
+              
+              
+                  <li><a href="https://www.facebook.com/future.saiyo" class="icon style2 fa-facebook" target="_blank" ><span class="label">Facebook</span></a></li>
+              
+              
+                  <li><a href="https://github.com/future-architect" class="icon style2 fa-github" target="_blank" ><span class="label">GitHub</span></a></li>
+              
+              
+                  <li><a href="http://qiita.com/organizations/future" class="icon style2 fa-pencil" target="_blank" ><span class="label">Qiita</span></a></li>
+              
+              
+                 <li><a href="https://future-architect.github.io/" class="icon style2 fa-pencil-square-o" target="_blank" ><span class="label">Tech Blog</span></a></li>
+              
+          </ul>
+      </section>
+      <br>
+      <ul class="copyright">
+          <li>&copy; Future Architect. All rights reserved</li>
+          <li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
+          <li>Hexo: <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></li>
+      </ul>
+  </div>
+</footer>
+        </div>
+        <!-- After footer scripts -->
+        
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- skel -->
+<script src="/js/skel.min.js"></script>
+
+<!-- Custom Code -->
+<script src="/js/util.js"></script>
+
+<!--[if lte IE 8]>
+<script src="/js/ie/respond.min.js"></script>
+<![endif]-->
+
+<!-- Custom Code -->
+<script src="/js/main.js"></script>
+
+<!-- Gallery -->
+<script src="//cdn.rawgit.com/noelboss/featherlight/1.3.5/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+    </body>
+
+</html>

@@ -1,0 +1,1014 @@
+pre > code {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px;
+  font-family: Courier New, Courier, monospace;
+  border: none;
+  margin: 0;
+  cursor: text;
+  overflow-x: auto;
+  line-height: 1.7em;
+  font-size: 15px;
+}
+
+code {
+  font-size: 15px;
+  display: inline-block;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 400;
+  background-color: #f7f8f8;
+  padding: 0 10px;
+}
+
+figure.highlight,
+.codeblock {
+  margin: 35px 0 50px 0;
+  line-height: 1.3em;
+  overflow-x: scroll;
+}
+
+figure.highlight table,
+.codeblock table {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+figure.highlight table tr {
+  border: 0;
+}
+
+figure.highlight pre,
+figure.highlight .gutter,
+figure.highlight .code,
+figure.highlight .tag,
+.codeblock pre,
+.codeblock .gutter,
+.codeblock .code,
+.codeblock .tag {
+  font-family: Courier New, Courier, monospace;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: text;
+}
+
+figure.highlight .gutter,
+figure.highlight .code,
+.codeblock .gutter,
+.codeblock .code {
+  vertical-align: top;
+}
+
+figure.highlight.plain .gutter,
+.codeblock.plain .gutter {
+  display: none;
+}
+
+figure.highlight figcaption,
+.codeblock figcaption {
+  font-size: 15px;
+  padding: 0 15px 20px;
+  margin: 0;
+}
+
+figure.highlight figcaption a,
+.codeblock figcaption a {
+  float: right;
+}
+
+figure.highlight .gutter,
+.codeblock .gutter {
+  border-right: 1px solid;
+  padding: 0.3em 15px;
+}
+
+figure.highlight .code,
+.codeblock .code {
+  padding: 0.3em 15px 0.3em 1em;
+  width: 100%;
+}
+
+figure.highlight .code pre,
+.codeblock .code pre {
+  max-width: calc(750px - 50px);
+  /*overflow-x: auto;*/
+  /*overflow-y: hidden;*/
+}
+
+figure.highlight .line,
+.codeblock .line {
+  height: 1.3em;
+  font-size: 15px;
+}
+
+.codeblock--tabbed figure.highlight,
+.codeblock--tabbed pre > code {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.codeblock--tabbed figcaption a, .codeblock--tabbed figcaption span {
+  float: left !important;
+}
+
+.codeblock--tabbed figcaption .tabs {
+  float: right;
+}
+
+.codeblock--tabbed figcaption .tabs .tab {
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 5px;
+  padding: 0 7px;
+}
+
+.codeblock--tabbed figcaption .tabs .tab:last-child {
+  margin-right: 0;
+}
+
+.gist .line,
+.gist .line-number {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1em;
+  margin: 0 0 5px 0;
+}
+
+pre > code {
+  background: #f7f8f8;
+  color: #eff2f6;
+}
+
+code {
+  background-color: #f7f8f8;
+}
+
+.codeblock--tabbed figcaption .tab.active {
+  background: #349ef3;
+  color: white;
+}
+
+figure.highlight, .codeblock {
+  color: #eff2f6;
+}
+
+figure.highlight figcaption, .codeblock figcaption {
+  background: #f7f8f8;
+  color: #999999;
+}
+
+figure.highlight .gutter, .codeblock .gutter {
+  border-right-color: #e6e6e6;
+}
+
+figure.highlight .gutter .line, .codeblock .gutter .line {
+  color: #aaaaaa;
+}
+
+figure.highlight .comment, .codeblock .comment {
+  color: #7e817e;
+}
+
+figure.highlight .string, .codeblock .string {
+  color: #557df7;
+}
+
+figure.highlight .keyword, .codeblock .keyword {
+  color: #dd3c87;
+}
+
+figure.highlight.apacheconf .code {
+  .common, .nomarkup, .attribute, .variable, .cbracket, .keyword {
+    color: #00bfff;
+  }
+}
+
+.codeblock.apacheconf .code {
+  .common, .nomarkup, .attribute, .variable, .cbracket, .keyword {
+    color: #00bfff;
+  }
+}
+
+figure.highlight.apacheconf .code .sqbracket, .codeblock.apacheconf .code .sqbracket {
+  color: #df5000;
+}
+
+figure.highlight.apacheconf .code {
+  .section, .tag {
+    color: #63a35c;
+  }
+}
+
+.codeblock.apacheconf .code {
+  .section, .tag {
+    color: #63a35c;
+  }
+}
+
+figure.highlight.bash .code .shebang, .codeblock.bash .code .shebang {
+  color: #7e817e;
+}
+
+figure.highlight.bash .code {
+  .literal, .built_in {
+    color: #00bfff;
+  }
+}
+
+.codeblock.bash .code {
+  .literal, .built_in {
+    color: #00bfff;
+  }
+}
+
+figure.highlight.bash .code .variable, .codeblock.bash .code .variable {
+  color: #eff2f6;
+}
+
+figure.highlight.bash .code .title, .codeblock.bash .code .title, figure.highlight.coffeescript .code .title, .codeblock.coffeescript .code .title {
+  color: #795da3;
+}
+
+figure.highlight.coffeescript .code {
+  .literal, .built_in, .number {
+    color: #00bfff;
+  }
+}
+
+.codeblock.coffeescript .code {
+  .literal, .built_in, .number {
+    color: #00bfff;
+  }
+}
+
+figure.highlight.coffeescript .code {
+  .reserved, .attribute {
+    color: #1d3e81;
+  }
+}
+
+.codeblock.coffeescript .code {
+  .reserved, .attribute {
+    color: #1d3e81;
+  }
+}
+
+figure.highlight.coffeescript .code {
+  .subst, .regexp, .attribute {
+    color: #df5000;
+  }
+}
+
+.codeblock.coffeescript .code {
+  .subst, .regexp, .attribute {
+    color: #df5000;
+  }
+}
+
+figure.highlight {
+  &.cpp .code .preprocessor, &.c .code .preprocessor {
+    color: #df5000;
+  }
+}
+
+.codeblock {
+  &.cpp .code .preprocessor, &.c .code .preprocessor {
+    color: #df5000;
+  }
+}
+
+figure.highlight {
+  &.cpp .code .meta-keyword, &.c .code .meta-keyword {
+    color: #dd3c87;
+  }
+}
+
+.codeblock {
+  &.cpp .code .meta-keyword, &.c .code .meta-keyword {
+    color: #dd3c87;
+  }
+}
+
+figure.highlight {
+  &.cpp .code .title, &.c .code .title {
+    color: #795da3;
+  }
+}
+
+.codeblock {
+  &.cpp .code .title, &.c .code .title {
+    color: #795da3;
+  }
+}
+
+figure.highlight {
+  &.cpp .code {
+    .number, .built_in {
+      color: #00bfff;
+    }
+  }
+  &.c .code {
+    .number, .built_in {
+      color: #00bfff;
+    }
+  }
+}
+
+.codeblock {
+  &.cpp .code {
+    .number, .built_in {
+      color: #00bfff;
+    }
+  }
+  &.c .code {
+    .number, .built_in {
+      color: #00bfff;
+    }
+  }
+}
+
+figure.highlight.cs .code .preprocessor, .codeblock.cs .code .preprocessor {
+  color: #eff2f6;
+  .keyword {
+    color: #eff2f6;
+  }
+}
+
+figure.highlight.cs .code .title, .codeblock.cs .code .title {
+  color: #795da3;
+}
+
+figure.highlight.cs .code .number, figure.highlight.cs .code .built_in {
+  color: #00bfff;
+}
+
+.codeblock.cs .code .number, .codeblock.cs .code .built_in {
+  color: #00bfff;
+}
+
+figure.highlight.cs .code .xmlDocTag, figure.highlight.cs .code .doctag {
+  color: #63a35c;
+}
+
+.codeblock.cs .code .xmlDocTag, .codeblock.cs .code .doctag {
+  color: #63a35c;
+}
+
+figure.highlight.css .code .at_rule, figure.highlight.css .code .important, figure.highlight.css .code .meta {
+  color: #dd3c87;
+}
+
+.codeblock.css .code .at_rule, .codeblock.css .code .important, .codeblock.css .code .meta {
+  color: #dd3c87;
+}
+
+figure.highlight.css .code .attribute, figure.highlight.css .code .hexcolor, figure.highlight.css .code .number, figure.highlight.css .code .function {
+  color: #00bfff;
+}
+
+.codeblock.css .code .attribute, .codeblock.css .code .hexcolor, .codeblock.css .code .number, .codeblock.css .code .function {
+  color: #00bfff;
+}
+
+figure.highlight.css .code .attr_selector, figure.highlight.css .code .value {
+  color: #eff2f6;
+}
+
+.codeblock.css .code .attr_selector, .codeblock.css .code .value {
+  color: #eff2f6;
+}
+
+figure.highlight.css .code .id, figure.highlight.css .code .class, figure.highlight.css .code .pseudo, figure.highlight.css .code .selector-pseudo {
+  color: #795da3;
+}
+
+.codeblock.css .code .id, .codeblock.css .code .class, .codeblock.css .code .pseudo, .codeblock.css .code .selector-pseudo {
+  color: #795da3;
+}
+
+figure.highlight.css .code .tag, figure.highlight.css .code .selector-tag {
+  color: #63a35c;
+}
+
+.codeblock.css .code .tag, .codeblock.css .code .selector-tag {
+  color: #63a35c;
+}
+
+figure.highlight.diff .code .chunk, figure.highlight.diff .code .meta {
+  color: #795da3;
+  font-weight: bold;
+}
+
+.codeblock.diff .code .chunk, .codeblock.diff .code .meta {
+  color: #795da3;
+  font-weight: bold;
+}
+
+figure.highlight.diff .code .addition, .codeblock.diff .code .addition {
+  color: #55a532;
+  background-color: #eaffea;
+}
+
+figure.highlight.diff .code .deletion, .codeblock.diff .code .deletion {
+  color: #bd2c00;
+  background-color: #ffecec;
+}
+
+figure.highlight.http .code .attribute, figure.highlight.http .code .attr {
+  color: #557df7;
+}
+
+.codeblock.http .code .attribute, .codeblock.http .code .attr {
+  color: #557df7;
+}
+
+figure.highlight.http .code .literal, .codeblock.http .code .literal {
+  color: #00bfff;
+}
+
+figure.highlight.http .code .request, .codeblock.http .code .request {
+  color: #dd3c87;
+}
+
+figure.highlight.ini .code {
+  .title, .section {
+    color: #795da3;
+  }
+}
+
+.codeblock.ini .code {
+  .title, .section {
+    color: #795da3;
+  }
+}
+
+figure.highlight.ini .code {
+  .setting, .attr {
+    color: #dd3c87;
+  }
+}
+
+.codeblock.ini .code {
+  .setting, .attr {
+    color: #dd3c87;
+  }
+}
+
+figure.highlight.ini .code {
+  .value, .keyword {
+    color: #eff2f6;
+  }
+}
+
+.codeblock.ini .code {
+  .value, .keyword {
+    color: #eff2f6;
+  }
+}
+
+figure.highlight.java .code .title, .codeblock.java .code .title {
+  color: #795da3;
+}
+
+figure.highlight.java .code .javadoc, .codeblock.java .code .javadoc {
+  color: #7e817e;
+}
+
+figure.highlight.java .code {
+  .meta, .annotation, .javadoctag {
+    color: #dd3c87;
+  }
+}
+
+.codeblock.java .code {
+  .meta, .annotation, .javadoctag {
+    color: #dd3c87;
+  }
+}
+
+figure.highlight.java .code .number, .codeblock.java .code .number {
+  color: #00bfff;
+}
+
+figure.highlight.java .code .params, .codeblock.java .code .params {
+  color: #1d3e81;
+}
+
+figure.highlight.js .code {
+  .built_in, .title {
+    color: #795da3;
+  }
+}
+
+.codeblock.js .code {
+  .built_in, .title {
+    color: #795da3;
+  }
+}
+
+figure.highlight.js .code .javadoc, .codeblock.js .code .javadoc {
+  color: #7e817e;
+}
+
+figure.highlight.js .code {
+  .tag, .javadoctag {
+    color: #dd3c87;
+  }
+}
+
+.codeblock.js .code {
+  .tag, .javadoctag {
+    color: #dd3c87;
+  }
+}
+
+figure.highlight.js .code .tag .title, .codeblock.js .code .tag .title {
+  color: #eff2f6;
+}
+
+figure.highlight.js .code .regexp, .codeblock.js .code .regexp {
+  color: #df5000;
+}
+
+figure.highlight.js .code {
+  .literal, .number {
+    color: #00bfff;
+  }
+}
+
+.codeblock.js .code {
+  .literal, .number {
+    color: #00bfff;
+  }
+}
+
+figure.highlight.json .code .attribute, .codeblock.json .code .attribute {
+  color: #557df7;
+}
+
+figure.highlight.json .code {
+  .number, .literal {
+    color: #00bfff;
+  }
+}
+
+.codeblock.json .code {
+  .number, .literal {
+    color: #00bfff;
+  }
+}
+
+figure.highlight.mak .code .constant, .codeblock.mak .code .constant {
+  color: #eff2f6;
+}
+
+figure.highlight.mak .code .title, .codeblock.mak .code .title {
+  color: #795da3;
+}
+
+figure.highlight.mak .code {
+  .keyword, .meta-keyword {
+    color: #00bfff;
+  }
+}
+
+.codeblock.mak .code {
+  .keyword, .meta-keyword {
+    color: #00bfff;
+  }
+}
+
+figure.highlight.md .code {
+  .value, .link_label, .strong, .emphasis, .blockquote, .quote, .section {
+    color: #557df7;
+  }
+}
+
+.codeblock.md .code {
+  .value, .link_label, .strong, .emphasis, .blockquote, .quote, .section {
+    color: #557df7;
+  }
+}
+
+figure.highlight.md .code {
+  .link_reference, .symbol, .code {
+    color: #00bfff;
+  }
+}
+
+.codeblock.md .code {
+  .link_reference, .symbol, .code {
+    color: #00bfff;
+  }
+}
+
+figure.highlight.md .code {
+  .link_url, .link {
+    text-decoration: underline;
+  }
+}
+
+.codeblock.md .code {
+  .link_url, .link {
+    text-decoration: underline;
+  }
+}
+
+figure.highlight.nginx .code {
+  .title, .attribute {
+    color: #dd3c87;
+  }
+}
+
+.codeblock.nginx .code {
+  .title, .attribute {
+    color: #dd3c87;
+  }
+}
+
+figure.highlight.nginx .code {
+  .built_in, .literal {
+    color: #00bfff;
+  }
+}
+
+.codeblock.nginx .code {
+  .built_in, .literal {
+    color: #00bfff;
+  }
+}
+
+figure.highlight.nginx .code .regexp, .codeblock.nginx .code .regexp {
+  color: #557df7;
+}
+
+figure.highlight.nginx .code .variable, .codeblock.nginx .code .variable {
+  color: #eff2f6;
+}
+
+figure.highlight.objectivec .code {
+  .preprocessor, .meta {
+    color: #dd3c87;
+  }
+}
+
+.codeblock.objectivec .code {
+  .preprocessor, .meta {
+    color: #dd3c87;
+  }
+}
+
+figure.highlight.objectivec .code {
+  .preprocessor .title, .meta .title {
+    color: #df5000;
+  }
+}
+
+.codeblock.objectivec .code {
+  .preprocessor .title, .meta .title {
+    color: #df5000;
+  }
+}
+
+figure.highlight.objectivec .code .meta-string, .codeblock.objectivec .code .meta-string {
+  color: #557df7;
+}
+
+figure.highlight.objectivec .code .title, .codeblock.objectivec .code .title {
+  color: #795da3;
+}
+
+figure.highlight.objectivec .code {
+  .literal, .number, .built_in {
+    color: #00bfff;
+  }
+}
+
+.codeblock.objectivec .code {
+  .literal, .number, .built_in {
+    color: #00bfff;
+  }
+}
+
+figure.highlight.perl .code .sub, .codeblock.perl .code .sub, figure.highlight.perl .code .title, .codeblock.perl .code .title {
+  color: #795da3;
+}
+
+figure.highlight.perl .code .regexp, .codeblock.perl .code .regexp {
+  color: #df5000;
+}
+
+figure.highlight.php .code {
+  .phpdoc, .doctag {
+    color: #dd3c87;
+  }
+}
+
+.codeblock.php .code {
+  .phpdoc, .doctag {
+    color: #dd3c87;
+  }
+}
+
+figure.highlight.php .code .regexp, .codeblock.php .code .regexp {
+  color: #df5000;
+}
+
+figure.highlight.php .code {
+  .literal, .number {
+    color: #00bfff;
+  }
+}
+
+.codeblock.php .code {
+  .literal, .number {
+    color: #00bfff;
+  }
+}
+
+figure.highlight.php .code .title, .codeblock.php .code .title {
+  color: #795da3;
+}
+
+figure.highlight.python .code {
+  .decorator, .title, .meta {
+    color: #795da3;
+  }
+}
+
+.codeblock.python .code {
+  .decorator, .title, .meta {
+    color: #795da3;
+  }
+}
+
+figure.highlight.python .code .number, .codeblock.python .code .number {
+  color: #00bfff;
+}
+
+figure.highlight.ruby .code {
+  .parent, .title {
+    color: #795da3;
+  }
+}
+
+.codeblock.ruby .code {
+  .parent, .title {
+    color: #795da3;
+  }
+}
+
+figure.highlight.ruby .code {
+  .prompt, .constant, .number, .subst .keyword, .symbol {
+    color: #00bfff;
+  }
+}
+
+.codeblock.ruby .code {
+  .prompt, .constant, .number, .subst .keyword, .symbol {
+    color: #00bfff;
+  }
+}
+
+figure.highlight.sql .built_in, .codeblock.sql .built_in {
+  color: #dd3c87;
+}
+
+figure.highlight.sql .number, .codeblock.sql .number {
+  color: #00bfff;
+}
+
+figure.highlight {
+  &.xml .tag, &.html .tag {
+    color: #eff2f6;
+  }
+}
+
+.codeblock {
+  &.xml .tag, &.html .tag {
+    color: #eff2f6;
+  }
+}
+
+figure.highlight {
+  &.xml .value, &.html .value {
+    color: #557df7;
+  }
+}
+
+.codeblock {
+  &.xml .value, &.html .value {
+    color: #557df7;
+  }
+}
+
+figure.highlight {
+  &.xml {
+    .attribute, .attr {
+      color: #795da3;
+    }
+  }
+  &.html {
+    .attribute, .attr {
+      color: #795da3;
+    }
+  }
+}
+
+.codeblock {
+  &.xml {
+    .attribute, .attr {
+      color: #795da3;
+    }
+  }
+  &.html {
+    .attribute, .attr {
+      color: #795da3;
+    }
+  }
+}
+
+figure.highlight {
+  &.xml {
+    .title, .name {
+      color: #63a35c;
+    }
+  }
+  &.html {
+    .title, .name {
+      color: #63a35c;
+    }
+  }
+}
+
+.codeblock {
+  &.xml {
+    .title, .name {
+      color: #63a35c;
+    }
+  }
+  &.html {
+    .title, .name {
+      color: #63a35c;
+    }
+  }
+}
+
+figure.highlight.puppet .title, .codeblock.puppet .title {
+  color: #795da3;
+}
+
+figure.highlight.puppet .function, .codeblock.puppet .function {
+  color: #00bfff;
+}
+
+figure.highlight.puppet .name, .codeblock.puppet .name {
+  color: #dd3c87;
+}
+
+figure.highlight.puppet .attr, .codeblock.puppet .attr {
+  color: #00bfff;
+}
+
+figure.highlight.less {
+  .tag, .at_rule {
+    color: #dd3c87;
+  }
+}
+
+.codeblock.less .tag, .codeblock.less .at_rule {
+  color: #dd3c87;
+}
+
+figure.highlight.less .number, figure.highlight.less .hexcolor, figure.highlight.less .function, figure.highlight.less .attribute {
+  color: #00bfff;
+}
+
+.codeblock.less .number, .codeblock.less .hexcolor, .codeblock.less .function, .codeblock.less .attribute {
+  color: #00bfff;
+}
+
+figure.highlight.less .built_in, .codeblock.less .built_in {
+  color: #df5000;
+}
+
+figure.highlight.less .id, figure.highlight.less .pseudo, figure.highlight.less .class, figure.highlight.less .selector-id, figure.highlight.less .selector-class, figure.highlight.less .selector-tag {
+  color: #795da3;
+}
+
+.codeblock.less .id, .codeblock.less .pseudo, .codeblock.less .class, .codeblock.less .selector-id, .codeblock.less .selector-class, .codeblock.less .selector-tag {
+  color: #795da3;
+}
+
+figure.highlight.scss .tag, figure.highlight.scss .at_rule, figure.highlight.scss .important {
+  color: #dd3c87;
+}
+
+.codeblock.scss .tag, .codeblock.scss .at_rule, .codeblock.scss .important {
+  color: #dd3c87;
+}
+
+figure.highlight.scss .number, figure.highlight.scss .hexcolor, figure.highlight.scss .function, figure.highlight.scss .attribute {
+  color: #00bfff;
+}
+
+.codeblock.scss .number, .codeblock.scss .hexcolor, .codeblock.scss .function, .codeblock.scss .attribute {
+  color: #00bfff;
+}
+
+figure.highlight.scss .variable, .codeblock.scss .variable {
+  color: #eff2f6;
+}
+
+figure.highlight.scss .built_in, .codeblock.scss .built_in {
+  color: #df5000;
+}
+
+figure.highlight.scss .id, figure.highlight.scss .pseudo, figure.highlight.scss .class, figure.highlight.scss .preprocessor, figure.highlight.scss .selector-class, figure.highlight.scss .selector-id {
+  color: #795da3;
+}
+
+.codeblock.scss .id, .codeblock.scss .pseudo, .codeblock.scss .class, .codeblock.scss .preprocessor, .codeblock.scss .selector-class, .codeblock.scss .selector-id {
+  color: #795da3;
+}
+
+figure.highlight.scss .tag, figure.highlight.scss .selector-tag {
+  color: #63a35c;
+}
+
+.codeblock.scss .tag, .codeblock.scss .selector-tag {
+  color: #63a35c;
+}
+
+figure.highlight.stylus .at_rule, .codeblock.stylus .at_rule {
+  color: #dd3c87;
+}
+
+figure.highlight.stylus .tag, figure.highlight.stylus .selector-tag {
+  color: #63a35c;
+}
+
+.codeblock.stylus .tag, .codeblock.stylus .selector-tag {
+  color: #63a35c;
+}
+
+figure.highlight.stylus .number, figure.highlight.stylus .hexcolor, figure.highlight.stylus .attribute, figure.highlight.stylus .params {
+  color: #00bfff;
+}
+
+.codeblock.stylus .number, .codeblock.stylus .hexcolor, .codeblock.stylus .attribute, .codeblock.stylus .params {
+  color: #00bfff;
+}
+
+figure.highlight.stylus .class, figure.highlight.stylus .id, figure.highlight.stylus .pseudo, figure.highlight.stylus .title, figure.highlight.stylus .selector-id, figure.highlight.stylus .selector-pseudo, figure.highlight.stylus .selector-class {
+  color: #795da3;
+}
+
+.codeblock.stylus .class, .codeblock.stylus .id, .codeblock.stylus .pseudo, .codeblock.stylus .title, .codeblock.stylus .selector-id, .codeblock.stylus .selector-pseudo, .codeblock.stylus .selector-class {
+  color: #795da3;
+}
+
+figure.highlight.go .typename, .codeblock.go .typename {
+  color: #dd3c87;
+}
+
+figure.highlight.go .built_in, figure.highlight.go .constant {
+  color: #00bfff;
+}
+
+.codeblock.go .built_in, .codeblock.go .constant {
+  color: #00bfff;
+}
+
+figure.highlight.swift .preprocessor, .codeblock.swift .preprocessor {
+  color: #dd3c87;
+}
+
+figure.highlight.swift .title, .codeblock.swift .title {
+  color: #795da3;
+}
+
+figure.highlight.swift .built_in, figure.highlight.swift .number, figure.highlight.swift .type {
+  color: #00bfff;
+}
+
+.codeblock.swift .built_in, .codeblock.swift .number, .codeblock.swift .type {
+  color: #00bfff;
+}
+
+figure.highlight.yml .line .attr, .codeblock.yml .line .attr {
+  color: #63a35c;
+}
+
+figure.highlight.yml .line, figure.highlight.yml .string, figure.highlight.yml .type, figure.highlight.yml .literal, figure.highlight.yml .meta {
+  color: #557df7;
+}
+
+.codeblock.yml .line, .codeblock.yml .string, .codeblock.yml .type, .codeblock.yml .literal, .codeblock.yml .meta {
+  color: #557df7;
+}
+
+figure.highlight.yml .number, .codeblock.yml .number {
+  color: #00bfff;
+}
