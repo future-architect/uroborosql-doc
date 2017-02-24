@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[Getting Started]]></title>
-      <url>./getting_started/</url>
+      <url>./uroborosql-doc/getting_started/</url>
       <content type="html"><![CDATA[<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">Connection connection = DriverManager.getConnetion(<span class="string">"jdbc:derby:target/productdb"</span>; user=test; password=test);</div><div class="line"></div><div class="line"><span class="comment">// SQLクラスの初期化</span></div><div class="line">SqlManager sqlManager = <span class="keyword">new</span> SqlManagerImpl(<span class="keyword">new</span> SqlLoaderImpl());</div><div class="line">sqlManager.initialize();</div><div class="line"></div><div class="line">SqlFilterManager sqlFilterManager = <span class="keyword">new</span> SqlFilterManagerImpl();</div><div class="line"></div><div class="line">SqlContextFactory sqlContextFactory = <span class="keyword">new</span> SqlContextFactoryImpl();</div><div class="line">sqlContextFactory.setSqlFilterManager(sqlFilterManager);</div><div class="line">sqlContextFactory.initialize();</div><div class="line">SqlAgentFactory agentFactory = <span class="keyword">new</span> SqlAgentFactoryImpl(<span class="keyword">new</span> DefaultConnectionSupplierImpl(connection), </div><div class="line">                                                       sqlManager, sqlFilterManager);</div><div class="line"></div><div class="line">SqlAgent sqlAgent = agentFactory.createSqlAgent();</div><div class="line">SqlContext sqlContext = sqlContextFactory.createSqlContext();</div><div class="line"></div><div class="line"><span class="comment">// 検索</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.select"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">String productId = <span class="string">"0010"</span>;</div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, productId); <span class="comment">// WHERE句の条件記入</span></div><div class="line">ResultSet resultSet = sqlAgent.executeQuery(sqlContext);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 挿入</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.insert"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"note-A"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 更新</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.update"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"note-B"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext); </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 削除</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.delete"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext);</div></pre></td></tr></table></figure>
 <div style="font-size:130%; font-weight:bold;"><br><a href="/setup/" style="float:right">事前準備 &#62;&#62;</a><br></div>]]></content>
       
@@ -14,7 +14,7 @@
     
     <entry>
       <title><![CDATA[事前準備]]></title>
-      <url>./setup/</url>
+      <url>./uroborosql-doc/setup/</url>
       <content type="html"><![CDATA[<hr>
 <ul>
 <li><a href="#環境設定">環境設定</a><ul>
@@ -35,7 +35,7 @@
     
     <entry>
       <title><![CDATA[基本操作]]></title>
-      <url>./basics/</url>
+      <url>./uroborosql-doc/basics/</url>
       <content type="html"><![CDATA[<hr>
 <ul>
 <li><a href="#検索">検索</a></li>
@@ -71,7 +71,7 @@
     
     <entry>
       <title><![CDATA[高度な操作]]></title>
-      <url>./advanced/</url>
+      <url>./uroborosql-doc/advanced/</url>
       <content type="html"><![CDATA[<hr>
 <ul>
 <li><a href="#バインド出来るパラメーターの型">バインド出来るパラメーターの型</a></li>
@@ -271,7 +271,7 @@
     
     <entry>
       <title><![CDATA[開発者ガイド]]></title>
-      <url>./developer_guide/</url>
+      <url>./uroborosql-doc/developer_guide/</url>
       <content type="html"><![CDATA[<hr>
 <ul>
 <li>コネクションの切り替え</li>
@@ -287,7 +287,7 @@
     
     <entry>
       <title><![CDATA[uroboroSQLについて]]></title>
-      <url>./about_uroborosql/</url>
+      <url>./uroborosql-doc/about_uroborosql/</url>
       <content type="html"><![CDATA[<hr>
 <ul>
 <li>リリースノート</li>
