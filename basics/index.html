@@ -104,8 +104,8 @@
     searchFunc(path, 'local-search-input', 'local-search-result');
     </script>
     <ul id="menu-agenda">
+        <li><a href="/uroborosql-doc/why_uroborosql/">Why? uroboroSQL</a></li>
         <li><a href="/uroborosql-doc/getting_started/">Getting Started</a></li>
-        <li><a href="/uroborosql-doc/setup/">事前準備</a></li>
         <li><a href="/uroborosql-doc/basics/">基本操作</a></li>
         <li><a href="/uroborosql-doc/advanced/">高度な操作</a></li>
         <li><a href="/uroborosql-doc/developer_guide/">開発者ガイド</a></li>
@@ -155,7 +155,7 @@
 <p>となり、<code>where</code>句に入る条件式が不在なため不正なSQLとなってしまいます。<br>この問題に対しては、<code>where</code>句を<code>BEGIN</code>コメントと<code>END</code>コメントで囲むことで対処出来ます。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="comment">/*BEGIN*/</span></div><div class="line"><span class="keyword">where</span></div><div class="line"><span class="comment">/*IF product_category_id == "07"*/</span></div><div class="line">    product_price = <span class="number">120</span></div><div class="line"><span class="comment">/*END*/</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure></p>
 <p><code>product_category_id</code>が”08”である場合、このSQLは<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div></pre></td></tr></table></figure></p>
 <p>と、<code>BEGIN</code>と<code>END</code>に囲まれた<code>IF</code>の条件式が<code>false</code>になるため、囲まれた<code>where</code>句そのものが削除される処理が実行されます。</p>
-<div style="font-size:130%; font-weight:bold;"><br><a href="/setup/" style="float:left">&#60;&#60; 事前準備</a><a href="/advanced/" style="float:right">高度な操作 &#62;&#62;</a><br></div>
+<div style="font-size:130%; font-weight:bold;"><br>  <a href="../getting_started" style="float:left">&#60;&#60; Getting Started</a><a href="../advanced" style="float:right">高度な操作 &#62;&#62;</a><br></div>
 
 <!-- Tags -->
 
@@ -183,20 +183,6 @@
 <footer id="footer">
   <div class="inner">
       <section>
-          <h2>About</h2>
-          <div>
-              経営とITをデザインする、フューチャーアーキテクトの技術ブログです<br><a href="http://www.future.co.jp/">http://www.future.co.jp/</a>
-          </div>
-      </section>
-      <section>
-          <h2>Contact</h2>
-                  東京都品川区大崎<br>
-                  1-2-2<br>
-                  アートヴィレッジ大崎セントラルタワー<br>
-                  Phone: 03-5740-5721<br>
-                  Email: techblog@future.co.jp<br>
-      </section>
-      <section>
           <h2>Follow</h2>
           <ul class="icons">
               
@@ -218,9 +204,8 @@
       </section>
       <br>
       <ul class="copyright">
-          <li>&copy; Future Architect. All rights reserved</li>
+          <li>&copy; 2017 Future Architect. All rights reserved</li>
           <li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
-          <li>Hexo: <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></li>
       </ul>
   </div>
 </footer>

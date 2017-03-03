@@ -8,14 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--Description-->
     
-        <meta name="description" content="環境設定
-ビルドツールの設定
-サンプルプロジェクトの構成
-
-
-
-
-環境設定ビルドツールの設定uroboroSQLをMavenプロジェクトに組み込むには、pom.xmlに以下の記述を加えて下さい。12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;jp.co.futur">
+        <meta name="description" content="uroboroSQLとは  Getting Started &amp;#62;&amp;#62;">
     
 
     <!--Author-->
@@ -25,7 +18,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="事前準備"/>
+        <meta property="og:title" content="Why? uroboroSQL"/>
     
 
     <!--Open Graph Site Name-->
@@ -38,7 +31,7 @@
 
     <!-- Title -->
     
-    <title>事前準備 - uroboroSQL</title>
+    <title>Why? uroboroSQL - uroboroSQL</title>
 
     <!-- Custom CSS -->
     <!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -104,8 +97,8 @@
     searchFunc(path, 'local-search-input', 'local-search-result');
     </script>
     <ul id="menu-agenda">
+        <li><a href="/uroborosql-doc/why_uroborosql/">Why? uroboroSQL</a></li>
         <li><a href="/uroborosql-doc/getting_started/">Getting Started</a></li>
-        <li><a href="/uroborosql-doc/setup/">事前準備</a></li>
         <li><a href="/uroborosql-doc/basics/">基本操作</a></li>
         <li><a href="/uroborosql-doc/advanced/">高度な操作</a></li>
         <li><a href="/uroborosql-doc/developer_guide/">開発者ガイド</a></li>
@@ -119,7 +112,7 @@
                 <!-- Main Content -->
                 
 
-    <h1>事前準備</h1>
+    <h1>Why? uroboroSQL</h1>
 
 
 
@@ -127,20 +120,8 @@
 
 
 <!-- Content -->
-<hr>
-<ul>
-<li><a href="#環境設定">環境設定</a><ul>
-<li><a href="#ビルドツールの設定">ビルドツールの設定</a></li>
-<li><a href="#サンプルプロジェクトの構成">サンプルプロジェクトの構成</a></li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="環境設定"><a href="#環境設定" class="headerlink" title="環境設定"></a>環境設定</h2><h3 id="ビルドツールの設定"><a href="#ビルドツールの設定" class="headerlink" title="ビルドツールの設定"></a>ビルドツールの設定</h3><p>uroboroSQLをMavenプロジェクトに組み込むには、<strong>pom.xml</strong>に以下の記述を加えて下さい。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>jp.co.future<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>uroborosql/artifactId&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>Gradleプロジェクトの場合は、<strong>build.gradle</strong>のdependencies内に以下の記述を加えて下さい。<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">compile</span> <span class="keyword">group</span>: jp.co.future, name: uroborosql, version: <span class="number">1.0</span>.<span class="number">0</span></div></pre></td></tr></table></figure></p>
-<h2 id="サンプルプロジェクトの構成"><a href="#サンプルプロジェクトの構成" class="headerlink" title="サンプルプロジェクトの構成"></a>サンプルプロジェクトの構成</h2><p>uroboroSQLを実行するプロジェクトのサンプルを以下に示します。</p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">src</div><div class="line">|<span class="emphasis">___</span>main</div><div class="line"><span class="code">    |___ java</span></div><div class="line"><span class="code">    |    |___ main.java</span></div><div class="line"><span class="code">    |___ resources</span></div><div class="line"><span class="code">          |___ sql</span></div><div class="line"><span class="code">               |___ product</span></div><div class="line"><span class="code">                    |___ selectparam.sql</span></div><div class="line"><span class="code">                    |___ selecttwoparams.sql</span></div><div class="line"><span class="code">                    |___ insert.sql</span></div></pre></td></tr></table></figure>
-<div style="font-size:130%; font-weight:bold;"><br><a href="/getting_started/" style="float:left">&#60;&#60; Getting_started</a><a href="/basics/" style="float:right">基本操作 &#62;&#62;</a><br></div>
+<h1 id="uroboroSQLとは"><a href="#uroboroSQLとは" class="headerlink" title="uroboroSQLとは"></a>uroboroSQLとは</h1><div style="font-size:130%; font-weight:bold;"><br>  <a href="../getting_started" style="float:right">Getting Started &#62;&#62;</a><br></div>
+
 
 <!-- Tags -->
 
@@ -168,20 +149,6 @@
 <footer id="footer">
   <div class="inner">
       <section>
-          <h2>About</h2>
-          <div>
-              経営とITをデザインする、フューチャーアーキテクトの技術ブログです<br><a href="http://www.future.co.jp/">http://www.future.co.jp/</a>
-          </div>
-      </section>
-      <section>
-          <h2>Contact</h2>
-                  東京都品川区大崎<br>
-                  1-2-2<br>
-                  アートヴィレッジ大崎セントラルタワー<br>
-                  Phone: 03-5740-5721<br>
-                  Email: techblog@future.co.jp<br>
-      </section>
-      <section>
           <h2>Follow</h2>
           <ul class="icons">
               
@@ -203,9 +170,8 @@
       </section>
       <br>
       <ul class="copyright">
-          <li>&copy; Future Architect. All rights reserved</li>
+          <li>&copy; 2017 Future Architect. All rights reserved</li>
           <li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
-          <li>Hexo: <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></li>
       </ul>
   </div>
 </footer>

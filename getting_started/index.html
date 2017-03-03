@@ -8,7 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--Description-->
     
-        <meta name="description" content="123456789101112131415161718192021222324252627282930313233343536373839404142Connection connection = DriverManager.getConnetion(&quot;jdbc:derby:target/produ">
+        <meta name="description" content="環境設定
+ビルドツールの設定
+サンプルプロジェクトの構成
+使い方
+
+
+
+
+環境設定ビルドツールの設定uroboroSQLをMavenプロジェクトに組み込むには、pom.xmlに以下の記述を加えて下さい。12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;jp.co.f">
     
 
     <!--Author-->
@@ -97,8 +105,8 @@
     searchFunc(path, 'local-search-input', 'local-search-result');
     </script>
     <ul id="menu-agenda">
+        <li><a href="/uroborosql-doc/why_uroborosql/">Why? uroboroSQL</a></li>
         <li><a href="/uroborosql-doc/getting_started/">Getting Started</a></li>
-        <li><a href="/uroborosql-doc/setup/">事前準備</a></li>
         <li><a href="/uroborosql-doc/basics/">基本操作</a></li>
         <li><a href="/uroborosql-doc/advanced/">高度な操作</a></li>
         <li><a href="/uroborosql-doc/developer_guide/">開発者ガイド</a></li>
@@ -120,8 +128,22 @@
 
 
 <!-- Content -->
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">Connection connection = DriverManager.getConnetion(<span class="string">"jdbc:derby:target/productdb"</span>; user=test; password=test);</div><div class="line"></div><div class="line"><span class="comment">// SQLクラスの初期化</span></div><div class="line">SqlManager sqlManager = <span class="keyword">new</span> SqlManagerImpl(<span class="keyword">new</span> SqlLoaderImpl());</div><div class="line">sqlManager.initialize();</div><div class="line"></div><div class="line">SqlFilterManager sqlFilterManager = <span class="keyword">new</span> SqlFilterManagerImpl();</div><div class="line"></div><div class="line">SqlContextFactory sqlContextFactory = <span class="keyword">new</span> SqlContextFactoryImpl();</div><div class="line">sqlContextFactory.setSqlFilterManager(sqlFilterManager);</div><div class="line">sqlContextFactory.initialize();</div><div class="line">SqlAgentFactory agentFactory = <span class="keyword">new</span> SqlAgentFactoryImpl(<span class="keyword">new</span> DefaultConnectionSupplierImpl(connection), </div><div class="line">                                                       sqlManager, sqlFilterManager);</div><div class="line"></div><div class="line">SqlAgent sqlAgent = agentFactory.createSqlAgent();</div><div class="line">SqlContext sqlContext = sqlContextFactory.createSqlContext();</div><div class="line"></div><div class="line"><span class="comment">// 検索</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.select"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">String productId = <span class="string">"0010"</span>;</div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, productId); <span class="comment">// WHERE句の条件記入</span></div><div class="line">ResultSet resultSet = sqlAgent.executeQuery(sqlContext);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 挿入</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.insert"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"note-A"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 更新</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.update"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"note-B"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext); </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 削除</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.delete"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext);</div></pre></td></tr></table></figure>
-<div style="font-size:130%; font-weight:bold;"><br><a href="/setup/" style="float:right">事前準備 &#62;&#62;</a><br></div>
+<hr>
+<ul>
+<li><a href="#環境設定">環境設定</a><ul>
+<li><a href="#ビルドツールの設定">ビルドツールの設定</a></li>
+<li><a href="#サンプルプロジェクトの構成">サンプルプロジェクトの構成</a></li>
+<li><a href="#使い方">使い方</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="環境設定"><a href="#環境設定" class="headerlink" title="環境設定"></a>環境設定</h2><h3 id="ビルドツールの設定"><a href="#ビルドツールの設定" class="headerlink" title="ビルドツールの設定"></a>ビルドツールの設定</h3><p>uroboroSQLをMavenプロジェクトに組み込むには、<strong>pom.xml</strong>に以下の記述を加えて下さい。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>jp.co.future<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>uroborosql/artifactId&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>Gradleプロジェクトの場合は、<strong>build.gradle</strong>のdependencies内に以下の記述を加えて下さい。<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">compile</span> <span class="keyword">group</span>: jp.co.future, name: uroborosql, version: <span class="number">1.0</span>.<span class="number">0</span></div></pre></td></tr></table></figure></p>
+<h2 id="サンプルプロジェクトの構成"><a href="#サンプルプロジェクトの構成" class="headerlink" title="サンプルプロジェクトの構成"></a>サンプルプロジェクトの構成</h2><p>uroboroSQLを実行するプロジェクトのサンプルを以下に示します。</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">src</div><div class="line">|<span class="emphasis">___</span>main</div><div class="line"><span class="code">    |___ java</span></div><div class="line"><span class="code">    |    |___ main.java</span></div><div class="line"><span class="code">    |___ resources</span></div><div class="line"><span class="code">          |___ sql</span></div><div class="line"><span class="code">               |___ product</span></div><div class="line"><span class="code">                    |___ selectparam.sql</span></div><div class="line"><span class="code">                    |___ selecttwoparams.sql</span></div><div class="line"><span class="code">                    |___ insert.sql</span></div></pre></td></tr></table></figure>
+<h2 id="使い方"><a href="#使い方" class="headerlink" title="使い方"></a>使い方</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">Connection connection = DriverManager.getConnetion(<span class="string">"jdbc:derby:target/productdb"</span>; user=test; password=test);</div><div class="line"></div><div class="line"><span class="comment">// SQLクラスの初期化</span></div><div class="line">SqlManager sqlManager = <span class="keyword">new</span> SqlManagerImpl(<span class="keyword">new</span> SqlLoaderImpl());</div><div class="line">sqlManager.initialize();</div><div class="line"></div><div class="line">SqlFilterManager sqlFilterManager = <span class="keyword">new</span> SqlFilterManagerImpl();</div><div class="line"></div><div class="line">SqlContextFactory sqlContextFactory = <span class="keyword">new</span> SqlContextFactoryImpl();</div><div class="line">sqlContextFactory.setSqlFilterManager(sqlFilterManager);</div><div class="line">sqlContextFactory.initialize();</div><div class="line">SqlAgentFactory agentFactory = <span class="keyword">new</span> SqlAgentFactoryImpl(<span class="keyword">new</span> DefaultConnectionSupplierImpl(connection), </div><div class="line">                                                       sqlManager, sqlFilterManager);</div><div class="line"></div><div class="line">SqlAgent sqlAgent = agentFactory.createSqlAgent();</div><div class="line">SqlContext sqlContext = sqlContextFactory.createSqlContext();</div><div class="line"></div><div class="line"><span class="comment">// 検索</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.select"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">String productId = <span class="string">"0010"</span>;</div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, productId); <span class="comment">// WHERE句の条件記入</span></div><div class="line">ResultSet resultSet = sqlAgent.executeQuery(sqlContext);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 挿入</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.insert"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"note-A"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 更新</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.update"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"note-B"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext); </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// 削除</span></div><div class="line">sqlContext.setSqlName(<span class="string">"product.delete"</span>); <span class="comment">// 参照するSQLファイル指定</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>); <span class="comment">// パラメータ追加</span></div><div class="line">sqlAgent.executeUpdate(sqlContext);</div></pre></td></tr></table></figure>
+<div style="font-size:130%; font-weight:bold;"><br>  <a href="../why_uroborosql" style="float:left">&#60;&#60; Why? uroboroSQL</a><a href="../basics" style="float:right">基本操作 &#62;&#62;</a><br></div>
 
 <!-- Tags -->
 
@@ -149,20 +171,6 @@
 <footer id="footer">
   <div class="inner">
       <section>
-          <h2>About</h2>
-          <div>
-              経営とITをデザインする、フューチャーアーキテクトの技術ブログです<br><a href="http://www.future.co.jp/">http://www.future.co.jp/</a>
-          </div>
-      </section>
-      <section>
-          <h2>Contact</h2>
-                  東京都品川区大崎<br>
-                  1-2-2<br>
-                  アートヴィレッジ大崎セントラルタワー<br>
-                  Phone: 03-5740-5721<br>
-                  Email: techblog@future.co.jp<br>
-      </section>
-      <section>
           <h2>Follow</h2>
           <ul class="icons">
               
@@ -184,9 +192,8 @@
       </section>
       <br>
       <ul class="copyright">
-          <li>&copy; Future Architect. All rights reserved</li>
+          <li>&copy; 2017 Future Architect. All rights reserved</li>
           <li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
-          <li>Hexo: <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></li>
       </ul>
   </div>
 </footer>
