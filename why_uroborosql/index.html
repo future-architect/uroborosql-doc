@@ -52,8 +52,11 @@
     <!-- Gallery -->
     <link href="//cdn.rawgit.com/noelboss/featherlight/1.3.5/release/featherlight.min.css" type="text/css" rel="stylesheet" />
     <link rel="shortcut icon" href="/uroborosql-doc/favicon.ico">
-    <!-- Place this tag in your head or just before your close body tag. -->
+
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer>
+      {lang: 'ja'}
+    </script>
     <!-- Google Analytics -->
     
 
@@ -149,7 +152,35 @@
         <!-- Footer -->
 <footer id="footer">
   <div class="inner">
-      <section>
+      <div>
+        <h2>Share</h2>
+        <ul class="sns-area">
+          <li>
+            <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://future-architect.github.io/uroborosql-doc/">Tweet</a>
+            <script>
+            ! function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0],
+                p = /^http:/.test(d.location) ? 'http' : 'https';
+              if (!d.getElementById(id)) { js = d.createElement(s);
+                js.id = id;
+                js.src = p + '://platform.twitter.com/widgets.js';
+                fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');
+
+            </script>
+          </li>
+          <li>
+            <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Ffuture-architect.github.io%2Furoborosql-doc%2F&width=130&layout=button_count&action=like&size=small&show_faces=true&share=true&height=46&appId=316260158574612" width="130" height="46" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+          </li>
+          <li>
+            <a href="http://b.hatena.ne.jp/entry/s/future-architect.github.io/uroborosql-doc/" class="hatena-bookmark-button" data-hatena-bookmark-layout="basic-counter" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+            <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+          </li>
+          <li>
+            <div class="g-plusone" data-size="medium" data-href="https://future-architect.github.io/uroborosql-doc/"></div>
+          </li>
+        </ul>
+      </div>
+      <div>
           <h2>Follow</h2>
           <ul class="icons">
               
@@ -168,7 +199,7 @@
                  <li><a href="https://future-architect.github.io/" class="icon style2 fa-pencil-square-o" target="_blank" ><span class="label">Tech Blog</span></a></li>
               
           </ul>
-      </section>
+      </div>
       <br>
       <ul class="copyright">
           <li>&copy; 2017 Future Architect. All rights reserved</li>

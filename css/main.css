@@ -3537,10 +3537,21 @@ h2.contents {
 }
 .github-button-area {
 	position: absolute;
-	top: 5px;
-	right: 5px;
+	top: 10px;
+	right: 10px;
 }
-
+.sns-area {
+	display: flex;
+	flex-wrap: wrap;
+	list-style-type: none;
+	position: relative;
+	/*margin-top: -28px;*/
+	margin-bottom: 0;
+	z-index: 5;
+}
+.sns-area li {
+	height: 25px;
+}
 
 @media screen and (max-width: 480px) {
 	header.entrance h1 {
@@ -3548,6 +3559,9 @@ h2.contents {
 	}
 	header.entrance {
 		margin-bottom: 50px;
+	}
+	div.entrance img {
+		width: 150%;
 	}
 	.features {
 		margin-top: 50px;
@@ -3566,6 +3580,9 @@ h2.contents {
 	.features div.feature {
 		width: 100%;
 		margin-bottom: 10px;
+	}
+	.sns-area {
+		margin-top: 0px;
 	}
 }
 
