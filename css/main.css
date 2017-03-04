@@ -2979,7 +2979,7 @@
 
 		div.entrance {
 			margin-top: -20px;
-			height: 350px;
+			height: 300px;
 			position: absolute;
 			top: 80px;
 			left: 0;
@@ -2991,15 +2991,19 @@
 			opacity: 0.4;
 		}
 		header.entrance h1 {
+			padding-top: 50px;
+			font-size: 42px;
+			text-align: center;
 			text-shadow: 2px 2px 7px blue;
 		}
 		header.entrance {
 			position: relative;
 			z-index: 2;
-			margin-bottom: 230px;
+			margin-bottom: 120px;
 		}
 		header.entrance p {
-			font-size: 20px;
+			font-size: 22px;
+			text-align: center;
 		}
 
 		@media screen and (max-width: 736px) {
@@ -3496,28 +3500,57 @@ h2.contents {
 	font-size: 28px;
 	clear: both;
 	width: 100%;
+	margin-bottom: 25px;
+}
+.features {
 }
 .features h2 {
-	display: none;
+	font-size: 28px;
+	margin-bottom: 15px;
 }
 .features div.feature {
-	width: calc(100% / 3);
 	float: left;
+	text-align: center;
+	width: calc(100% / 3);
 }
-.features div.feature span {
-	font-size: 32px;
-	line-height: 32px;
-	text-shadow: 2px 2px 5px #000;
+.features div.feature p {
+	text-align: left;
+	font-size: 16px;
+	line-height: 1.2em;
+	padding: 5px;
+	margin-bottom: 1em;
+}
+.features div.feature span.title {
+	display: inline-block;
+	font-size: 24px;
+	line-height: 24px;
+	text-shadow: 2px 2px 5px blue;
+	margin-bottom: 15px;
+	width: 100%;
 }
 .features div.feature i {
-	font-size: 70px;
+	font-size: 72px;
 	color: yellow;
 	display: block;
 	text-align: center;
+	text-shadow: 2px 2px 5px blue;
 }
+.github-button-area {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+}
+
+
 @media screen and (max-width: 480px) {
+	header.entrance h1 {
+		padding-top: 0;
+	}
+	header.entrance {
+		margin-bottom: 50px;
+	}
 	.features {
-		margin-top: 80px;
+		margin-top: 50px;
 	}
 	.features h2 {
 		font-size: 28px;
@@ -3527,7 +3560,7 @@ h2.contents {
 		font-size: 36px;
 		display: inline;
 	}
-	.features div.feature span {
+	.features div.feature span.title {
 		font-size: 22px;
 	}
 	.features div.feature {
@@ -3535,8 +3568,6 @@ h2.contents {
 		margin-bottom: 10px;
 	}
 }
-
-
 
 
 

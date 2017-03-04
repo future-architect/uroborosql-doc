@@ -48,7 +48,8 @@
     <!-- Gallery -->
     <link href="//cdn.rawgit.com/noelboss/featherlight/1.3.5/release/featherlight.min.css" type="text/css" rel="stylesheet" />
     <link rel="shortcut icon" href="/uroborosql-doc/favicon.ico">
-
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Google Analytics -->
     
 
@@ -108,28 +109,38 @@
                 <!-- Main Content -->
                 <div class="entrance">
     <img src="/uroborosql-doc/images/wp-index.jpg" alt="" />
+    <div class="github-button-area">
+      <a class="github-button" href="https://github.com/future-architect/uroborosql" data-style="mega" data-count-href="/future-architect/uroborosql/stargazers" data-count-api="/repos/future-architect/uroborosql#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star future-architect/uroborosql on GitHub">Star</a>
+    </div>
 </div>
 <header class="entrance">
     <h1>Welcome to uroboroSQL</h1>
     <p>
         uroboroSQLは2way SQLが利用可能なJavaのシンプルなSQL実行ライブラリです。
     </p>
-    <div class="features">
-      <h2>Features</h2>
-      <div class="feature">
-        <i class="fa fa-terminal" aria-hidden="true"></i>
-        <span>REPL搭載</span>
-      </div>
-      <div class="feature">
-        <i class="fa fa-magic" aria-hidden="true"></i>
-        <span>区分値サポート</span>
-      </div>
-      <div class="feature">
-        <i class="fa fa-retweet" aria-hidden="true"></i>
-        <span>2Way-SQL with Coverage</span>
-      </div>
-    </div>
 </header>
+
+<section class="features">
+  <h2>Features</h2>
+  <div class="feature">
+    <i class="fa fa-terminal" aria-hidden="true"></i>
+    <span class="title">REPL搭載</span>
+    <p>これまでSQLファイルを修正するたびにコンパイルしてテスト実行するのに時間がかかる・・・。他のORマッパーやSQLフレームワークでイライラしていた経験はありませんか？</p>
+    <p>uroboroSQLではREPLを搭載。SQLを修正して、IDE等のコンソールからコマンドでコンパイルなしで実行、即デバッグができます。</p>
+  </div>
+  <div class="feature">
+    <i class="fa fa-magic" aria-hidden="true"></i>
+    <span class="title">区分値サポート</span>
+    <p>2Way-SQLのライブラリを使用していると、いくつものSQLで区分値や定数などをいちいちパラメータに指定するのがわずらわしいと思ったことはありませんか？</p>
+    <p>エンタープライズで使われてOSS化したuroboroSQLでは、SQLファイルの中で定数クラスや列挙体を指定することにより、呼び出し時の実装をシンプルにします。</p>
+  </div>
+  <div class="feature">
+    <i class="fa fa-retweet" aria-hidden="true"></i>
+    <span class="title">2Way-SQL with Coverage</span>
+    <p>ORマッパー、クエリビルダならJavaコードでカバレッジが取れるのに、2Way-SQLで分岐を使った場合には、カバレッジが取れず、本番環境で意図しないSQLが・・・。</p>
+    <p>uroboroSQLではテスト実行時にカバレッジ取得用のログを出力・解析することにより、カバレッジレポートを出力することが可能です。(v0.2.0リリース予定)</p>
+  </div>
+</section>
 
 <h2 class="contents">Contents</h2>
 <section class="tiles">
