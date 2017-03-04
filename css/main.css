@@ -1707,7 +1707,7 @@
 		@media screen and (max-width: 736px) {
 
 			h1 {
-				font-size: 2em;
+				font-size: 26px;
 				margin: 0 0 1em 0;
 			}
 
@@ -1845,7 +1845,7 @@
 	}
 
 	header p {
-		margin-top: -1em;
+		margin-top: -1.5em;
 	}
 
 	@media screen and (max-width: 736px) {
@@ -2595,6 +2595,7 @@
 		flex-wrap: wrap;
 		postiion: relative;
 		margin: -2.5em 0 0 -2.5em;
+		clear: both;
 	}
 
 		.tiles article {
@@ -2989,6 +2990,9 @@
 			width: 100%;
 			opacity: 0.4;
 		}
+		header.entrance h1 {
+			text-shadow: 2px 2px 7px blue;
+		}
 		header.entrance {
 			position: relative;
 			z-index: 2;
@@ -3001,7 +3005,7 @@
 		@media screen and (max-width: 736px) {
 
 			#header {
-				padding: 4em 0 0.1em 0 ;
+				/*padding: 4em 0 0.1em 0 ;*/
 			}
 
 				#header nav {
@@ -3013,6 +3017,9 @@
 						background-size: 1.5em 1.5em;
 					}
 
+			header.entrance p {
+				font-size: 16px;
+			}
 		}
 
 /* Menu */
@@ -3484,3 +3491,54 @@ p.no-result {
   font-family: font-serif serif;
   border-bottom: 2px solid #d3d3d3;
 }
+
+h2.contents {
+	font-size: 28px;
+	clear: both;
+	width: 100%;
+}
+.features h2 {
+	display: none;
+}
+.features div.feature {
+	width: calc(100% / 3);
+	float: left;
+}
+.features div.feature span {
+	font-size: 32px;
+	line-height: 32px;
+	text-shadow: 2px 2px 5px #000;
+}
+.features div.feature i {
+	font-size: 70px;
+	color: yellow;
+	display: block;
+	text-align: center;
+}
+@media screen and (max-width: 480px) {
+	.features {
+		margin-top: 80px;
+	}
+	.features h2 {
+		font-size: 28px;
+		display: block;
+	}
+	.features div.feature i {
+		font-size: 36px;
+		display: inline;
+	}
+	.features div.feature span {
+		font-size: 22px;
+	}
+	.features div.feature {
+		width: 100%;
+		margin-bottom: 10px;
+	}
+}
+
+
+
+
+
+
+
