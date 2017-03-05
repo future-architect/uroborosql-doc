@@ -1697,7 +1697,8 @@
 		font-weight: 700;
 		line-height: 1.3;
 		margin: 0 0 1em 0;
-		letter-spacing: -0.035em;
+		letter-spacing: 0.05em;
+		text-shadow: 2px 2px 5px blue;
 	}
 
 		h1 a {
@@ -1726,7 +1727,7 @@
 		line-height: 1.5;
 		margin: 0 0 2em 0;
 		/*text-transform: uppercase;*/
-		letter-spacing: 0.35em;
+		letter-spacing: 0.1em;
 	}
 
 		h2 a, h3 a, h4 a, h5 a, h6 a {
@@ -1734,7 +1735,9 @@
 		}
 
 	h2 {
-		font-size: 1.1em;
+		font-size: 1.2em;
+		margin: 2em 0 1em 0;
+		border-bottom: solid 1px aqua;
 	}
 
 	h3 {
@@ -2717,6 +2720,7 @@
 
 				.tiles article > a h2 {
 					margin: 0;
+					border-bottom: none;
 				}
 
 				.tiles article > a .content {

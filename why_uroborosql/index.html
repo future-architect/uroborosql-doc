@@ -8,7 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--Description-->
     
-        <meta name="description" content="uroboroSQLとは  Getting Started &amp;#62;&amp;#62;">
+        <meta name="description" content="uroboroSQLとは
+uroboroSQLを使う理由？
+
+
+uroboroSQLとはuroboroSQLは、Java8対応の2Way-SQLが利用可能なシンプルなSQL実行ライブラリです。
+フューチャーアーキテクト社内にて、2006-2007年頃にS2Daoを参考に開発されて、プロジェクトで利用">
     
 
     <!--Author-->
@@ -18,7 +23,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="Why? uroboroSQL"/>
+        <meta property="og:title" content="Why uroboroSQL?"/>
     
 
     <!--Open Graph Site Name-->
@@ -31,7 +36,7 @@
 
     <!-- Title -->
     
-    <title>Why? uroboroSQL - uroboroSQL</title>
+    <title>Why uroboroSQL? - uroboroSQL</title>
 
     <!-- Custom CSS -->
     <!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -101,7 +106,7 @@
     searchFunc(path, 'local-search-input', 'local-search-result');
     </script>
     <ul id="menu-agenda">
-        <li><a href="/uroborosql-doc/why_uroborosql/">Why? uroboroSQL</a></li>
+        <li><a href="/uroborosql-doc/why_uroborosql/">Why uroboroSQL?</a></li>
         <li><a href="/uroborosql-doc/getting_started/">Getting Started</a></li>
         <li><a href="/uroborosql-doc/basics/">基本操作</a></li>
         <li><a href="/uroborosql-doc/advanced/">高度な操作</a></li>
@@ -116,7 +121,7 @@
                 <!-- Main Content -->
                 
 
-    <h1>Why? uroboroSQL</h1>
+    <h1>Why uroboroSQL?</h1>
 
 
 
@@ -124,7 +129,21 @@
 
 
 <!-- Content -->
-<h1 id="uroboroSQLとは"><a href="#uroboroSQLとは" class="headerlink" title="uroboroSQLとは"></a>uroboroSQLとは</h1><div style="font-size:130%; font-weight:bold;"><br>  <a href="../getting_started" style="float:right">Getting Started &#62;&#62;</a><br></div>
+<hr>
+<ul>
+<li><a href="#uroboroSQLとは">uroboroSQLとは</a></li>
+<li><a href="#uroboroSQLを使う理由？">uroboroSQLを使う理由？</a></li>
+</ul>
+<hr>
+<h2 id="uroboroSQLとは"><a href="#uroboroSQLとは" class="headerlink" title="uroboroSQLとは"></a>uroboroSQLとは</h2><p>uroboroSQLは、Java8対応の2Way-SQLが利用可能なシンプルなSQL実行ライブラリです。</p>
+<p>フューチャーアーキテクト社内にて、2006-2007年頃にS2Daoを参考に開発されて、プロジェクトで利用され、現在まで改善が続けられてきました。社内では、Webアプリケーションフレームワークや各種設計開発支援ツールと連携・統合される形で利用されています。</p>
+<p>とはいえ、社内で秘伝のタレ化していることは否めず、開発フェーズでは、開発パートナーさんからも「ググれない」から、使い方がわからないいう声もちらほら。だったら、OSS化してしまえということのが公開のきっかけです。</p>
+<h2 id="uroboroSQLを使う理由？"><a href="#uroboroSQLを使う理由？" class="headerlink" title="uroboroSQLを使う理由？"></a>uroboroSQLを使う理由？</h2><p>JavaからRDBにアクセスするとき、Java標準のJPA(Java Persistence API)の実装であるEclipseLink、OpenJPAはもとより、歴史のあるORMとしてHibernate、MyBatis、SpringJDBCといったグローバルで使われているものもありますし、日本でよく使われてきたS2Dao、S2JDBC、DBflute、Domaといったものもあります。</p>
+<p>こういった数多のDB系ライブラリ・フレームワークの中で、解決したい領域もそれぞれですが、uroboroSQLは主にSQL中心の設計コンセプトを採用しています。これはエンタープライズシステムにおいて、ORマッパーやクエリビルダでは実装しきれない、分析関数の利用などの複雑かつDBプロダクト依存のSQLを使う場合に有効だからです。</p>
+<p>そのため、uroboroSQLはSQLは2Way-SQL方式で記述ができるものの、ORMでよくあるエンティティクラスとリレーションをたどって遅延ロードして子エンティティを取得するなどの機能は有していません。</p>
+<p><strong>SQLをゴリゴリ書きつつ、生産性と品質を高めたい</strong></p>
+<p>それがuroboroSQLの最大の関心事です。</p>
+<div style="font-size:130%; font-weight:bold;"><br>  <a href="../getting_started" style="float:right">Getting Started &#62;&#62;</a><br></div>
 
 
 <!-- Tags -->
