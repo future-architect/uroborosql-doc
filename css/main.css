@@ -3255,6 +3255,9 @@
 			-ms-flex-direction: row;
 			flex-direction: row;
 		}
+		#footer > .inner > div {
+			margin-right: 25px;
+		}
 
 			#footer > .inner > * > :last-child {
 				margin-bottom: 0;
