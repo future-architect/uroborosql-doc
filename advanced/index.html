@@ -8,19 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--Description-->
     
-        <meta name="description" content="バインド出来るパラメーターの型
-バッチ実行
-ストアドプロシージャの実行
-トランザクション
+        <meta name="description" content="区分値定数/列挙型の利用
+SQLフィルター
+SQLカバレッジ
 エラーハンドリング 
-ストリームAPI
 ログ
-式言語
 
 
-バインド出来るパラメーターの型uroboroSQLでバインド出来るパラメーターの型は、下記の通りです。
-
-プリミティブ型とそのラッパー型（ただし cha">
+区分値定数/列挙型の利用これまでSQLの開発では、区分値や定数値などの固定値がマジックナンバーとしてSQL文内に埋め込まれていました。マジックナンバーの使用は仕様変更時の調査が困難で不具合の温床になったり、">
     
 
     <!--Author-->
@@ -138,58 +133,33 @@
 <!-- Content -->
 <hr>
 <ul>
-<li><a href="#バインド出来るパラメーターの型">バインド出来るパラメーターの型</a></li>
-<li><a href="#バッチ実行">バッチ実行</a></li>
-<li><a href="#ストアドプロシージャの実行">ストアドプロシージャの実行</a></li>
-<li><a href="#トランザクション">トランザクション</a></li>
+<li><a href="#区分値定数/列挙型の利用">区分値定数/列挙型の利用</a></li>
+<li><a href="#SQLフィルター">SQLフィルター</a></li>
+<li><a href="#SQLカバレッジ">SQLカバレッジ</a></li>
 <li><a href="#エラーハンドリング">エラーハンドリング </a></li>
-<li><a href="#ストリームAPI">ストリームAPI</a></li>
 <li><a href="#ログ">ログ</a></li>
-<li><a href="#式言語">式言語</a></li>
 </ul>
 <hr>
-<h2 id="バインド出来るパラメーターの型"><a href="#バインド出来るパラメーターの型" class="headerlink" title="バインド出来るパラメーターの型"></a>バインド出来るパラメーターの型</h2><p>uroboroSQLでバインド出来るパラメーターの型は、下記の通りです。</p>
+<h2 id="区分値定数-列挙型の利用"><a href="#区分値定数-列挙型の利用" class="headerlink" title="区分値定数/列挙型の利用"></a>区分値定数/列挙型の利用</h2><p>これまでSQLの開発では、区分値や定数値などの固定値がマジックナンバーとしてSQL文内に埋め込まれていました。マジックナンバーの使用は仕様変更時の調査が困難で不具合の温床になったり、可読性を下げる要因になっていました。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line"> *</div><div class="line"><span class="keyword">FROM</span> EMPLOYEE</div><div class="line"><span class="keyword">WHERE</span> EMP_TYP = <span class="string">'05'</span> <span class="comment">-- 05:従業員     &lt;-- 従業員の区分が変わったらどうする？</span></div></pre></td></tr></table></figure>
+<p>uroboroSQLはエンタープライズ分野での開発に利用されてきた経験から、SQL文の中でマジックナンバーを使わないための仕組みを提供しています。</p>
+<p>区分値定数/列挙型を利用するためには<code>SqlConfig</code>生成後に以下の設定を追加します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// SqlConfigの取得</span></div><div class="line">SqlConfig config = DefaultSqlConfig.getConfig(<span class="string">"jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"</span>, <span class="string">"sa"</span>, <span class="string">""</span>);</div><div class="line"></div><div class="line"><span class="comment">// SqlConfigからSqlContextFactoryを取得</span></div><div class="line">SqlContextFactory sqlContextFactory = config.getSqlContextFactory();</div><div class="line"><span class="comment">// 定数クラス（`TypeConstants`）を定数として登録</span></div><div class="line">sqlContextFactory.setConstantClassNames(Arrays.asList(TypeConstants.class.getName()));</div><div class="line"><span class="comment">// 列挙型（`Gender`）を定数として登録</span></div><div class="line">sqlContextFactory.setEnumConstantPackageNames(Arrays.asList(Gender.class.getPackage().getName()));</div><div class="line"><span class="comment">// 初期化</span></div><div class="line">sqlContextFactory.initialize();</div></pre></td></tr></table></figure></p>
+<p>TypeConstants.javaの内容<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 区分値定数クラス</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">TypeConstants</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="title">TypeConstants</span><span class="params">()</span> </span>&#123;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/** 区分種別名称：口座種別区分  区分種別番号：0035  長さ：0 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACCOUNT_TYP = <span class="string">"0035"</span>;</div><div class="line">	<span class="comment">/** 区分種別名称：口座種別区分  区分値名称：普通  区分値略称：普通  区分値番号：1 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACCOUNT_TYP_FUTSU = <span class="string">"1"</span>;</div><div class="line">	<span class="comment">/** 区分種別名称：口座種別区分  区分値名称：当座  区分値略称：当座  区分値番号：2 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACCOUNT_TYP_TOUZA = <span class="string">"2"</span>;</div><div class="line">	<span class="comment">/** 区分種別名称：口座種別区分  区分値名称：定期  区分値略称：定期  区分値番号：3 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACCOUNT_TYP_TEIKI = <span class="string">"3"</span>;</div><div class="line">	<span class="comment">/** 区分種別名称：発行区分  区分種別番号：0052  長さ：0 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ISSUE_TYP = <span class="string">"0052"</span>;</div><div class="line">	<span class="comment">/** 区分種別名称：発行区分  区分値名称：未発行  区分値略称：未発行  区分値番号：1 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ISSUE_TYP_UNISSUED = <span class="string">"1"</span>;</div><div class="line">	<span class="comment">/** 区分種別名称：発行区分  区分値名称：発行済  区分値略称：発行済  区分値番号：2 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ISSUE_TYP_OUTSTANDING = <span class="string">"2"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Gender.javaの内容<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 性別を表す列挙体</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Gender &#123;</div><div class="line">	Male(<span class="string">"M"</span>), Female(<span class="string">"F"</span>), Other(<span class="string">"O"</span>);</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String label;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Gender</span><span class="params">(<span class="keyword">final</span> String label)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.label = label;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> label;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>このように区分値定数や列挙型をSQL定数として登録しておくことで、SQL文の中で定数名が利用できるようになります。<br>参照方法は以下になります。</p>
 <ul>
-<li>プリミティブ型とそのラッパー型（ただし char と java.lang.Character は除く）</li>
-<li>java.math.BigDecimal</li>
-<li>java.math.BigInteger</li>
-<li>java.lang.String</li>
-<li>byte[ ]</li>
-<li>java.sql.Date</li>
-<li>java.sql.Time</li>
-<li>java.sql.Timestamp</li>
-<li>java.sql.Array</li>
-<li>java.sql.Ref</li>
-<li>java.sql.Blob</li>
-<li>java.sql.Clob</li>
-<li>java.sql.SQLXML</li>
-<li>java.sql.Struct</li>
-<li>列挙型(enum)</li>
-<li>java.util.Date</li>
-<li>java.util.Optional</li>
-<li>java.util.OptionalInt</li>
-<li>java.util.OptionalLong</li>
-<li>java.util.OptionalDouble</li>
-<li>java.time.LocalDateTime</li>
-<li>java.time.OffsetDateTime</li>
-<li>java.time.ZonedDateTime</li>
-<li>java.time.LocalDate</li>
-<li>java.time.LocalTime</li>
-<li>java.time.OffsetTime</li>
-<li>java.time.Year</li>
-<li>java.time.YearMonth</li>
-<li>java.time.MonthDay</li>
-<li>java.time.Month</li>
-<li>java.time.DayOfWeek</li>
+<li>定数<br>  <code>CLS_[定数フィールド名大文字]</code></li>
+<li>列挙型<br>  <code>CLS_[定数フィールド名大文字]</code></li>
 </ul>
-<h2 id="バッチ実行"><a href="#バッチ実行" class="headerlink" title="バッチ実行"></a>バッチ実行</h2><p>複数の挿入/更新/削除処理を実行する場合、<code>addBatch</code>と<code>executeBatch</code>メソッドを使用することでバッチ更新を行うことが出来ます。<br>例として、以下のSQLを実行するケースを考えてみます。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">values</span>(</div><div class="line">    <span class="comment">/* product_id */</span><span class="string">'0040'</span>,</div><div class="line">    <span class="comment">/* product_category_id */</span><span class="string">'09'</span>,</div><div class="line">    <span class="comment">/* product_name */</span><span class="string">'コーラ'</span>,</div><div class="line">    <span class="comment">/* product_price */</span><span class="number">120</span></div><div class="line">)</div></pre></td></tr></table></figure></p>
-<p>挿入処理を行いたいデータが複数存在する場合、以下の様に記述をすることでバッチ更新が実行されます。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"0040"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_category_id"</span>, <span class="string">"09"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"コーラ"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_price"</span>, <span class="number">120</span>);</div><div class="line">sqlContext.addBatch();</div><div class="line"></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"0041"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_category_id"</span>, <span class="string">"09"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"サイダー"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_price"</span>, <span class="number">120</span>);</div><div class="line">sqlContext.addBatch();</div><div class="line"></div><div class="line">sqlAgent.executeBatch(sqlContext);</div></pre></td></tr></table></figure></p>
-<h2 id="ストアドプロシージャの実行"><a href="#ストアドプロシージャの実行" class="headerlink" title="ストアドプロシージャの実行"></a>ストアドプロシージャの実行</h2><p><code>executeProcedure</code>メソッドを利用することで、ストアドプロシージャを実行することが出来ます。<br>例えば、<code>product_id</code>で商品の有無を確認するストアドプロシージャ<code>product_id_exists_check</code>を実行する以下SQLを考えます。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">call</span> product_id_exists_check(<span class="comment">/*product_id*/</span><span class="string">'0010'</span>, <span class="comment">/*check_out*/</span>)</div></pre></td></tr></table></figure></p>
-<p>この時には、以下の様に記述をすることでストアドプロシージャを実行することが出来ます。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>,<span class="string">"0010"</span> );</div><div class="line">sqlContext.addOutParam(<span class="string">"check_out"</span>,Types.NUMERIC);</div><div class="line"></div><div class="line">Map&lt;String, Object&gt; result = sqlAgent.executeProcedure(sqlContext);</div></pre></td></tr></table></figure></p>
-<p><code>addOutParam</code>メソッドにより、<code>check_out</code>を戻り値として返されるパラメーターとして設定をしています。このプロシージャの実行結果は<code>result.get(&quot;check_out&quot;)</code>により取得が可能です。</p>
-<h2 id="トランザクション"><a href="#トランザクション" class="headerlink" title="トランザクション"></a>トランザクション</h2><h2 id="エラーハンドリング"><a href="#エラーハンドリング" class="headerlink" title="エラーハンドリング"></a>エラーハンドリング</h2><p>エラーが発生した際、エラーコードの種類によるリトライを設定することが出来ます。<br>リトライするエラーコード、最大リトライ回数、リトライ時の待機時間を下記のように指定します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">List&lt;String&gt; sqlRetryCodeList = <span class="keyword">new</span> ArrayList&lt;String&gt;();</div><div class="line">sqlRetryCodeList.add(<span class="string">"54"</span>);</div><div class="line">sqlRetryCodeList.add(<span class="string">"60"</span>);</div><div class="line">agentFactory.setSqlRetryCodeList(sqlRetryCodeList); <span class="comment">// リトライ対象とするSQLエラーコード。デフォルトは指定なし。</span></div><div class="line"></div><div class="line">agentFactory.setDefaultMaxRetryCount(<span class="number">3</span>); <span class="comment">// 最大リトライ回数。デフォルトは0。</span></div><div class="line"></div><div class="line">agentFactory.setDefaultSqlRetryWaitTime(<span class="number">1000</span>); <span class="comment">// リトライ時の待機時間(ms)。デフォルトは0。</span></div></pre></td></tr></table></figure></p>
-<h2 id="ストリームAPI"><a href="#ストリームAPI" class="headerlink" title="ストリームAPI"></a>ストリームAPI</h2><p>実行したSQLの結果を取得したい際には、ストリームAPIを利用することが出来ます。  </p>
-<h2 id="ログ"><a href="#ログ" class="headerlink" title="ログ"></a>ログ</h2><p>uroboroSQLではログ出力ライブラリとしてLogbackを使用しています。Logbackの詳細は<a href="http://logback.qos.ch/manual/index_ja.html" target="_blank" rel="external">公式のドキュメント</a>を参照して下さい。<br>クラス毎で出力されるログ内容は以下表の通りです。</p>
+<p>実際に使用する際は置換文字列として /*#CLS<em>[定数フィールド名大文字]*/ や /*$CLS</em>[定数フィールド名大文字]*/ という風に使用します。</p>
+<p>列挙型の例<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	EMP.EMP_NO		<span class="keyword">AS</span>	EMP_NO</div><div class="line">,	EMP.FIRST_NAME	<span class="keyword">AS</span>	FIRST_NAME</div><div class="line">,	EMP.LAST_NAME	<span class="keyword">AS</span>	LAST_NAME</div><div class="line">,	EMP.BIRTH_DATE	<span class="keyword">AS</span>	BIRTH_DATE</div><div class="line">,	EMP.GENDER		<span class="keyword">AS</span>	GENDER</div><div class="line"><span class="keyword">FROM</span></div><div class="line">	EMPLOYEE	EMP</div><div class="line"><span class="keyword">WHERE</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="comment">/*IF female != null and female*/</span></div><div class="line"><span class="keyword">AND</span>	EMP.GENDER		=	<span class="comment">/*#CLS_GENDER_FEMALE*/</span><span class="string">'F'</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure></p>
+<h2 id="SQLフィルター"><a href="#SQLフィルター" class="headerlink" title="SQLフィルター"></a>SQLフィルター</h2><p>This section is still under construction.</p>
+<h2 id="SQLカバレッジ"><a href="#SQLカバレッジ" class="headerlink" title="SQLカバレッジ"></a>SQLカバレッジ</h2><p>これまでアプリケーション上の条件分岐はカバレッジツールを利用して条件分岐の網羅率を確認することができました。<br>しかし、SQL文の条件分岐は実際にその分岐が通っているかどうかを確認する手段がなく、リリース後に初めて通った条件で不具合を発生させることがありました。<br>この問題を解決するためにuroboroSQLでは、SQL文の条件分岐を集計してカバレッジレポートを行う機能を提供します。</p>
+<p>SQLカバレッジはuroboroSQLを利用するアプリケーションの起動時オプションに<code>-Duroborosql.sql.coverage=true</code>を追加することで有効になります。<br>アプリケーションが実行している間に発行されるSQLについて、カバレッジ情報が収集されます。<br>カバレッジ情報の収集結果は標準では<code>target/coverage/sql-cover.xml</code>に出力されます。<br>このファイルの場所や名前を変更したい場合は、起動時オプションに<code>-Duroborosql.sql.coverage.file=[出力ファイルパス]</code>を指定してください。</p>
+<p>出力された<code>sql-cover.xml</code>をJenkinsのCobertura pluginなどのXMLレポートとして読み込むとSQLファイルのカバレッジレポートが参照できるようになります。</p>
+<p><img src="cobertura.png" alt="カバレッジレポート例" title="Jenkins Cobertura Report"></p>
+<h2 id="エラーハンドリング"><a href="#エラーハンドリング" class="headerlink" title="エラーハンドリング"></a>エラーハンドリング</h2><p>This section is still under construction.</p>
+<h2 id="ログ"><a href="#ログ" class="headerlink" title="ログ"></a>ログ</h2><p>uroboroSQLではログ出力ライブラリとしてSLF4Jを使用しています。SLF4Jの詳細は<a href="https://www.slf4j.org/" target="_blank" rel="external">公式のドキュメント</a>を参照して下さい。<br>uroboroSQLで出力されるログ内容は以下表の通りです。</p>
 <table>
 <thead>
 <tr>
@@ -286,48 +256,6 @@
 </tr>
 </tbody>
 </table>
-<h2 id="式言語"><a href="#式言語" class="headerlink" title="式言語"></a>式言語</h2><h3 id="リテラル"><a href="#リテラル" class="headerlink" title="リテラル"></a>リテラル</h3><p>以下のリテラルが使用できます。</p>
-<ul>
-<li>“a”(java.lang.String)</li>
-<li>‘a’(char)</li>
-<li>1(int)</li>
-<li>1L(long)</li>
-<li>0.1F(float)</li>
-<li>0.1D(double)</li>
-<li>0.1B(java.math.BigDecimal)</li>
-<li>1H(java.math.BigInteger)</li>
-<li>true, false(Boolean)</li>
-<li>null</li>
-</ul>
-<h3 id="演算子"><a href="#演算子" class="headerlink" title="演算子"></a>演算子</h3><p>以下の演算子が使用できます。</p>
-<h4 id="算術演算子"><a href="#算術演算子" class="headerlink" title="算術演算子"></a>算術演算子</h4><ul>
-<li>e1 + e2(足し算)</li>
-<li>e1 - e2 (引き算)</li>
-<li>e1 * e2 (掛け算)</li>
-<li>e1 / e2 (割り算)</li>
-<li>e1 % e2 (余り)</li>
-</ul>
-<h4 id="比較演算子"><a href="#比較演算子" class="headerlink" title="比較演算子"></a>比較演算子</h4><ul>
-<li>e1 eq e2, e1 == e2 (等しい)<br>→ e1・e2のいずれかがnullの場合、両方ともnullの時のみe1とe2は等しい。<br>→ e1・e2が同じオブジェクトの場合、またはequals()メソッドにより等しいと判断される場合、e1とe2は等しい。<br>→ e1・e2が数値の場合、倍精度浮動小数点数が等しい時のみe1とe2は等しい。<br>→ その以外の場合、e1とe2は等しくない。</li>
-<li>e1 neq e2, e1 != e2 (等しくない)</li>
-<li>e1 lt e2, e1 &lt; e2 (小なり)</li>
-<li>e1 lte e2, e1 &lt;= e2 (小なりイコール)</li>
-<li>e1 gt e2, e1 &gt; e2 (大なり)</li>
-<li>e1 gte e2, e1 &gt;= e2 (大なりイコール)</li>
-</ul>
-<h4 id="論理演算子"><a href="#論理演算子" class="headerlink" title="論理演算子"></a>論理演算子</h4><ul>
-<li>e1 or e2, e1 || e2 (論理和)</li>
-<li>e1 and e2, e1 &amp;&amp; e2 (論理積)</li>
-<li>not e, ! e (論理否定)</li>
-</ul>
-<h4 id="連結演算子"><a href="#連結演算子" class="headerlink" title="連結演算子"></a>連結演算子</h4><ul>
-<li>e1 + e2 (文字列連結)</li>
-</ul>
-<h3 id="メソッド・フィールドの呼び出し"><a href="#メソッド・フィールドの呼び出し" class="headerlink" title="メソッド・フィールドの呼び出し"></a>メソッド・フィールドの呼び出し</h3><p>以下のようにメソッド・フィールドの呼び出しができます。</p>
-<ul>
-<li>e.method(args) (メソッドの呼び出し)</li>
-<li>e.property (フィールドの呼び出し)</li>
-</ul>
 <div style="font-size:130%; font-weight:bold;"><br><a href="../basics" style="float:left">&#60;&#60; 基本操作</a><a href="../developer_guide" style="float:right">開発者ガイド &#62;&#62;</a><br></div>
 
 
