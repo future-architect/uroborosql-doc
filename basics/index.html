@@ -8,14 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--Description-->
     
-        <meta name="description" content="検索
-挿入と更新と削除
-動的SQLの構築
+        <meta name="description" content="2WaySQL
+OGNL式言語
+基本操作
+トランザクション
 
 
-ここでは、uroboroSQLの基本操作をまとめています。
-検索SELECT文を実行する際は、executeQueryメソッドを使用します。
-パラメーターをバインドする場合123456select    *from    ms_productswhere">
+この章では、uroboroSQLの基本操作をまとめています。
+2WaySQL2WaySQLは普通のSQL文をファイルに保存したものです。そのままSQLクライアントツールで実行することもできますし、uroboroSQLで読み込んで実行する">
     
 
     <!--Author-->
@@ -133,33 +133,321 @@
 <!-- Content -->
 <hr>
 <ul>
-<li><a href="#検索">検索</a></li>
-<li><a href="#挿入と更新と削除">挿入と更新と削除</a></li>
-<li><a href="#動的SQLの構築">動的SQLの構築</a></li>
+<li><a href="#2WaySQL">2WaySQL</a></li>
+<li><a href="#OGNL式言語">OGNL式言語</a></li>
+<li><a href="#基本操作">基本操作</a></li>
+<li><a href="#トランザクション">トランザクション</a></li>
 </ul>
 <hr>
-<p>ここでは、uroboroSQLの基本操作をまとめています。</p>
-<h2 id="検索"><a href="#検索" class="headerlink" title="検索"></a>検索</h2><p>SELECT文を実行する際は、<code>executeQuery</code>メソッドを使用します。</p>
-<h3 id="パラメーターをバインドする場合"><a href="#パラメーターをバインドする場合" class="headerlink" title="パラメーターをバインドする場合"></a>パラメーターをバインドする場合</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span></div><div class="line">    product_id = <span class="comment">/* product_id */</span><span class="string">'0010'</span></div></pre></td></tr></table></figure>
-<p>パラメーターのバインドを行う場合は、<code>addParam</code>メソッドを用います。<code>addParam</code>メソッドは引数に<code>(パラメーター名, バインドするパラメーターの値)</code>を設定します。上記SQLを実行するには以下のように記述します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sqlContext.setSqlName(<span class="string">"product.selectaparam"</span>);</div><div class="line"></div><div class="line">String productId = <span class="string">"0010"</span></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, productId);</div><div class="line"></div><div class="line">ResultSet resultSet = sqlAgent.executeQuery(sqlContext);</div></pre></td></tr></table></figure></p>
-<h3 id="複数のパラメーターをバインドする場合"><a href="#複数のパラメーターをバインドする場合" class="headerlink" title="複数のパラメーターをバインドする場合"></a>複数のパラメーターをバインドする場合</h3><p>また、以下のようなSQLに対し、複数のパラメーターをバインドすることも可能です。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> * </div><div class="line"><span class="keyword">from</span> </div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> </div><div class="line">    product_price = <span class="comment">/* product_price */</span><span class="number">120</span> </div><div class="line"><span class="keyword">and</span> product_category = <span class="comment">/* product_category_id */</span><span class="string">'07'</span></div></pre></td></tr></table></figure></p>
-<p>この場合も以下の様に、<code>addParam</code>メソッドを使用することでバインドが完了します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sqlContext.setSqlName(<span class="string">"product.selecttwoparams"</span>);</div><div class="line"></div><div class="line"><span class="keyword">int</span> productPrice = <span class="number">120</span>;</div><div class="line">String productCategoryId = <span class="string">"07"</span>;</div><div class="line">sqlContext.addParam(<span class="string">"product_price"</span>, productPrice);</div><div class="line">sqlContext.addParam(<span class="string">"product_category_id"</span>, productCategoryId);</div><div class="line"></div><div class="line">ResultSet resultSet = sqlAgent.executeQuery(sqlContext);</div></pre></td></tr></table></figure></p>
-<p>バインド出来るパラメーターのデータ型については、<a href="/advanced/#バインド出来るパラメーターの型">高度な操作&gt;バインド出来るパラメーターの型</a>を参照して下さい。</p>
-<h2 id="挿入と更新と削除"><a href="#挿入と更新と削除" class="headerlink" title="挿入と更新と削除"></a>挿入と更新と削除</h2><p>INSERT・UPDATE・DELETE文を実行する際は、<code>executeUpdate</code>メソッドを使用します。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">insert</span> <span class="keyword">into</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">values</span> (</div><div class="line">    <span class="comment">/* product_id */</span><span class="string">'1234567890123'</span>,</div><div class="line">    <span class="comment">/* product_name */</span><span class="string">'note-A'</span></div><div class="line">)</div></pre></td></tr></table></figure></p>
-<p>例えば挿入の場合、上記SQLを実行するには以下のように記述します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sqlContext.setSqlName(<span class="string">"product.insert"</span>);</div><div class="line"></div><div class="line">sqlContext.addParam(<span class="string">"product_id"</span>, <span class="string">"1234567890123"</span>);</div><div class="line">sqlContext.addParam(<span class="string">"product_name"</span>, <span class="string">"note-A"</span>);</div><div class="line"></div><div class="line">sqlAgent.executeUpdate(sqlContext);</div></pre></td></tr></table></figure></p>
-<p>更新、削除の場合も同じ要領で記述します。</p>
-<h2 id="動的SQLの構築"><a href="#動的SQLの構築" class="headerlink" title="動的SQLの構築"></a>動的SQLの構築</h2><p>SQLに対し条件分岐/ループ等の動的な制御を行いたい場合、コメント形式で記述することが可能です。</p>
-<h3 id="条件分岐"><a href="#条件分岐" class="headerlink" title="条件分岐"></a>条件分岐</h3><p>条件分岐の制御はSQLコメント<code>/*IF 条件式*/</code>、<code>/*END*/</code>、<code>/*ELSEIF 条件式*/</code>、<code>/*ELSE*/</code>を用いて記述します。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="comment">/*IF  product_category_id ==  "07"*/</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">120</span></div><div class="line"><span class="comment">/*ELSEIF product_category_id == "08"*/</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">200</span></div><div class="line"><span class="comment">/*ELSE*/</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">250</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure></p>
-<p>上のSQLでは、パラメーター<code>product_category_id</code>の値によって動的にSQLの処理が制御されています。<br>つまり、<code>product_category_id</code>が”07”である場合、<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">120</span></div></pre></td></tr></table></figure></p>
-<p>“08”ならば<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">200</span></div></pre></td></tr></table></figure></p>
-<p>それ以外の場合は<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="keyword">and</span> product_price = <span class="number">250</span></div></pre></td></tr></table></figure></p>
-<p>との処理が実行されます。</p>
-<h3 id="範囲の有効-無効の設定"><a href="#範囲の有効-無効の設定" class="headerlink" title="範囲の有効/無効の設定"></a>範囲の有効/無効の設定</h3><p>例えば、以下の条件分岐の制御をかけたSQLの実行を考えてみます。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span></div><div class="line"><span class="comment">/*IF product_category_id == "07"*/</span></div><div class="line">    product_price = <span class="number">120</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure></p>
-<p>この時、<code>product_category_id</code>として”08”をバインドした場合、このSQLは<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="keyword">where</span></div></pre></td></tr></table></figure></p>
-<p>となり、<code>where</code>句に入る条件式が不在なため不正なSQLとなってしまいます。<br>この問題に対しては、<code>where</code>句を<code>BEGIN</code>コメントと<code>END</code>コメントで囲むことで対処出来ます。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div><div class="line"><span class="comment">/*BEGIN*/</span></div><div class="line"><span class="keyword">where</span></div><div class="line"><span class="comment">/*IF product_category_id == "07"*/</span></div><div class="line">    product_price = <span class="number">120</span></div><div class="line"><span class="comment">/*END*/</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure></p>
-<p><code>product_category_id</code>が”08”である場合、このSQLは<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span></div><div class="line">    *</div><div class="line"><span class="keyword">from</span></div><div class="line">    ms_products</div></pre></td></tr></table></figure></p>
-<p>と、<code>BEGIN</code>と<code>END</code>に囲まれた<code>IF</code>の条件式が<code>false</code>になるため、囲まれた<code>where</code>句そのものが削除される処理が実行されます。</p>
+<p>この章では、uroboroSQLの基本操作をまとめています。</p>
+<h2 id="2WaySQL"><a href="#2WaySQL" class="headerlink" title="2WaySQL"></a>2WaySQL</h2><p>2WaySQLは普通のSQL文をファイルに保存したものです。<br>そのままSQLクライアントツールで実行することもできますし、uroboroSQLで読み込んで実行することも出来ます。<br>（２つの実行方法があることから<strong>2Way</strong>SQLと呼ばれます）</p>
+<h3 id="バインドパラメータ"><a href="#バインドパラメータ" class="headerlink" title="バインドパラメータ"></a>バインドパラメータ</h3><p>SQLにバインドするパラメータを <code>/*parameter name*/</code>の形式で指定することができます。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	*</div><div class="line"><span class="keyword">FROM</span></div><div class="line">	DEPARTMENT</div><div class="line"><span class="keyword">WHERE</span></div><div class="line">	DEPT_NO		=	<span class="comment">/*dept_no*/</span><span class="number">10</span></div><div class="line"><span class="keyword">AND</span>	DEPT_NAME	=	<span class="comment">/*dept_name*/</span><span class="string">'Sales'</span></div></pre></td></tr></table></figure>
+<p>上の例では、<code>/*dept_no*/</code>, <code>/*dept_name*/</code> がバインドパラメータで、uroboroSQLから実行される際はこの部分が<code>?</code>に置き換わり、後ろの<code>10</code>や<code>&#39;Sales&#39;</code>が削除されます。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	*</div><div class="line"><span class="keyword">FROM</span></div><div class="line">	DEPARTMENT</div><div class="line"><span class="keyword">WHERE</span></div><div class="line">	DEPT_NO		=	?<span class="comment">/*dept_no*/</span></div><div class="line"><span class="keyword">AND</span>	DEPT_NAME	=	?<span class="comment">/*dept_name*/</span></div></pre></td></tr></table></figure>
+<p>配列やList型の値をIN句のバインドパラメータとして指定することもできます。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	*</div><div class="line"><span class="keyword">FROM</span></div><div class="line">	EMPLOYEE	EMP</div><div class="line"><span class="keyword">WHERE</span></div><div class="line"><span class="comment">/*IF gender_list != null*/</span></div><div class="line"><span class="keyword">AND</span>	EMP.GENDER	<span class="keyword">IN</span>	<span class="comment">/*gender_list*/</span>(<span class="string">'M'</span>)</div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure>
+<p>上の例に<code>gender_list</code>として{“M”, “F”}を指定すると以下のように変換されます。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	*</div><div class="line"><span class="keyword">FROM</span></div><div class="line">	EMPLOYEE	EMP</div><div class="line"><span class="keyword">WHERE</span></div><div class="line"><span class="comment">/*IF gender_list != null*/</span></div><div class="line"><span class="keyword">AND</span>	EMP.GENDER	<span class="keyword">IN</span>	(?, ?)<span class="comment">/*gender_list*/</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure>
+<p>バインドパラメータに指定できるJava型は以下になります。</p>
+<h3 id="バインド出来るパラメータの型"><a href="#バインド出来るパラメータの型" class="headerlink" title="バインド出来るパラメータの型"></a>バインド出来るパラメータの型</h3><ul>
+<li>プリミティブ型とそのラッパー型（ただし char と java.lang.Character は除く）</li>
+<li>java.math.BigDecimal</li>
+<li>java.math.BigInteger</li>
+<li>java.lang.String</li>
+<li>byte[]</li>
+<li>java.sql.Date</li>
+<li>java.sql.Time</li>
+<li>java.sql.Timestamp</li>
+<li>java.sql.Array</li>
+<li>java.sql.Ref</li>
+<li>java.sql.Blob</li>
+<li>java.sql.Clob</li>
+<li>java.sql.SQLXML</li>
+<li>java.sql.Struct</li>
+<li>列挙型(enum)</li>
+<li>java.util.Date</li>
+<li>java.util.Optional</li>
+<li>java.util.OptionalInt</li>
+<li>java.util.OptionalLong</li>
+<li>java.util.OptionalDouble</li>
+<li>java.time.LocalDateTime</li>
+<li>java.time.OffsetDateTime</li>
+<li>java.time.ZonedDateTime</li>
+<li>java.time.LocalDate</li>
+<li>java.time.LocalTime</li>
+<li>java.time.OffsetTime</li>
+<li>java.time.Year</li>
+<li>java.time.YearMonth</li>
+<li>java.time.MonthDay</li>
+<li>java.time.Month</li>
+<li>java.time.DayOfWeek</li>
+</ul>
+<h3 id="置換文字列"><a href="#置換文字列" class="headerlink" title="置換文字列"></a>置換文字列</h3><p>置換文字列を使うことでSQLの一部を動的に変更することができます。<br>置換文字列は <code>/*$parameter name*/</code> もしくは <code>/*#parameter name*/</code>と記述します。<br> <code>/*#parameter name*/</code> と記述した場合は、置換文字列の前後を<code>&#39;</code>(シングルクォート)で囲みます。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	*</div><div class="line"><span class="keyword">FROM</span>    <span class="comment">/*$table_name*/</span></div><div class="line"><span class="keyword">WHERE</span></div><div class="line">	GENDER	=	<span class="comment">/*#gender*/</span></div></pre></td></tr></table></figure>
+<p>上の例では、<code>table_name</code>や<code>gender</code>に設定した値でSQLが置換されます。<br>これはバインドパラメータではなく発行されるSQLが置換される点に注意してください。</p>
+<ul>
+<li><code>table_name</code>に<code>employee</code>, <code>gender</code>に<code>M</code>を設定した場合<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	*</div><div class="line"><span class="keyword">FROM</span>	EMPLOYEE</div><div class="line"><span class="keyword">WHERE</span></div><div class="line">	GENDER	=	<span class="string">'M'</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>という風に置換されます。</p>
+<p><strong>※置換文字列はSQLインジェクションを防ぐため、変換の際にシングルクォート<code>&#39;</code>を<code>&#39;&#39;</code>にエスケープします。</strong></p>
+<h3 id="条件分岐"><a href="#条件分岐" class="headerlink" title="条件分岐"></a>条件分岐</h3><p>/*IF*/,/*ELIF*/,/*ELSE*/,/*END*/ を使用してSQLを動的に変更することができます。<br>IF, ELIF の評価式としてOGNL式言語を利用します。<br>（ OGNL式言語の説明は<a href="#OGNL式言語">こちら</a> )<br>また、標準でSF関数(<em>S</em>tring <em>F</em>unction)を使うことができます。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	*</div><div class="line"><span class="keyword">FROM</span></div><div class="line">	EMPLOYEE	EMP</div><div class="line"><span class="keyword">WHERE</span></div><div class="line"><span class="comment">/*IF SF.isNotEmpty(birth_date_from) and SF.isNotEmpty(birth_date_to)*/</span></div><div class="line"><span class="keyword">AND</span>	EMP.BIRTH_DATE	<span class="keyword">BETWEEN</span>	<span class="comment">/*birth_date_from*/</span><span class="string">'1990-01-01'</span>	<span class="keyword">AND</span>	<span class="comment">/*birth_date_to*/</span><span class="string">'1999-12-31'</span></div><div class="line"><span class="comment">/*ELIF SF.isNotEmpty(birth_date_from)*/</span></div><div class="line"><span class="keyword">AND</span>	EMP.BIRTH_DATE	&gt;=		<span class="comment">/*birth_date_from*/</span><span class="string">'1990-01-01'</span></div><div class="line"><span class="comment">/*ELIF SF.isNotEmpty(birth_date_to)*/</span></div><div class="line"><span class="keyword">AND</span>	EMP.BIRTH_DATE	&lt;		<span class="comment">/*birth_date_to*/</span><span class="string">'1999-12-31'</span></div><div class="line"><span class="comment">/*ELSE*/</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure>
+<p>上の例ではIFの評価式として<code>SF.isNotEmpty()</code>を使用してバインド変数が<code>null</code>または<code>&quot;&quot;</code>でないことを評価しています。</p>
+<p>バインド変数として<code>birth_date_from</code>に<code>2000-01-01</code>, <code>birth_date_to</code>に<code>2010-12-31</code>を指定した場合、生成されるSQLは以下のようになります。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	*</div><div class="line"><span class="keyword">FROM</span></div><div class="line">	EMPLOYEE	EMP</div><div class="line"><span class="keyword">WHERE</span></div><div class="line">	EMP.BIRTH_DATE	<span class="keyword">BETWEEN</span>	<span class="string">'2000-01-01'</span><span class="comment">/*birth_date_from*/</span>	<span class="keyword">AND</span>	<span class="string">'2010-12-31'</span><span class="comment">/*birth_date_to*/</span></div></pre></td></tr></table></figure>
+<p>ここでEMP.BIRTH_DATEの前にあった<code>AND</code>が消えていることに注目してください。<br>uroboroSQLでは動的SQLを生成する際、WHERE句の後ろに<code>AND</code>や<code>OR</code>が来る場合はそれを削除してSQL文として正しい状態にします。<br>ただし、上の加工前SQLのようにSQL文として不正な状態になってしまうのでSQLクライアントツールからは実行できないという欠点もあります。<br>このようにSQL文として不正になることを防ぐために、WHERE句のあとに他に影響を与えない評価を入れる方法があります。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	*</div><div class="line"><span class="keyword">FROM</span></div><div class="line">	EMPLOYEE	EMP</div><div class="line"><span class="keyword">WHERE</span></div><div class="line">	<span class="number">1</span>				=		<span class="number">1</span>	// &lt;<span class="comment">-- 必ずtrueとなる評価を入れる</span></div><div class="line"><span class="comment">/*IF SF.isNotEmpty(birth_date_from) and SF.isNotEmpty(birth_date_to)*/</span></div><div class="line"><span class="keyword">AND</span>	EMP.BIRTH_DATE	<span class="keyword">BETWEEN</span>	<span class="comment">/*birth_date_from*/</span><span class="string">'1990-01-01'</span>	<span class="keyword">AND</span>	<span class="comment">/*birth_date_to*/</span><span class="string">'1999-12-31'</span></div><div class="line"><span class="comment">/*ELIF SF.isNotEmpty(birth_date_from)*/</span></div><div class="line"><span class="keyword">AND</span>	EMP.BIRTH_DATE	&gt;=		<span class="comment">/*birth_date_from*/</span><span class="string">'1990-01-01'</span></div><div class="line"><span class="comment">/*ELIF SF.isNotEmpty(birth_date_to)*/</span></div><div class="line"><span class="keyword">AND</span>	EMP.BIRTH_DATE	&lt;		<span class="comment">/*birth_date_to*/</span><span class="string">'1999-12-31'</span></div><div class="line"><span class="comment">/*ELSE*/</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure>
+<h3 id="範囲の有効化"><a href="#範囲の有効化" class="headerlink" title="範囲の有効化"></a>範囲の有効化</h3><p>/*BEGIN*/, /*END*/ で囲まれた範囲は、その中の/*IF*/, /*ELIF*/のうち、どれか1つでも真(true)になった場合に出力されます。範囲内の全ての評価式が偽（false）の場合、/*BEGIN*/, /*END*/ で囲まれた範囲は出力されません。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	*</div><div class="line"><span class="keyword">FROM</span></div><div class="line">	EMPLOYEE	EMP</div><div class="line"><span class="comment">/*BEGIN*/</span></div><div class="line"><span class="keyword">WHERE</span></div><div class="line"><span class="comment">/*IF SF.isNotEmpty(first_name)*/</span></div><div class="line"><span class="keyword">AND</span>	EMP.FIRST_NAME	=	<span class="comment">/*first_name*/</span><span class="string">'Bob'</span></div><div class="line"><span class="comment">/*END*/</span></div><div class="line"><span class="comment">/*IF SF.isNotEmpty(last_name)*/</span></div><div class="line"><span class="keyword">AND</span>	EMP.LAST_NAME	=	<span class="comment">/*last_name*/</span><span class="string">'Smith'</span></div><div class="line"><span class="comment">/*END*/</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure>
+<p>上の例で、バインドパラメータ <code>first_name</code>に<code>Willson</code>, <code>last_name</code>に<code>null</code>を指定した場合は以下のようになります。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	*</div><div class="line"><span class="keyword">FROM</span></div><div class="line">	EMPLOYEE	EMP</div><div class="line"><span class="keyword">WHERE</span></div><div class="line">	EMP.FIRST_NAME	=	?<span class="comment">/*first_name*/</span></div></pre></td></tr></table></figure>
+<p>バインドパラメータ <code>first_name</code>, <code>last_name</code>ともに<code>null</code>を指定した場合は以下のようになります。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	*</div><div class="line"><span class="keyword">FROM</span></div><div class="line">	EMPLOYEE	EMP</div></pre></td></tr></table></figure>
+<h2 id="OGNL式言語"><a href="#OGNL式言語" class="headerlink" title="OGNL式言語"></a>OGNL式言語</h2><p>uroboroSQLでは、条件分岐の式として<a href="https://github.com/jkuhnert/ognl" target="_blank" rel="external">OGNL式言語</a>を利用することができます。<br>条件分岐の式として使用する場合、評価結果が真偽値(true/false)になるように記述してください。</p>
+<h3 id="リテラル"><a href="#リテラル" class="headerlink" title="リテラル"></a>リテラル</h3><p>以下のリテラルが使用できます。</p>
+<ul>
+<li>“a”(java.lang.String)</li>
+<li>‘a’(char)</li>
+<li>1(int)</li>
+<li>1L(long)</li>
+<li>0.1F(float)</li>
+<li>0.1D(double)</li>
+<li>0.1B(java.math.BigDecimal)</li>
+<li>1H(java.math.BigInteger)</li>
+<li>true, false(Boolean)</li>
+<li>null</li>
+</ul>
+<h3 id="演算子"><a href="#演算子" class="headerlink" title="演算子"></a>演算子</h3><p>以下の演算子が使用できます。</p>
+<h4 id="算術演算子"><a href="#算術演算子" class="headerlink" title="算術演算子"></a>算術演算子</h4><ul>
+<li>e1 + e2(足し算)</li>
+<li>e1 - e2 (引き算)</li>
+<li>e1 * e2 (掛け算)</li>
+<li>e1 / e2 (割り算)</li>
+<li>e1 % e2 (余り)</li>
+</ul>
+<h4 id="比較演算子"><a href="#比較演算子" class="headerlink" title="比較演算子"></a>比較演算子</h4><ul>
+<li>e1 eq e2, e1 == e2 (等しい)<br>→ e1・e2のいずれかがnullの場合、両方ともnullの時のみe1とe2は等しい。<br>→ e1・e2が同じオブジェクトの場合、またはequals()メソッドにより等しいと判断される場合、e1とe2は等しい。<br>→ e1・e2が数値の場合、倍精度浮動小数点数が等しい時のみe1とe2は等しい。<br>→ その以外の場合、e1とe2は等しくない。</li>
+<li>e1 neq e2, e1 != e2 (等しくない)</li>
+<li>e1 lt e2, e1 &lt; e2 (小なり)</li>
+<li>e1 lte e2, e1 &lt;= e2 (小なりイコール)</li>
+<li>e1 gt e2, e1 &gt; e2 (大なり)</li>
+<li>e1 gte e2, e1 &gt;= e2 (大なりイコール)</li>
+</ul>
+<h4 id="論理演算子"><a href="#論理演算子" class="headerlink" title="論理演算子"></a>論理演算子</h4><ul>
+<li>e1 or e2, e1 || e2 (論理和)</li>
+<li>e1 and e2, e1 &amp;&amp; e2 (論理積)</li>
+<li>not e, ! e (論理否定)</li>
+</ul>
+<h4 id="連結演算子"><a href="#連結演算子" class="headerlink" title="連結演算子"></a>連結演算子</h4><ul>
+<li>e1 + e2 (文字列連結)</li>
+</ul>
+<h4 id="メソッド・フィールドの呼び出し"><a href="#メソッド・フィールドの呼び出し" class="headerlink" title="メソッド・フィールドの呼び出し"></a>メソッド・フィールドの呼び出し</h4><p>以下のようにメソッド・フィールドの呼び出しができます。</p>
+<ul>
+<li>e.method(args) (メソッドの呼び出し)</li>
+<li>e.property (フィールドの呼び出し)</li>
+</ul>
+<h4 id="StringFunction-SF"><a href="#StringFunction-SF" class="headerlink" title="StringFunction(SF)"></a>StringFunction(SF)</h4><p>uroboroSQLではOGNL式を利用する際、標準でStringFunction（SF）を使用することができます。<br>OGNL式と合わせてStringFunctionクラスのメソッドを呼び出すことができます。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*IF SF.isNotEmpty(emp_no)*/</span></div><div class="line">   <span class="comment">-- emp_noがnull または ""でない場合に処理される</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure>
+<p>StringFunctionが提供するメソッドの一覧です。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">メソッド名</th>
+<th style="text-align:left">説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">booean SF.isEmpty(String str)</td>
+<td style="text-align:left">対象文字列が空文字であること判定する</td>
+</tr>
+<tr>
+<td style="text-align:left">boolean SF.isNotEmpty(String str)</td>
+<td style="text-align:left">対象文字列が空文字でないことを判定する</td>
+</tr>
+<tr>
+<td style="text-align:left">boolean SF.isBlank(String str)</td>
+<td style="text-align:left">対象文字列が空文字、もしくは空白であること判定する</td>
+</tr>
+<tr>
+<td style="text-align:left">boolean SF.isNotBlank(String str)</td>
+<td style="text-align:left">対象文字列が空文字、もしくは空白でないこと判定する</td>
+</tr>
+<tr>
+<td style="text-align:left">String SF.trim(String str)</td>
+<td style="text-align:left">文字列の前後の空白を除去する。nullを渡した場合は結果もnullとなる</td>
+</tr>
+<tr>
+<td style="text-align:left">String SF.trimToEmpty(String str)</td>
+<td style="text-align:left">文字列の前後の空白を除去する。nullを渡した場合は空文字となる</td>
+</tr>
+<tr>
+<td style="text-align:left">String SF.left(String str, int len)</td>
+<td style="text-align:left">文字列の先頭から指定した文字数の文字列を取得する</td>
+</tr>
+<tr>
+<td style="text-align:left">String SF.right(String str, int len)</td>
+<td style="text-align:left">文字列の最後から指定した文字数の文字列を取得する</td>
+</tr>
+<tr>
+<td style="text-align:left">String SF.mid(String str, int pos, int len)</td>
+<td style="text-align:left">文字列の指定した位置から指定した文字数の文字列を取得する</td>
+</tr>
+<tr>
+<td style="text-align:left">String SF.rightPad(String str, int size)</td>
+<td style="text-align:left">文字列の末尾に空白を埋めて指定された長さにする</td>
+</tr>
+<tr>
+<td style="text-align:left">String SF.rightPad(String str, int size, char padChar)</td>
+<td style="text-align:left">文字列の末尾に指定した埋め込み文字を埋めて指定された長さにする</td>
+</tr>
+<tr>
+<td style="text-align:left">String SF.leftPad(String str, int size)</td>
+<td style="text-align:left">文字列の先頭に空白を埋めて指定された長さにする</td>
+</tr>
+<tr>
+<td style="text-align:left">String SF.leftPad(String str, int size, char padChar)</td>
+<td style="text-align:left">文字列の先頭に指定した埋め込み文字を埋めて指定された長さにする</td>
+</tr>
+<tr>
+<td style="text-align:left">String[] SF.split(String str)</td>
+<td style="text-align:left">文字列を空白で区切って配列に格納します。<br>nullが入力された場合はnullを返します</td>
+</tr>
+<tr>
+<td style="text-align:left">String[] SF.split(String str, char separatorChar)</td>
+<td style="text-align:left">文字列を指定した区切り文字で区切って配列に格納します。<br>nullが入力された場合はnullを返します</td>
+</tr>
+<tr>
+<td style="text-align:left">String[] SF.split(String str, String separatorChars, int max)</td>
+<td style="text-align:left">文字列を指定した区切り文字で区切って配列に格納します。<br>nullが入力された場合はnullを返します</td>
+</tr>
+<tr>
+<td style="text-align:left">String SF.capitalize(String str)</td>
+<td style="text-align:left">文字列の先頭文字を大文字にする</td>
+</tr>
+<tr>
+<td style="text-align:left">String SF.uncapitalize(String str)</td>
+<td style="text-align:left">文字列の先頭を小文字にする</td>
+</tr>
+</tbody>
+</table>
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><p>uroboroSQLを利用した基本的なDB操作を説明します。</p>
+<h3 id="DB接続"><a href="#DB接続" class="headerlink" title="DB接続"></a>DB接続</h3><p>DBに接続するためには<code>SqlConfig</code>インタフェースのインスタンスを生成する必要があります。<br>標準で<code>DefaultSqlConfig</code>クラスが提供されているので、このクラスのファクトリメソッドを使用して生成します。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// JDBC接続を行うSqlConfigの生成</span></div><div class="line"><span class="comment">// SqlConfig config = DefaultSqlConfig.getConfig(url, user, password);</span></div><div class="line">SqlConfig config = DefaultSqlConfig.getConfig(<span class="string">"jdbc:h2:mem:uroborosql"</span>, <span class="string">"sa"</span>, <span class="string">""</span>);</div><div class="line"></div><div class="line"><span class="comment">// DataSourceを使用したDB接続を行うSqlConfigの生成</span></div><div class="line"><span class="comment">// SqlConfig config = DefaultSqlConfig.getConfig(datasourceName);</span></div><div class="line">SqlConfig config = DefaultSqlConfig.getConfig(<span class="string">"java:comp/env/jdbc/datasource"</span>);</div></pre></td></tr></table></figure>
+<p>次にすべての操作の基点となる<code>SqlAgent</code>インタフェースのインスタンスを取得します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span> (SqlAgent agent = config.createAgent()) &#123;</div><div class="line">	<span class="comment">// この中でSQLの操作を行う</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>SqlAgent</code>インタフェースは<code>java.lang.AutoClosable</code>インタフェースを実装しているので、上の例のようにtry-with-resourcesの中で宣言することで、終了時に自動的にclose処理が呼び出され、中で保持しているConnectionなどのオブジェクトも正しく破棄されます。</p>
+<h3 id="SQLファイルの管理"><a href="#SQLファイルの管理" class="headerlink" title="SQLファイルの管理"></a>SQLファイルの管理</h3><p>uroboroSQLではSQL文の書かれたファイルのパスを指定してSQLを実行することができます。<br>その際、SQLファイルはクラスパスから参照できる場所に配置されている必要があります。</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">src</div><div class="line"><span class="code">    └─main</span></div><div class="line"><span class="code">        └─resources</span></div><div class="line"><span class="code">            └─sql</span></div><div class="line"><span class="code">                ├─department</span></div><div class="line"><span class="code">                │    ├─insert_department.sql</span></div><div class="line"><span class="code">                │    └─select_department.sql</span></div><div class="line"><span class="code">                └─employee</span></div><div class="line"><span class="code">                     ├─insert_employee.sql</span></div><div class="line"><span class="code">                     └─select_employee.sql</span></div></pre></td></tr></table></figure>
+<p>上のようなフォルダ構成の場合で、<code>src/main/resources/</code>がクラスパスに指定されている場合、<br>その下のsqlフォルダをルートフォルダとした相対パスでSQLファイルを指定することができます。<br>それぞれのSQLファイルは以下のような<code>SQL名</code>となります</p>
+<ul>
+<li><code>insert_department.sql</code> -&gt; <code>department/insert_department</code></li>
+<li><code>select_department.sql</code> -&gt; <code>department/select_department</code></li>
+<li><code>insert_employee.sql</code> -&gt; <code>employee/insert_employee</code></li>
+<li><code>select_employee.sql</code> -&gt; <code>employee/select_employee</code></li>
+</ul>
+<p>また、SQLファイルはjarの中にリソースとして含めることもできます。<br>その場合、リソースのルート直下のsqlフォルダをルートフォルダとした相対パスでSQLファイルを指定することができます。</p>
+<h3 id="検索"><a href="#検索" class="headerlink" title="検索"></a>検索</h3><p>SQLを検索する方法は大きく２つあります。</p>
+<ol>
+<li><code>SQL名</code>を指定して検索</li>
+<li>SQL文の文字列を指定して検索</li>
+</ol>
+<p>1つ目の<code>SQL名</code>を指定する場合は、<a href="#SQLファイルの管理">SQLファイルの管理</a>で説明した<code>SQL名</code>を用いてSQLファイルを指定し、<code>SqlQuery</code>インタフェースのインスタンスを取得します。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 検索結果の先頭１件をMapで取得</span></div><div class="line">Map&lt;String, Object&gt; employee = agent.query(<span class="string">"employee/select_employee"</span>).param(<span class="string">"emp_no"</span>, <span class="number">1001</span>).first();</div></pre></td></tr></table></figure>
+<p><code>SqlQuery</code>インタフェースはFluent APIを提供しているので、バインドパラメータの追加や検索結果の取得をFluent APIを使用して記述することができます。</p>
+<p>2つ目のSQL文の文字列を指定する場合は、<code>SqlAgent#queryWith(&quot;[SQL文字列]&quot;)</code>を使用して<code>SqlQuery</code>インタフェースのインスタンスを取得します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// employeeテーブルの各行の名前の一覧を取得</span></div><div class="line">List&lt;String&gt; names = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">agent.queryWith(<span class="string">"select first_name, last_name where employee"</span>).collect().forEach(row -&gt; names.add(row.get(<span class="string">"first_name"</span>) + <span class="string">" "</span> + row.get(<span class="string">"last_name"</span>)));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>SQLQuery</code>インタフェースの主なAPIは以下になります。</p>
+<ul>
+<li>バインドパラメータ設定メソッド<ul>
+<li><code>SqlQuery#param(String key, Object value)</code><br>  バインドパラメータや置換文字列として使用するキーと値のセットを設定する</li>
+<li><code>SqlQuery#paramList(String key, Object... value)</code><br>  IN句のバインドパラメータに使用するキーと値のセットを設定する</li>
+</ul>
+</li>
+</ul>
+<p>他にもパラメータの型に応じたバインドパラメータ設定メソッドが提供されています。</p>
+<ul>
+<li>終端処理用メソッド<ul>
+<li><code>Map&lt;String, Object&gt; SqlQuery#first()</code><br>  検索結果の1行目をMapに詰めて取得する</li>
+<li><code>List&lt;Map&lt;String, Object&gt;&gt; SqlQuery#collect()</code><br>  検索結果の各行をMapに詰めたListの形式で取得する</li>
+<li><code>Stream&lt;Map&lt;String, Object&gt; SqlQuery#stream()</code><br>  検索結果をJava8で追加されたStreamの形式で取得する</li>
+<li><code>ResultSet SqlQuery#resultSet()</code><br>  検索結果のResultSetを取得する</li>
+</ul>
+</li>
+</ul>
+<h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><p>DB更新処理も検索処理と同様<code>SQL名</code>を指定する場合と直接SQL文字列を記述する２つのAPIが提供されています。<br><code>agent#update()</code> もしくは <code>agent#updateWith()</code>を使用してSqlUpdateインタフェースのインスタンスを取得します。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// １件挿入</span></div><div class="line"><span class="keyword">int</span> count = agent.update(<span class="string">"department/insert_department"</span>).param(<span class="string">"dept_no"</span>, <span class="number">1111</span>).param(<span class="string">"dept_name"</span>, <span class="string">"Sales"</span>).count();</div><div class="line"></div><div class="line"><span class="comment">// 更新</span></div><div class="line"><span class="keyword">int</span> count = agent.updateWith(<span class="string">"update employee set first_name = /*first_name*/ where emp_no = /*emp_no*/"</span>).param(<span class="string">"emp_no"</span>, <span class="number">1001</span>).param(<span class="string">"first_name"</span>, <span class="string">"Bob"</span>).count();</div></pre></td></tr></table></figure>
+<p><code>SqlUpdate</code>インタフェースの主なAPIは以下になります。</p>
+<ul>
+<li>バインドパラメータ設定メソッド<ul>
+<li><code>SqlUpdate#param(String key, Object value)</code><br>  バインドパラメータや置換文字列として使用するキーと値のセットを設定する</li>
+<li><code>SqlUpdate#paramList(String key, Object... value)</code><br>  IN句のバインドパラメータに使用するキーと値のセットを設定する</li>
+</ul>
+</li>
+</ul>
+<p>他にもパラメータの型に応じたバインドパラメータ設定メソッドが提供されています。</p>
+<ul>
+<li>終端処理用メソッド<ul>
+<li><code>int SqlUpdate#count()</code><br>  更新処理を行い、登録、更新を行った行数を返します</li>
+</ul>
+</li>
+</ul>
+<h3 id="バッチ更新"><a href="#バッチ更新" class="headerlink" title="バッチ更新"></a>バッチ更新</h3><p>大量のデータを一括で更新する場合、通常の更新では都度SQLが発行されるため速度が遅く問題になります。<br>そういったケースに対応するため、uroboroSQLではバッチ更新用のAPIを提供しています。</p>
+<p>バッチ更新も更新と同様SqlUpdateインタフェースで行います。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// バッチ登録で使用するデータをファイルから取得</span></div><div class="line">List&lt;Map&lt;String, String&gt;&gt; deptList = getDataByFile(Paths.get(<span class="string">"src/main/resources/data/department.tsv"</span>));</div><div class="line"><span class="comment">// SqlUpdateインタフェースのインスタンスを取得</span></div><div class="line">SqlUpdate deptUpdate = agent.update(<span class="string">"department/insert_department"</span>);</div><div class="line"><span class="comment">// 登録件数分繰り返す</span></div><div class="line">deptList.forEach(row -&gt; &#123;</div><div class="line">	<span class="comment">// １件分のデータをパラメータとして設定したら、SqlUpdate#addBatch()を呼び出し、バッチパラメータとして登録する</span></div><div class="line">	row.forEach(deptUpdate::param);</div><div class="line">	deptUpdate.addBatch();</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 最後にSqlUpdate#batch()終端処理を呼び出し一括登録する</span></div><div class="line"><span class="keyword">int</span>[] deptCount = deptUpdate.batch();</div></pre></td></tr></table></figure>
+<p><code>SqlUpdate</code>インタフェースのバッチ更新用のAPIは以下になります。</p>
+<ul>
+<li><p>バッチパラメータ登録メソッド</p>
+<ul>
+<li><code>SqlUpdate addBatch()</code><br>  1行登録する分のパラメータを設定した後呼び出す。このメソッドを呼び出すことで<br>  それまでに設定したバインドパラメータをまとめて1行分のデータとして保持される</li>
+</ul>
+</li>
+<li><p>終端処理用メソッド</p>
+<ul>
+<li><code>int[] SqlUpdate#batch()</code><br>  一括更新処理を行い、登録、更新を行った行数の配列を返す。（※）<br>  （※）戻り値については利用するJDBCドライバの仕様によって変わる場合があります。</li>
+</ul>
+</li>
+</ul>
+<p><strong>（注意）</strong><br>上の例では<code>deptList</code>の件数分ループを回してすべての行を<code>addBatch()</code>していますが、その間はメモリにバインドしたパラメータが蓄積されるため、件数が増えると<code>Out Of Memory</code>になる可能性が出てきます。<br><code>Out Of Memory</code>を回避するために、一定の件数（100件とか1,000件など）で一度<code>SqlUpdate#batch()</code>を呼び出し、蓄積したパラメータをクリアするようにしてください。</p>
+<h3 id="プロシージャの実行"><a href="#プロシージャの実行" class="headerlink" title="プロシージャの実行"></a>プロシージャの実行</h3><p>uroboroSQLでは、SQLの検索/更新のほかDBが提供するストアドプロシージャの呼び出し用APIも提供しています。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// SqlUpdateインタフェースのインスタンスを取得</span></div><div class="line">Map&lt;String, Object&gt; result = agent.procWith(<span class="string">"&#123;call product_id_exist_check(/*product_id*/, /*check_out*/)&#125;"</span>).param(<span class="string">"product_id"</span>, <span class="number">0</span>).outParam(<span class="string">"check_out"</span>, java.sql.JDBCType.NUMERIC).call();</div><div class="line">BigDecimal checkOut = (BigDecimal)result.get(<span class="string">"check_out"</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="トランザクション"><a href="#トランザクション" class="headerlink" title="トランザクション"></a>トランザクション</h2><p>uroboroSQLではローカルトランザクションを提供します。<br>トランザクションを利用することで、エラー発生時でも一部のデータだけ登録を成功させるといった細かな制御ができるようになります。</p>
+<h3 id="トランザクションの開始と終了"><a href="#トランザクションの開始と終了" class="headerlink" title="トランザクションの開始と終了"></a>トランザクションの開始と終了</h3><p>uroboroSQLで提供するトランザクションのレベルは以下の3つです</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">トランザクションタイプ</th>
+<th style="text-align:left">トランザクション有り</th>
+<th style="text-align:left">トランザクションなし</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">required</td>
+<td style="text-align:left">トランザクション内で処理を実行</td>
+<td style="text-align:left">新たなトランザクションを開始して処理を実行</td>
+</tr>
+<tr>
+<td style="text-align:left">requiresNew</td>
+<td style="text-align:left">既存のトランザクションを停止し、新たなトランザクションを開始して処理を実行。<br>トランザクションが終了すると停止していたトランザクションを再開させる</td>
+<td style="text-align:left">新たなトランザクションを開始して処理を実行</td>
+</tr>
+<tr>
+<td style="text-align:left">notSupported</td>
+<td style="text-align:left">既存のトランザクションを停止し、トランザクション外で処理を実行。<br>処理が終了すると停止していたトランザクションを再開させる</td>
+<td style="text-align:left">トランザクション外で処理を実行</td>
+</tr>
+</tbody>
+</table>
+<p><code>SqlAgent</code>インタフェースにトランザクションタイプに応じたメソッドが提供されており、そのメソッドを呼び出すことでトランザクションの開始と終了を制御します。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">agent.required(() -&gt; &#123;</div><div class="line">	<span class="comment">//トランザクション開始</span></div><div class="line">	agent.contextWith(<span class="string">"insert into employee (emp_no) values (/*emp_no*/1001)"</span>).param(<span class="string">"emp_no"</span>, <span class="number">1001</span>).count();</div><div class="line"></div><div class="line">	agent.requiresNew(() -&gt; &#123;</div><div class="line">		<span class="comment">//新しい トランザクション開始</span></div><div class="line">		agent.contextWith(<span class="string">"insert into department (dept_no, dept_name) values (/*dept_no*/1111, /*dept_name*/'Sales')"</span>).param(<span class="string">"dept_no"</span>, <span class="number">1002</span>).param(<span class="string">"dept_name"</span>, <span class="string">"export"</span>).count();</div><div class="line">		<span class="comment">//トランザクション終了 commit</span></div><div class="line">	&#125;);</div><div class="line">	<span class="comment">//トランザクション終了 commit</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="コミットとロールバック"><a href="#コミットとロールバック" class="headerlink" title="コミットとロールバック"></a>コミットとロールバック</h3><p>トランザクションのラムダ式が正常に終了すればトランザクションはコミットされます。<br>トランザクションのラムダ式が例外をスローした場合はトランザクションをロールバックします。</p>
+<p>例外をスローさせずに明示的にロールバックを行う場合は<code>SqlAgent#setRollbackOnly()</code>を呼び出します。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">agent.required(() -&gt; &#123;</div><div class="line">	<span class="comment">//トランザクション開始</span></div><div class="line">	agent.updateWith(<span class="string">"insert into employee (emp_no) values (/*emp_no*/1001)"</span>).param(<span class="string">"emp_no"</span>, <span class="number">1001</span>).count();</div><div class="line"></div><div class="line">	agent.requiresNew(() -&gt; &#123;</div><div class="line">		<span class="comment">//新しい トランザクション開始</span></div><div class="line">		agent.updateWith(<span class="string">"insert into department (dept_no, dept_name) values (/*dept_no*/1111, /*dept_name*/'Sales')"</span>).param(<span class="string">"dept_no"</span>, <span class="number">1002</span>).param(<span class="string">"dept_name"</span>, <span class="string">"export"</span>).count();</div><div class="line">		<span class="comment">//トランザクション終了 明示的なrollback</span></div><div class="line">		agent.setRollbackOnly();</div><div class="line">	&#125;);</div><div class="line">	<span class="comment">//トランザクション終了 commit</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="セーブポイント"><a href="#セーブポイント" class="headerlink" title="セーブポイント"></a>セーブポイント</h3><p>トランザクション内でセーブポイントを設けることで、トランザクション内の特定の更新のみ取り消すといった細かな制御ができます。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">agent.required(() -&gt; &#123;</div><div class="line">	<span class="comment">//トランザクション開始</span></div><div class="line">	agent.update(<span class="string">"employee/insert_employee"</span>).param(<span class="string">"emp_no"</span>, <span class="number">1001</span>).count();</div><div class="line"></div><div class="line">	agent.setSavepoint(<span class="string">"sp"</span>);</div><div class="line">	agent.update(<span class="string">"employee/insert_employee"</span>).param(<span class="string">"emp_no"</span>, <span class="number">1002</span>).count();</div><div class="line"></div><div class="line">	assertThat(agent.query(<span class="string">"employee/select_employee"</span>).collect().size(), <span class="number">2</span>);</div><div class="line"></div><div class="line">	agent.rollback(<span class="string">"sp"</span>);<span class="comment">//最後のinsertを取消</span></div><div class="line"></div><div class="line">	assertThat(agent.query(<span class="string">"employee/select_employee"</span>).collect().size(), <span class="number">1</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <div style="font-size:130%; font-weight:bold;"><br>  <a href="../getting_started" style="float:left">&#60;&#60; Getting Started</a><a href="../advanced" style="float:right">高度な操作 &#62;&#62;</a><br></div>
+
 
 <!-- Tags -->
 
