@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--Description-->
     
+        <meta name="description" content="uroboroSQLの公式ドキュメントサイトです。">
+    
 
     <!--Author-->
     
@@ -18,7 +20,7 @@
     
 
     <!--Open Graph Site Name-->
-    <meta property="og:site_name" content="uroboroSQL"/>
+    <meta property="og:site_name" content="uroboroSQL ドキュメント"/>
 
     <!--Page Cover-->
     
@@ -27,7 +29,7 @@
 
     <!-- Title -->
     
-    <title>uroboroSQL</title>
+    <title>uroboroSQL ドキュメント</title>
 
     <!-- Custom CSS -->
     <!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -113,6 +115,7 @@
         <li><a href="/uroborosql-doc/basics/">基本操作</a></li>
         <li><a href="/uroborosql-doc/advanced/">高度な操作</a></li>
         <li><a href="/uroborosql-doc/developer_guide/">開発者ガイド</a></li>
+        <li><a href="/uroborosql-doc/license/">License</a></li>
         <li><a href="/uroborosql-doc/about_uroborosql/">uroboroSQLについて</a></li>
     </ul>
 </nav>
@@ -138,6 +141,12 @@
 <section class="features">
   <h2>Features</h2>
   <div class="feature">
+    <i class="fa fa-retweet" aria-hidden="true"></i>
+    <span class="title">2Way-SQL with Coverage</span>
+    <p>ORマッパー、クエリビルダならJavaコードでカバレッジが取れるのに、2Way-SQLで分岐を使った場合には、カバレッジが取れず、本番環境で意図しないSQLが・・・。</p>
+    <p>uroboroSQLではテスト実行時にカバレッジ取得用のログを出力・解析することにより、カバレッジレポートを出力することが可能です。</p>
+  </div>
+  <div class="feature">
     <i class="fa fa-terminal" aria-hidden="true"></i>
     <span class="title">REPL搭載</span>
     <p>これまでSQLファイルを修正するたびにコンパイルしてテスト実行するのに時間がかかる・・・。他のORマッパーやSQLフレームワークでイライラしていた経験はありませんか？</p>
@@ -148,12 +157,6 @@
     <span class="title">区分値サポート</span>
     <p>2Way-SQLのライブラリを使用していると、いくつものSQLで区分値や定数などをいちいちパラメータに指定するのがわずらわしいと思ったことはありませんか？</p>
     <p>エンタープライズで使われてOSS化したuroboroSQLでは、SQLファイルの中で定数クラスや列挙体を指定することにより、呼び出し時の実装をシンプルにします。</p>
-  </div>
-  <div class="feature">
-    <i class="fa fa-retweet" aria-hidden="true"></i>
-    <span class="title">2Way-SQL with Coverage</span>
-    <p>ORマッパー、クエリビルダならJavaコードでカバレッジが取れるのに、2Way-SQLで分岐を使った場合には、カバレッジが取れず、本番環境で意図しないSQLが・・・。</p>
-    <p>uroboroSQLではテスト実行時にカバレッジ取得用のログを出力・解析することにより、カバレッジレポートを出力することが可能です。</p>
   </div>
 </section>
 
@@ -220,6 +223,20 @@
 
 <article class="style5">
     <span class="image">
+        <img src="/uroborosql-doc//images/wp07.png" alt="" />
+    </span>
+    <a href="/uroborosql-doc/license/">
+        <h2>License</h2>
+        <div class="content">
+            <p></p>
+        </div>
+    </a>
+</article>
+    
+        
+
+<article class="style6">
+    <span class="image">
         <img src="/uroborosql-doc//images/wp05.jpg" alt="" />
     </span>
     <a href="/uroborosql-doc/developer_guide/">
@@ -232,7 +249,7 @@
     
         
 
-<article class="style6">
+<article class="style7">
     <span class="image">
         <img src="/uroborosql-doc//images/wp06.jpg" alt="" />
     </span>
@@ -246,6 +263,24 @@
     
 </section>
 
+<section class="features">
+  <h2>Developer Tools</h2>
+  <img src="https://github.com/future-architect/uroboroSQL-formatter/raw/master/image/uroboroSQLformatter_logo.png" alt="uroboroSQL formatter" style="max-width:100%;">
+  <ul>
+    <li>CLI
+      <ul><li><a href="https://github.com/future-architect/uroboroSQL-formatter" target="_blank">https://github.com/future-architect/uroboroSQL-formatter</a></li></ul>
+    </li>
+    <li>Sublime Text 3 Plugin
+      <ul><li><a href="https://github.com/future-architect/Sublime-uroboroSQL-formatter" target="_blank">https://github.com/future-architect/Sublime-uroboroSQL-formatter</a></li></ul>
+    </li>
+    <li>IntelliJ IDEA Platform Plugin
+      <ul><li><a href="https://github.com/future-architect/idea-uroborosql-formatter" target="_blank">https://github.com/future-architect/idea-uroborosql-formatter</a></li></ul>
+    </li>
+    <li>Eclipse Plugin
+      <ul><li><a href="https://github.com/future-architect/eclipse-uroborosql-formatter" target="_blank">https://github.com/future-architect/eclipse-uroborosql-formatter</a></li></ul>
+    </li>
+  </ul>
+</section>
 
 
 
@@ -305,7 +340,7 @@
       </div>
       <br>
       <ul class="copyright">
-          <li>&copy; 2017 Future Architect. All rights reserved</li>
+          <li>&copy; 2018 Future Architect. All rights reserved</li>
           <li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
       </ul>
   </div>

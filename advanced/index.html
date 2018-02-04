@@ -8,14 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--Description-->
     
-        <meta name="description" content="区分値定数/列挙型の利用
-SQLフィルター
-SQLカバレッジ
-エラーハンドリング
-ログ
-
-
-区分値定数/列挙型の利用これまでSQLの開発では、区分値や定数値などの固定値がマジックナンバーとしてSQL文内に埋め込まれていました。マジックナンバーの使用は仕様変更時の調査が困難で不具合の温床になったり、可">
+        <meta name="description" content="uroboroSQLの公式ドキュメントサイトです。">
     
 
     <!--Author-->
@@ -29,7 +22,7 @@ SQLカバレッジ
     
 
     <!--Open Graph Site Name-->
-    <meta property="og:site_name" content="uroboroSQL"/>
+    <meta property="og:site_name" content="uroboroSQL ドキュメント"/>
 
     <!--Page Cover-->
     
@@ -38,7 +31,7 @@ SQLカバレッジ
 
     <!-- Title -->
     
-    <title>高度な操作 - uroboroSQL</title>
+    <title>高度な操作 - uroboroSQL ドキュメント</title>
 
     <!-- Custom CSS -->
     <!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -124,6 +117,7 @@ SQLカバレッジ
         <li><a href="/uroborosql-doc/basics/">基本操作</a></li>
         <li><a href="/uroborosql-doc/advanced/">高度な操作</a></li>
         <li><a href="/uroborosql-doc/developer_guide/">開発者ガイド</a></li>
+        <li><a href="/uroborosql-doc/license/">License</a></li>
         <li><a href="/uroborosql-doc/about_uroborosql/">uroboroSQLについて</a></li>
     </ul>
 </nav>
@@ -144,32 +138,80 @@ SQLカバレッジ
 <!-- Content -->
 <hr>
 <ul>
-<li><a href="#区分値定数/列挙型の利用">区分値定数/列挙型の利用</a></li>
+<li><a href="#SqlConfigのカスタマイズ">SqlConfigのカスタマイズ</a><ul>
+<li><a href="#区分値定数や列挙型の利用">区分値定数や列挙型の利用</a></li>
 <li><a href="#SQLフィルター">SQLフィルター</a></li>
-<li><a href="#SQLカバレッジ">SQLカバレッジ</a></li>
+<li><a href="#SQLファイルルートフォルダの設定">SQLファイルルートフォルダの設定</a></li>
 <li><a href="#エラーハンドリング">エラーハンドリング</a></li>
+<li><a href="#SQL発行のリトライ">SQL発行のリトライ</a></li>
+<li><a href="#SqlAgentの挙動設定">SqlAgentの挙動設定</a></li>
+<li><a href="#自動パラメータバインド関数の設定">自動パラメータバインド関数の設定</a></li>
+</ul>
+</li>
+<li><a href="#SQLカバレッジ">SQLカバレッジ</a></li>
 <li><a href="#ログ">ログ</a></li>
+<li><a href="#システムプロパティ">システムプロパティ</a></li>
 </ul>
 <hr>
-<h2 id="区分値定数-列挙型の利用"><a href="#区分値定数-列挙型の利用" class="headerlink" title="区分値定数/列挙型の利用"></a>区分値定数/列挙型の利用</h2><p>これまでSQLの開発では、区分値や定数値などの固定値がマジックナンバーとしてSQL文内に埋め込まれていました。マジックナンバーの使用は仕様変更時の調査が困難で不具合の温床になったり、可読性を下げる要因になっていました。</p>
+<h2 id="SqlConfigのカスタマイズ"><a href="#SqlConfigのカスタマイズ" class="headerlink" title="SqlConfigのカスタマイズ"></a>SqlConfigのカスタマイズ</h2><p>uroboroSQLではSqlConfigを生成するタイミングで各種の設定を行うことによりSQL発行時の動作を変更することができます。<br>設定は<code>UroboroSQL</code>ビルダーAPIで行います。</p>
+<h3 id="区分値定数や列挙型の利用"><a href="#区分値定数や列挙型の利用" class="headerlink" title="区分値定数や列挙型の利用"></a>区分値定数や列挙型の利用</h3><p>これまでSQLの開発では、区分値や定数値などの固定値がマジックナンバーとしてSQL文内に埋め込まれていました。<br>しかしマジックナンバーの記述は可読性が悪く仕様変更時の影響調査が困難なため不具合の温床となっていました。</p>
+<p>例</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line"> *</div><div class="line"><span class="keyword">FROM</span> EMPLOYEE</div><div class="line"><span class="keyword">WHERE</span> EMP_TYP = <span class="string">'05'</span> <span class="comment">-- 05:従業員     &lt;-- 従業員の区分が変わったらどうする？</span></div></pre></td></tr></table></figure>
 <p>uroboroSQLはエンタープライズ分野での開発に利用されてきた経験から、SQL文の中でマジックナンバーの代わりに定数や列挙型を利用するための仕組みを提供しています。</p>
-<p>区分値定数/列挙型を利用するためには<code>SqlConfig</code>生成後に以下の設定を追加します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// SqlConfigの取得</span></div><div class="line">SqlConfig config = DefaultSqlConfig.getConfig(<span class="string">"jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"</span>, <span class="string">"sa"</span>, <span class="string">""</span>);</div><div class="line"></div><div class="line"><span class="comment">// SqlConfigからSqlContextFactoryを取得</span></div><div class="line">SqlContextFactory sqlContextFactory = config.getSqlContextFactory();</div><div class="line"><span class="comment">// 定数クラス（`TypeConstants`）を定数として登録</span></div><div class="line">sqlContextFactory.setConstantClassNames(Arrays.asList(TypeConstants.class.getName()));</div><div class="line"><span class="comment">// 列挙型（`Gender`）を定数として登録</span></div><div class="line">sqlContextFactory.setEnumConstantPackageNames(Arrays.asList(Gender.class.getPackage().getName()));</div><div class="line"><span class="comment">// 初期化</span></div><div class="line">sqlContextFactory.initialize();</div></pre></td></tr></table></figure></p>
-<p>TypeConstants.javaの内容<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 区分値定数クラス</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">TypeConstants</span> </span>&#123;</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="title">TypeConstants</span><span class="params">()</span> </span>&#123;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/** 区分種別名称：口座種別区分  区分種別番号：0035  長さ：0 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACCOUNT_TYP = <span class="string">"0035"</span>;</div><div class="line">	<span class="comment">/** 区分種別名称：口座種別区分  区分値名称：普通  区分値略称：普通  区分値番号：1 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACCOUNT_TYP_FUTSU = <span class="string">"1"</span>;</div><div class="line">	<span class="comment">/** 区分種別名称：口座種別区分  区分値名称：当座  区分値略称：当座  区分値番号：2 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACCOUNT_TYP_TOUZA = <span class="string">"2"</span>;</div><div class="line">	<span class="comment">/** 区分種別名称：口座種別区分  区分値名称：定期  区分値略称：定期  区分値番号：3 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACCOUNT_TYP_TEIKI = <span class="string">"3"</span>;</div><div class="line">	<span class="comment">/** 区分種別名称：発行区分  区分種別番号：0052  長さ：0 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ISSUE_TYP = <span class="string">"0052"</span>;</div><div class="line">	<span class="comment">/** 区分種別名称：発行区分  区分値名称：未発行  区分値略称：未発行  区分値番号：1 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ISSUE_TYP_UNISSUED = <span class="string">"1"</span>;</div><div class="line">	<span class="comment">/** 区分種別名称：発行区分  区分値名称：発行済  区分値略称：発行済  区分値番号：2 */</span></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ISSUE_TYP_OUTSTANDING = <span class="string">"2"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>Gender.javaの内容<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 性別を表す列挙体</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Gender &#123;</div><div class="line">	Male(<span class="string">"M"</span>), Female(<span class="string">"F"</span>), Other(<span class="string">"O"</span>);</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> String label;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Gender</span><span class="params">(String label)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.label = label;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> label;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>このように区分値定数や列挙型をSQL定数として登録しておくことで、SQL文の中で定数名が利用できるようになります。<br>参照方法は以下になります。</p>
+<p>区分値定数/列挙型を利用するためには<code>SqlConfig</code>に以下の設定を追加します。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// create SqlConfig</span></div><div class="line">SqlConfig config = UroboroSQL</div><div class="line">  .builder(...)</div><div class="line">  <span class="comment">// SqlContextFactoryの設定</span></div><div class="line">  .setSqlContextFactory(<span class="keyword">new</span> SqlContextFactoryImpl()</div><div class="line">    <span class="comment">// 定数クラス設定の追加</span></div><div class="line">    .setConstantClassNames(Arrays.asList(TypeConstants.class.getName()))</div><div class="line">    <span class="comment">// 列挙型パッケージ設定の追加</span></div><div class="line">    .setEnumConstantPackageNames(Arrays.asList(Gender.class.getPackage().getName()))</div><div class="line">     <span class="comment">// 定数パラメータのプレフィックス指定(初期値 : CLS_)</span></div><div class="line">    .setConstParamPrefix(<span class="string">"CLS_"</span>))</div><div class="line">  .build();</div></pre></td></tr></table></figure></p>
+<p>定数クラス : TypeConstants.javaの実装例<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 区分値定数クラス</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">TypeConstants</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">TypeConstants</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">  <span class="comment">/** 区分種別名称：口座種別区分  区分種別番号：0035  長さ：0 */</span></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACCOUNT_TYP = <span class="string">"0035"</span>;</div><div class="line">  <span class="comment">/** 区分種別名称：口座種別区分  区分値名称：普通  区分値略称：普通  区分値番号：1 */</span></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACCOUNT_TYP_FUTSU = <span class="string">"1"</span>;</div><div class="line">  <span class="comment">/** 区分種別名称：口座種別区分  区分値名称：当座  区分値略称：当座  区分値番号：2 */</span></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACCOUNT_TYP_TOUZA = <span class="string">"2"</span>;</div><div class="line">  <span class="comment">/** 区分種別名称：口座種別区分  区分値名称：定期  区分値略称：定期  区分値番号：3 */</span></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ACCOUNT_TYP_TEIKI = <span class="string">"3"</span>;</div><div class="line">  <span class="comment">/** 区分種別名称：発行区分  区分種別番号：0052  長さ：0 */</span></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ISSUE_TYP = <span class="string">"0052"</span>;</div><div class="line">  <span class="comment">/** 区分種別名称：発行区分  区分値名称：未発行  区分値略称：未発行  区分値番号：1 */</span></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ISSUE_TYP_UNISSUED = <span class="string">"1"</span>;</div><div class="line">  <span class="comment">/** 区分種別名称：発行区分  区分値名称：発行済  区分値略称：発行済  区分値番号：2 */</span></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ISSUE_TYP_OUTSTANDING = <span class="string">"2"</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * システム定数</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Consts</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">Consts</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonValue</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">CommonValue</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="comment">/** 業務日付（オンライン） */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ONLINE_YMD = <span class="string">"1"</span>;</div><div class="line"></div><div class="line">    <span class="comment">/** 業務日付（バッチ） */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String BATCH_YMD = <span class="string">"2"</span>;</div><div class="line"></div><div class="line">    <span class="comment">/** SQL上でのフラグ表現（TRUE=1） */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String FLAG_ON = <span class="string">"1"</span>;</div><div class="line">    <span class="comment">/** SQL上でのフラグ表現（FALSE=0） */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String FLAG_OFF = <span class="string">"0"</span>;</div><div class="line">    <span class="comment">/** 日付ALL0 */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ZERO_DATE = <span class="string">"00000000"</span>;</div><div class="line">    <span class="comment">/** 日付最小値 */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String MIN_DATE = <span class="string">"19000101"</span>;</div><div class="line">    <span class="comment">/** 日付最大値 */</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String MAX_DATE = <span class="string">"99991231"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>列挙型 : Gender.javaの実装例<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 性別を表す列挙型</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Gender &#123;</div><div class="line">  MALE(<span class="string">"M"</span>), FEMALE(<span class="string">"F"</span>), OTHER(<span class="string">"O"</span>);</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">final</span> String label;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">Gender</span><span class="params">(String label)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.label = label;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> label;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>このように区分値定数や列挙型を定数パラメータとして登録しておくことで、SQL文の中で定数名が利用できるようになります。</p>
+<p>定数パラメータを利用する場合、以下の命名ルールに従ってパラメータを指定します。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">パターン</th>
+<th style="text-align:left">書式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">定数</td>
+<td style="text-align:left">[定数パラメータプレフィックス][定数フィールド名大文字]</td>
+</tr>
+<tr>
+<td style="text-align:left">定数(Innerクラスがある場合)</td>
+<td style="text-align:left">[定数パラメータプレフィックス][Innerクラス名大文字スネークケース]_[Innerクラス内定数フィールド名大文字]</td>
+</tr>
+<tr>
+<td style="text-align:left">列挙型</td>
+<td style="text-align:left">[定数パラメータプレフィックス][列挙型名大文字]_[列挙子名大文字]</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>※定数パラメータプレフィックスの初期値は <code>CLS_</code>となっています。SqlConfig生成時の設定で変更することが可能です。</p>
+</blockquote>
+<p>実際に使用する際は置換文字列として</p>
 <ul>
-<li>定数<br>  <code>CLS_[定数フィールド名大文字]</code></li>
-<li>列挙型<br>  <code>CLS_[列挙型名大文字]_[列挙子名大文字]</code></li>
+<li>/*#[定数パラメータプレフィックス][定数フィールド名大文字]*/</li>
+<li>/*#[定数パラメータプレフィックス][Innerクラス名大文字スネークケース]_[Innerクラス内定数フィールド名大文字]*/</li>
+<li>/*#[定数パラメータプレフィックス][列挙型名大文字]_[列挙子名大文字]*/ </li>
 </ul>
-<p>実際に使用する際は置換文字列として /*#CLS_[定数フィールド名大文字]*/ や /*$CLS_[列挙型名大文字]_[列挙子名大文字]*/ という風に使用します。</p>
-<p>列挙型の例<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">	EMP.EMP_NO		<span class="keyword">AS</span>	EMP_NO</div><div class="line">,	EMP.FIRST_NAME	<span class="keyword">AS</span>	FIRST_NAME</div><div class="line">,	EMP.LAST_NAME	<span class="keyword">AS</span>	LAST_NAME</div><div class="line">,	EMP.BIRTH_DATE	<span class="keyword">AS</span>	BIRTH_DATE</div><div class="line">,	EMP.GENDER		<span class="keyword">AS</span>	GENDER</div><div class="line"><span class="keyword">FROM</span></div><div class="line">	EMPLOYEE	EMP</div><div class="line"><span class="keyword">WHERE</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="comment">/*IF female != null and female*/</span></div><div class="line"><span class="keyword">AND</span>	EMP.GENDER		=	<span class="comment">/*#CLS_GENDER_FEMALE*/</span><span class="string">'F'</span></div><div class="line"><span class="comment">/*END*/</span></div></pre></td></tr></table></figure></p>
-<h2 id="SQLフィルター"><a href="#SQLフィルター" class="headerlink" title="SQLフィルター"></a>SQLフィルター</h2><p>uroboroSQLではSQLの実行を行う一連の処理の流れの中にいくつかの拡張ポイントを設けており、この拡張ポイントに処理を追加することで、共通的なSQL文の加工や検索結果の記録といった様々な拡張を行うことができるように設計されています。</p>
+<p>または</p>
+<ul>
+<li>/*$[定数パラメータプレフィックス][定数フィールド名大文字]*/</li>
+<li>/*$[定数パラメータプレフィックス][Innerクラス名大文字スネークケース]_[Innerクラス内定数フィールド名大文字]*/</li>
+<li>/*$[定数パラメータプレフィックス][列挙型名大文字]_[列挙子名大文字]*/ </li>
+</ul>
+<p>という風に使用します。  </p>
+<blockquote>
+<p>定数や列挙型の値は固定なので生成されるSQLは毎回同じ値になり、SQL文解析処理によるCPU負荷を考慮する必要はありません。</p>
+</blockquote>
+<p>定数の例<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">  EMP.EMP_NO    <span class="keyword">AS</span>  EMP_NO</div><div class="line">,  EMP.FIRST_NAME  <span class="keyword">AS</span>  FIRST_NAME</div><div class="line">,  EMP.LAST_NAME  <span class="keyword">AS</span>  LAST_NAME</div><div class="line">,  EMP.BIRTH_DATE  <span class="keyword">AS</span>  BIRTH_DATE</div><div class="line">,  EMP.GENDER    <span class="keyword">AS</span>  GENDER</div><div class="line"><span class="keyword">FROM</span></div><div class="line">  EMPLOYEE  EMP</div><div class="line"><span class="keyword">WHERE</span></div><div class="line">  EMP.BIRTH_DATE    !=  <span class="comment">/*#CLS_COMMON_VALUE_ZERO_DATE*/</span><span class="string">'00000000'</span>  <span class="comment">-- 定数パラメータの指定</span></div></pre></td></tr></table></figure></p>
+<p>列挙型の例<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span></div><div class="line">  EMP.EMP_NO    <span class="keyword">AS</span>  EMP_NO</div><div class="line">,  EMP.FIRST_NAME  <span class="keyword">AS</span>  FIRST_NAME</div><div class="line">,  EMP.LAST_NAME  <span class="keyword">AS</span>  LAST_NAME</div><div class="line">,  EMP.BIRTH_DATE  <span class="keyword">AS</span>  BIRTH_DATE</div><div class="line">,  EMP.GENDER    <span class="keyword">AS</span>  GENDER</div><div class="line"><span class="keyword">FROM</span></div><div class="line">  EMPLOYEE  EMP</div><div class="line"><span class="keyword">WHERE</span></div><div class="line">  EMP.GENDER    =  <span class="comment">/*#CLS_GENDER_FEMALE*/</span><span class="string">'F'</span>  <span class="comment">-- 列挙型定数パラメータの指定</span></div></pre></td></tr></table></figure></p>
+<h3 id="SQLフィルター"><a href="#SQLフィルター" class="headerlink" title="SQLフィルター"></a>SQLフィルター</h3><p>uroboroSQLではSQLの実行を行う一連の処理の流れの中にいくつかの拡張ポイントを設けており、この拡張ポイントに処理を追加することで、共通的なSQL文の加工や検索結果の記録といった様々な拡張を行うことができるように設計されています。</p>
 <p>SQL処理の拡張はSqlFilterインタフェースを実装したクラスを作成し登録することで行います。<br>SqlFilterインタフェースには以下のメソッドが定義されています。</p>
 <table>
 <thead>
 <tr>
-<th style="text-align:left">メソッド名</th>
+<th style="text-align:left">SqlFilterメソッド名</th>
 <th style="text-align:left">説明</th>
 </tr>
 </thead>
@@ -227,19 +269,19 @@ SQLカバレッジ
 <tbody>
 <tr>
 <td style="text-align:left">jp.co.future.uroborosql.filter.DebugSqlFilter</td>
-<td style="text-align:left">SqlFilterの動作を理解するためのサンプル。<br>各拡張ポイントで呼び出されるメソッドでログを出力する。</td>
+<td style="text-align:left">SqlFilterの動作を理解するためのサンプル。<br>各拡張ポイントで呼び出されるメソッドでログを出力します。</td>
 </tr>
 <tr>
 <td style="text-align:left">jp.co.future.uroborosql.filter.DumpResultSqlFilter</td>
-<td style="text-align:left">検索結果を表形式でログ出力するSQLフィルター。SqlREPLで使用。</td>
+<td style="text-align:left">検索結果を表形式でログ出力するSQLフィルター。<br>SqlREPLで使用しています。</td>
 </tr>
 <tr>
 <td style="text-align:left">jp.co.future.uroborosql.filter.WrapContextSqlFilter</td>
-<td style="text-align:left">SQL文の前後に文字列を追加するSQLフィルター。<br>ページングや検索件数の上限設定に使用する。</td>
+<td style="text-align:left">SQL文の前後に文字列を追加するSQLフィルター。<br>ページングや検索件数の上限設定に使用します。</td>
 </tr>
 <tr>
 <td style="text-align:left">jp.co.future.uroborosql.filter.SecretColumnSqlFilter</td>
-<td style="text-align:left">指定した特定のカラムのみ暗号化を行うSQLフィルター。<br>パスワードや機密情報を暗号化してDBに格納するために使用する。</td>
+<td style="text-align:left">指定した特定のカラムのみ暗号化を行うSQLフィルター。<br>パスワードや機密情報を暗号化してDBに格納するために使用します。</td>
 </tr>
 <tr>
 <td style="text-align:left">jp.co.future.uroborosql.filter.AuditLogSqlFilter</td>
@@ -247,24 +289,75 @@ SQLカバレッジ
 </tr>
 </tbody>
 </table>
-<p>SQLフィルターを利用するためには、SqlConfigからSqlFilterManagerを取得し、使用するSQLフィルターを追加してください。その際、SQLフィルターは複数登録することができます。複数登録した場合は登録した順にSQLフィルターが処理されます。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SqlConfig config = DefaultSqlConfig.getConfig(...);</div><div class="line"><span class="comment">// DumpResultSqlFilterの登録</span></div><div class="line">config.getSqlFilterManager().addSqlFilter(<span class="keyword">new</span> DumpResultSqlFilter());</div><div class="line"><span class="comment">// WrapContextSqlFilterの登録</span></div><div class="line">config.getSqlFilterManager().addSqlFilter(<span class="keyword">new</span> WrapContextSqlFilter(<span class="string">""</span>, <span class="string">"LIMIT /*$maxRowCount*/10 OFFSET /*$startRowIndex*/0"</span>, <span class="string">".*(FOR\\sUPDATE|\\.NEXTVAL).*"</span>));</div><div class="line"><span class="comment">// SqlFilterの初期化</span></div><div class="line">config.getSqlFilterManager().initialize();</div></pre></td></tr></table></figure>
-<p>独自にSqlFilterを作成する場合、<code>jp.co.future.uroborosql.filter.AbstractSqlFilter</code>を継承し、必要に応じてメソッドをオーバーライドしてください。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomSqlFilter</span> <span class="keyword">extends</span> <span class="title">AbstractSqlFilter</span> </span>&#123;</div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> ResultSet <span class="title">doQuery</span><span class="params">(SqlContext sqlContext, PreparedStatement preparedStatement, ResultSet resultSet)</span> </span>&#123;</div><div class="line">        <span class="comment">// フィルター処理の実装</span></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<h2 id="SQLカバレッジ"><a href="#SQLカバレッジ" class="headerlink" title="SQLカバレッジ"></a>SQLカバレッジ</h2><p>これまでアプリケーション上の条件分岐はカバレッジツールを利用して条件分岐の網羅率を確認することができました。<br>しかし、SQL文の条件分岐は実際にその分岐が通っているかどうかを確認する手段がなく、リリース後に初めて通った条件で不具合を発生させることがありました。<br>この問題を解決するためにuroboroSQLでは、SQL文の条件分岐を集計してカバレッジレポートを行う機能を提供します。</p>
-<p>SQLカバレッジはuroboroSQLを利用するアプリケーションの起動時オプションに<code>-Duroborosql.sql.coverage=true</code>を追加することで有効になります。<br>アプリケーションが実行している間に発行されるSQLについて、カバレッジ情報が収集されます。<br>カバレッジ情報の収集結果は標準では<code>target/coverage/sql-cover.xml</code>に出力されます。<br>このファイルの場所や名前を変更したい場合は、起動時オプションに<code>-Duroborosql.sql.coverage.file=[出力ファイルパス]</code>を指定してください。</p>
+<p>SQLフィルターを利用するためには、SqlConfig生成時にSqlFilterManagerの設定を追加して利用するSQLフィルターの登録を行ってください。<br>SQLフィルターは複数登録することができます。複数登録した場合は登録した順にSQLフィルターが処理されます。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// create SqlConfig</span></div><div class="line">SqlConfig config = UroboroSQL</div><div class="line">  .builder(...)</div><div class="line">  <span class="comment">// SqlFilterManagerの設定</span></div><div class="line">  .setSqlFilterManager(<span class="keyword">new</span> SqlFilterManagerImpl()</div><div class="line">    <span class="comment">// DumpResultSqlFilterの登録</span></div><div class="line">    .addSqlFilter(<span class="keyword">new</span> DumpResultSqlFilter())</div><div class="line">    <span class="comment">// WrapContextSqlFilterの登録</span></div><div class="line">    .addSqlFilter(<span class="keyword">new</span> WrapContextSqlFilter(<span class="string">""</span>,</div><div class="line">      <span class="string">"LIMIT /*$maxRowCount*/10 OFFSET /*$startRowIndex*/0"</span>,</div><div class="line">      <span class="string">".*FOR\\sUPDATE.*"</span>)))</div><div class="line">  .build();</div></pre></td></tr></table></figure>
+<p>独自にSqlFilterを作成する場合は、<code>jp.co.future.uroborosql.filter.AbstractSqlFilter</code>を継承し、必要に応じてメソッドをオーバーライドしてください。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomSqlFilter</span> <span class="keyword">extends</span> <span class="title">AbstractSqlFilter</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">// 途中略</span></div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> ResultSet <span class="title">doQuery</span><span class="params">(SqlContext sqlContext, PreparedStatement preparedStatement, ResultSet resultSet)</span> </span>&#123;</div><div class="line">        <span class="comment">// フィルター処理の実装</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="SQLファイルルートフォルダの設定"><a href="#SQLファイルルートフォルダの設定" class="headerlink" title="SQLファイルルートフォルダの設定"></a>SQLファイルルートフォルダの設定</h3><p>uroboroSQLは初期設定ではクラスパス上にあるsqlフォルダ配下のSQLを読み込みます。<br>このSQLファイルルートフォルダは変更することができます。</p>
+<p>SQLファイルルートフォルダの設定 (custom_sqlフォルダを指定)<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SqlConfig config = UroboroSQL.builder(...)</div><div class="line">  <span class="comment">// SQLファイルのルートフォルダの設定(custom_sqlフォルダをルートフォルダにする場合)</span></div><div class="line">  .setSqlManager(<span class="keyword">new</span> SqlManagerImpl(<span class="string">"custom_sql"</span>))</div><div class="line">  .build();</div></pre></td></tr></table></figure></p>
+<h3 id="エラーハンドリング"><a href="#エラーハンドリング" class="headerlink" title="エラーハンドリング"></a>エラーハンドリング</h3><p>uroboroSQLからSQLを発行した際にSQLExceptionがスローされると、そのSQLExceptionを内部に保持する<code>UroborosqlSQLException</code>が呼び出し元に返却されます。<br><code>UroborosqlSQLException</code>は<code>java.lang.RuntimeException</code>を継承しているため明示的なキャッチは不要です。</p>
+<p>呼出元のアプリケーションで明示的にエラーハンドリングを行う場合は、try-catchでUroborosqlSQLExceptionをキャッチすることで、例外発生時の挙動を制御することができます。</p>
+<p>エラーハンドリングの例<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">SqlConfig config = UroboroSQL.builder(...).build();</div><div class="line"></div><div class="line"><span class="keyword">try</span> (SqlAgent agent = config.agent()) &#123;</div><div class="line">  <span class="comment">// INSERT文の実行</span></div><div class="line">  <span class="comment">// insert into product (product_id) values (/*product_id*/0);</span></div><div class="line">  agent.update(<span class="string">"example/insert_product"</span>)</div><div class="line">    .param(<span class="string">"product_id"</span>, <span class="number">1</span>)</div><div class="line">    .count();</div><div class="line">&#125; <span class="keyword">catch</span> (UroborosqlSQLException ex) &#123;</div><div class="line">  <span class="comment">// SQLExceptionが発生した際に行う処理を実装</span></div><div class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"exception occured. ex="</span> + ex.getCause().getMessage(), ex);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="SQL発行のリトライ"><a href="#SQL発行のリトライ" class="headerlink" title="SQL発行のリトライ"></a>SQL発行のリトライ</h3><p>SQLを発行した際、タイミングによって発生する例外（テーブルロックエラーなど）の場合はリトライを行い、できるだけ正常に処理を終了させたい場合があります。</p>
+<p>通常、このようなケースでは以下のような実装を行います。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">SqlConfig config = UroboroSQL.builder(...).build();</div><div class="line"></div><div class="line"><span class="keyword">int</span> retryCount = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>(;;) &#123;</div><div class="line">  <span class="keyword">try</span> (SqlAgent agent = config.agent()) &#123;</div><div class="line">    <span class="comment">// INSERT文の実行</span></div><div class="line">    <span class="comment">// insert into product (product_id) values (/*product_id*/0);</span></div><div class="line">    agent.update(<span class="string">"example/insert_product"</span>).param(<span class="string">"product_id"</span>, <span class="number">1</span>).count();</div><div class="line">    <span class="keyword">break</span>;</div><div class="line">  &#125; <span class="keyword">catch</span> (UroborosqlSQLException ex) &#123;</div><div class="line">    <span class="comment">// SQLExceptionが発生した際に行う処理を実装</span></div><div class="line">    <span class="keyword">int</span> errorCode = ex.getErrorCode();</div><div class="line">    <span class="keyword">if</span> (errorCode == <span class="number">30006</span> || errorCode == <span class="number">54</span>) &#123;<span class="comment">// リソース・ビジー(Oracleの場合)</span></div><div class="line">      <span class="comment">// リトライ対象エラーコードの場合はリトライカウントをカウントアップしてリトライする</span></div><div class="line">      retryCount++;</div><div class="line">      <span class="keyword">if</span> (retryCount == MAX_RETRY_COUNT) &#123; <span class="comment">// MAX_RETRY_COUNT はアプリケーションで定義された最大リトライ回数の定数とする</span></div><div class="line">        <span class="comment">// 最大リトライ回数に達した場合は例外をスローする</span></div><div class="line">        <span class="keyword">throw</span> ex;</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">          <span class="comment">// 10ms 待機</span></div><div class="line">          Thread.sleep(<span class="number">10</span>);</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException iex) &#123;</div><div class="line">          <span class="comment">// do nothing</span></div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="comment">// リトライ対象エラーコード以外はすぐに例外をスローする</span></div><div class="line">      <span class="keyword">throw</span> ex;</div><div class="line">    &#125;</div><div class="line">  &#125;    </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>しかし、上記のようなリトライ処理を個々の実装で行うと、実装漏れや実装ミス、実装方法の差異（for()の代わりにwhile()を使用するなど）により、不具合が発生しやすくなります。<br>uroboroSQLでは、アプリケーション全体のリトライ設定と、リトライ全体設定より優先される個別処理でのリトライ用APIの2種類のAPIを提供することで、より簡潔で確実なリトライ処理が行えるよう工夫されています。</p>
+<p>アプリケーション全体のリトライ設定はSqlConfig生成時に行います。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">SqlConfig config = UroboroSQL.builder(...)</div><div class="line">  <span class="comment">// SqlAgentFactoryの設定</span></div><div class="line">  .setSqlAgentFactory(<span class="keyword">new</span> SqlAgentFactoryImpl()</div><div class="line">    <span class="comment">// アプリケーション全体のリトライ設定</span></div><div class="line">    <span class="comment">// SQLエラーコードが54,30006のいずれか(Oracleのリソース・ビジー)の場合</span></div><div class="line">    .setSqlRetryCodeList(Arrays.asList(<span class="string">"54"</span>, <span class="string">"30006"</span>))</div><div class="line">    <span class="comment">// 最大リトライ回数（3回）リトライ</span></div><div class="line">    .setDefaultMaxRetryCount(<span class="number">3</span>)</div><div class="line">    <span class="comment">// リトライ間隔10ms待機</span></div><div class="line">    .setDefaultSqlRetryWaitTime(<span class="number">10</span>))</div><div class="line">  .build();</div></pre></td></tr></table></figure></p>
+<p>リトライAPIを用いた実装は次のようになります。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// アプリケーション全体のリトライ設定に従ってリトライを行う。（個別のリトライ指定なし）</span></div><div class="line"><span class="keyword">try</span> (SqlAgent agent = config.agent()) &#123;</div><div class="line">  <span class="comment">// INSERT文の実行</span></div><div class="line">  <span class="comment">// insert into product (product_id) values (/*product_id*/0);</span></div><div class="line">  agent.update(<span class="string">"example/insert_product"</span>)</div><div class="line">    .param(<span class="string">"product_id"</span>, <span class="number">1</span>)</div><div class="line">    .count();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 個別にリトライ設定を上書きする（retry()を利用）</span></div><div class="line"><span class="keyword">try</span> (SqlAgent agent = config.agent()) &#123;</div><div class="line">  <span class="comment">// INSERT文の実行</span></div><div class="line">  <span class="comment">// insert into product (product_id) values (/*product_id*/0);</span></div><div class="line">  <span class="comment">// リトライ対象エラーコードの場合、5回のリトライを20ms間隔で行う</span></div><div class="line">  agent.update(<span class="string">"example/insert_product"</span>)</div><div class="line">    .param(<span class="string">"product_id"</span>, <span class="number">1</span>)</div><div class="line">    .retry(<span class="number">5</span>, <span class="number">20</span>)</div><div class="line">    .count();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="SqlAgentの挙動設定"><a href="#SqlAgentの挙動設定" class="headerlink" title="SqlAgentの挙動設定"></a>SqlAgentの挙動設定</h3><p>リトライ設定のほかにも、SqlAgentの挙動を変更する設定をSqlConfig生成時に行うことができます。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">設定項目</th>
+<th style="text-align:left">説明</th>
+<th style="text-align:left">初期値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">fetchSize</td>
+<td style="text-align:left">検索結果のフェッチサイズ</td>
+<td style="text-align:left">-1(0以上の値で有効化)</td>
+</tr>
+<tr>
+<td style="text-align:left">queryTimeout</td>
+<td style="text-align:left">検索タイムアウト時間(秒)</td>
+<td style="text-align:left">-1(0以上の値で有効化)</td>
+</tr>
+<tr>
+<td style="text-align:left">defaultMapKeyCaseFormat</td>
+<td style="text-align:left">検索結果のMapキーのデフォルトCaseFormat</td>
+<td style="text-align:left">CaseFormat.UPPER_SNAKE_CASE</td>
+</tr>
+<tr>
+<td style="text-align:left">sqlIdKeyName</td>
+<td style="text-align:left">SQL_IDを置換するためのKEY文字列</td>
+<td style="text-align:left">_SQL_ID_</td>
+</tr>
+<tr>
+<td style="text-align:left">outputExceptionLog</td>
+<td style="text-align:left">例外発生時のログ出力を行うかどうかの設定</td>
+<td style="text-align:left">false</td>
+</tr>
+</tbody>
+</table>
+<p>設定例<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">SqlConfig config = UroboroSQL.builder(...)</div><div class="line">  <span class="comment">// SqlAgentFactoryの設定</span></div><div class="line">  .setSqlAgentFactory(<span class="keyword">new</span> SqlAgentFactoryImpl()</div><div class="line">    <span class="comment">// 検索結果のフェッチサイズ設定。初期値 : -1(0以上の値で有効化)</span></div><div class="line">    .setFetchSize(<span class="number">1000</span>)</div><div class="line">    <span class="comment">// 検索タイムアウト時間(秒)。初期値 : -1(0以上の値で有効化)</span></div><div class="line">    .setQueryTimeout(<span class="number">30</span>)</div><div class="line">    <span class="comment">// 検索結果のMapキーのデフォルトCaseFormat。初期値 : UPPER_SNAKE_CASE</span></div><div class="line">    .setDefaultMapKeyCaseFormat(CaseFormat.CAMEL_CASE)</div><div class="line">    <span class="comment">// SQL_IDを置換するためのKEY文字列を設定。初期値 : _SQL_ID_</span></div><div class="line">    .setSqlIdKeyName(<span class="string">"_SQL_ID_"</span>)</div><div class="line">    <span class="comment">// 例外発生時のログ出力を行うかどうかを設定。初期値 : false</span></div><div class="line">    .setOutputExceptionLog(<span class="keyword">true</span>)</div><div class="line">  .build();</div></pre></td></tr></table></figure></p>
+<h3 id="自動パラメータバインド関数の設定"><a href="#自動パラメータバインド関数の設定" class="headerlink" title="自動パラメータバインド関数の設定"></a>自動パラメータバインド関数の設定</h3><p><em>(new v0.6.1)</em></p>
+<p>システム内の各テーブルに共通項目（登録日時、更新日時など）が定義されている場合、INSERT文やUPDATE文を発行する際には、必ずこれらの共通項目に対するパラメータを指定する必要が出てきます。<br>このような共通項目へのパラメータ設定を個別の実装で行うと実装が煩雑になりますし、どうしても実装漏れや記述ミスにより正しく値が設定されない、といったことが起こります。</p>
+<p>uroboroSQLではこのような共通項目に対して自動でパラメータをバインドする仕組みを提供しています。<br>設定はSqlConfig生成時に行います。</p>
+<p>設定例<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">SqlConfig config = UroboroSQL</div><div class="line">  .builder(...)</div><div class="line">  <span class="comment">// SqlContextFactoryの設定</span></div><div class="line">  .setSqlContextFactory(<span class="keyword">new</span> SqlContextFactoryImpl()</div><div class="line">    <span class="comment">// query用自動パラメータバインド関数の登録</span></div><div class="line">    .addQueryAutoParameterBinder((ctx) -&gt; ctx.paramIfAbsent(<span class="string">"current_flg"</span>, <span class="keyword">true</span>))</div><div class="line">    <span class="comment">// update/batch/procedure用自動パラメータバインド関数の登録</span></div><div class="line">    .addUpdateAutoParameterBinder((ctx) -&gt; ctx.paramIfAbsent(<span class="string">"ins_datetime"</span>, LocalDateTime.now()))</div><div class="line">    .addUpdateAutoParameterBinder((ctx) -&gt; ctx.paramIfAbsent(<span class="string">"upd_datetime"</span>, LocalDateTime.now()))</div><div class="line">  )</div><div class="line">  .build();</div></pre></td></tr></table></figure></p>
+<p>自動パラメータバインド関数は<code>SqlContext</code>を引数に受け取るので、関数内でパラメータの設定を行ってください。<br>関数の評価は実行SQL生成処理（SQL文内の/*IF*/や/*BEGIN*/、/*parameter_name*/の評価）の直前に行われます。</p>
+<h2 id="SQLカバレッジ"><a href="#SQLカバレッジ" class="headerlink" title="SQLカバレッジ"></a>SQLカバレッジ</h2><p>これまでアプリケーション上の条件分岐はカバレッジツールを利用して網羅率を確認することができました。<br>しかし、SQL文の条件分岐は実際にその分岐が通っているかどうかを確認する手段がなく、リリース後に初めて通った条件で不具合を発生させることがありました。<br>この問題を解決するためにuroboroSQLでは、SQL文の条件分岐を集計してカバレッジレポートを行う機能を提供します。</p>
+<p>SQLカバレッジはuroboroSQLを利用するアプリケーションの起動時オプションに<code>-Duroborosql.sql.coverage=true</code>を追加することで有効になります。<br>SQLカバレッジを有効にするとアプリケーションが実行している間に発行されるSQLについて、カバレッジ情報が収集されます。<br>カバレッジ情報の収集結果は標準では<code>target/coverage/sql-cover.xml</code>に出力されます。<br>このファイルの場所や名前を変更したい場合は、起動時オプションに<code>-Duroborosql.sql.coverage.file=[出力ファイルパス]</code>を指定してください。</p>
 <p>出力された<code>sql-cover.xml</code>をJenkinsのCobertura pluginなどのXMLレポートとして読み込むとSQLファイルのカバレッジレポートが参照できるようになります。</p>
 <p><img src="cobertura.png" alt="カバレッジレポート例" title="Jenkins Cobertura Report"></p>
 <p>またv0.2.0より、uroboroSQLのみでHTMLレポートを出力することができるようになりました。<br>起動時オプションに<code>-Duroborosql.sql.coverage=jp.co.future.uroborosql.coverage.reports.html.HtmlReportCoverageHandler</code>を指定することで本機能を利用することができます。</p>
 <p>カバレッジ情報はデフォルトでは<code>target/coverage/sql</code>フォルダ配下に出力されます。<br>出力先フォルダを変更した場合は、起動時オプションに<code>-Duroborosql.sql.coverage.dir=[出力フォルダパス]</code>を指定してください。</p>
 <p>出力されたレポートのサンプルは下記を参照してください。</p>
-<p><img src="html_coverage_report.png" alt="HTML Coverage Report" style="width:80%;"></p>
+<ul>
+<li>サマリーページ<br><img src="html_coverage_report_summary.png" alt="HTML Coverage Report Summary" style="width:80%;"></li>
+<li>詳細ページ<br><img src="html_coverage_report.png" alt="HTML Coverage Report" style="width:80%;"></li>
+</ul>
 <p><a href="../sample/testReport/" target="_blank" style="font-size:20px;"><i class="fa fa-external-link" aria-hidden="true"></i>出力サンプル</a></p>
-<h2 id="エラーハンドリング"><a href="#エラーハンドリング" class="headerlink" title="エラーハンドリング"></a>エラーハンドリング</h2><p>uroboroSQLからSQLを発行した際にSQLExceptionがスローされると、そのSQLExceptionがそのまま呼び出し元に返却されます。<br>呼出元のアプリケーションではtry-catch句を使ってSQLExceptionをキャッチすることで、例外発生時の挙動を制御することができます。</p>
-<p>エラーハンドリングの例）<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">SqlConfig config = DefaultConfig.getConfig(...);</div><div class="line"></div><div class="line"><span class="keyword">try</span> (SqlAgent agent = config.createAgent()) &#123;</div><div class="line">	<span class="comment">// INSERT文の実行</span></div><div class="line">	<span class="comment">// insert into product (product_id) values (/*product_id*/0);</span></div><div class="line">	agent.update(<span class="string">"example/insert_product"</span>).param(<span class="string">"product_id"</span>, <span class="number">1</span>).count();</div><div class="line">&#125; <span class="keyword">catch</span> (SQLException ex) &#123;</div><div class="line">	<span class="comment">// SQLExceptionが発生した際に行う処理を実装</span></div><div class="line">	<span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"exception occured. ex="</span> + ex.getMessage(), ex);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>また、タイミングによって発生する例外（テーブルロックエラーなど）でリトライを行う場合は以下のような実装になります。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">SqlConfig config = DefaultConfig.getConfig(...);</div><div class="line"></div><div class="line"><span class="keyword">int</span> retryCount = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span>(;;) &#123;</div><div class="line">	<span class="keyword">try</span> (SqlAgent agent = config.createAgent()) &#123;</div><div class="line">		<span class="comment">// INSERT文の実行</span></div><div class="line">		<span class="comment">// insert into product (product_id) values (/*product_id*/0);</span></div><div class="line">		agent.update(<span class="string">"example/insert_product"</span>).param(<span class="string">"product_id"</span>, <span class="number">1</span>).count();</div><div class="line">		<span class="keyword">break</span>;</div><div class="line">	&#125; <span class="keyword">catch</span> (SQLException ex) &#123;</div><div class="line">		<span class="comment">// SQLExceptionが発生した際に行う処理を実装</span></div><div class="line">		<span class="keyword">int</span> errorCode = ex.getErrorCode();</div><div class="line">		<span class="keyword">if</span> (errorCode == <span class="number">30006</span> || errorCode == <span class="number">54</span>) &#123; <span class="comment">// リソース・ビジー(Oracleの場合)</span></div><div class="line">			<span class="comment">// リトライ対象エラーコードの場合はリトライカウントをカウントアップしてリトライする</span></div><div class="line">			retryCount++;</div><div class="line">			<span class="keyword">if</span> (retryCount == MAX_RETRY_COUNT) &#123; <span class="comment">// MAX_RETRY_COUNT はアプリケーションで定義された最大リトライ回数の定数とする</span></div><div class="line">				<span class="comment">// 最大リトライ回数に達した場合は例外をスローする</span></div><div class="line">				<span class="keyword">throw</span> ex;</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				<span class="keyword">try</span> &#123;</div><div class="line">					<span class="comment">// 10ms 待機</span></div><div class="line">					Thread.sleep(<span class="number">10</span>);</div><div class="line">				&#125; <span class="keyword">catch</span> (InterruptedException iex) &#123;</div><div class="line">					<span class="comment">// do nothing</span></div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="comment">// リトライ対象エラーコード以外はすぐに例外をスローする</span></div><div class="line">			<span class="keyword">throw</span> ex;</div><div class="line">		&#125;</div><div class="line">	&#125;		</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>ここで上記のようなリトライ処理を個々の実装で行うと、実装漏れや実装ミス、実装方法の差異（for()の代わりにwhile()を使用するなど）により、不具合が発生しやすくなります。<br>uroboroSQLでは、アプリケーション全体のリトライ設定と、個別処理でリトライ全体設定より優先されるリトライ用APIを提供することで、より簡潔で確実なリトライ処理が行えるよう工夫されています。</p>
-<p>リトライAPIを用いた実装は次のようになります。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">SqlConfig config = DefaultConfig.getConfig(...);</div><div class="line"></div><div class="line"><span class="comment">// アプリケーション全体のリトライ設定</span></div><div class="line"><span class="comment">// SQLエラーコードが54,30006のいずれかの場合、最大リトライ回数（3回）リトライする。その際、リトライの間隔は10ms待機する</span></div><div class="line">config.getSqlAgentFactory().setSqlRetryCodeList(Arrays.asList(<span class="string">"54"</span>, <span class="string">"30006"</span>));</div><div class="line">config.getSqlAgentFactory().setDefaultMaxRetryCount(MAX_RETRY_COUNT); <span class="comment">// MAX_RETRY_COUNT = 3</span></div><div class="line">config.getSqlAgentFactory().setDefaultSqlRetryWaitTime(<span class="number">10</span>);</div><div class="line"></div><div class="line"><span class="comment">// アプリケーション全体のリトライ設定に従ってリトライを行う。（個別のリトライ指定なし）</span></div><div class="line"><span class="keyword">try</span> (SqlAgent agent = config.createAgent()) &#123;</div><div class="line">	<span class="comment">// INSERT文の実行</span></div><div class="line">	<span class="comment">// insert into product (product_id) values (/*product_id*/0);</span></div><div class="line">	agent.update(<span class="string">"example/insert_product"</span>).param(<span class="string">"product_id"</span>, <span class="number">1</span>).count();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 個別にリトライ設定を上書きする（retry()を利用）</span></div><div class="line"><span class="keyword">try</span> (SqlAgent agent = config.createAgent()) &#123;</div><div class="line">	<span class="comment">// INSERT文の実行</span></div><div class="line">	<span class="comment">// insert into product (product_id) values (/*product_id*/0);</span></div><div class="line">	<span class="comment">// リトライ対象エラーコードの場合、20ms間隔で5回リトライを行う</span></div><div class="line">	agent.update(<span class="string">"example/insert_product"</span>).param(<span class="string">"product_id"</span>, <span class="number">1</span>).retry(<span class="number">5</span>, <span class="number">20</span>).count();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="ログ"><a href="#ログ" class="headerlink" title="ログ"></a>ログ</h2><p>uroboroSQLではログ出力ライブラリとしてSLF4Jを使用しています。SLF4Jの詳細は<a href="https://www.slf4j.org/" target="_blank" rel="external">公式のドキュメント</a>を参照して下さい。<br>uroboroSQLで出力されるログ内容は以下表の通りです。</p>
 <table>
 <thead>
@@ -291,7 +384,7 @@ SQLカバレッジ
 <tr>
 <td style="text-align:center">DebugSqlFilter</td>
 <td style="text-align:center">-</td>
-<td style="text-align:center">パラメーター/<br\>対象データ数/<br\>実行結果</br\></br\></td>
+<td style="text-align:center">パラメーター/<br>対象データ数/<br>実行結果</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -300,7 +393,7 @@ SQLカバレッジ
 <tr>
 <td style="text-align:center">IfNode</td>
 <td style="text-align:center">-</td>
-<td style="text-align:center">評価式/<br\>判定結果/<br\>パラメーター</br\></br\></td>
+<td style="text-align:center">評価式/<br>判定結果/<br>パラメーター</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -318,7 +411,7 @@ SQLカバレッジ
 <tr>
 <td style="text-align:center">SecretColumnSqlFilter</td>
 <td style="text-align:center">-</td>
-<td style="text-align:center">バッチ処理追加件数/<br\>ストアドプロシージャ出力パラメーター</br\></td>
+<td style="text-align:center">バッチ処理追加件数/<br>ストアドプロシージャ出力パラメーター</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -327,7 +420,7 @@ SQLカバレッジ
 <tr>
 <td style="text-align:center">SqlAgent</td>
 <td style="text-align:center">ステートメントのクローズ</td>
-<td style="text-align:center">処理実行アナウンス/<br\>リトライ実行アナウンス/<br\>SQL実行時間</br\></br\></td>
+<td style="text-align:center">処理実行アナウンス/<br>リトライ実行アナウンス/<br>SQL実行時間</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">エラーメッセージ</td>
@@ -336,7 +429,7 @@ SQLカバレッジ
 <tr>
 <td style="text-align:center">SqlContext</td>
 <td style="text-align:center">-</td>
-<td style="text-align:center">バッチ処理追加件数/<br\>ストアドプロシージャ出力パラメーター</br\></td>
+<td style="text-align:center">バッチ処理追加件数/<br>ストアドプロシージャ出力パラメーター</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
@@ -357,8 +450,40 @@ SQLカバレッジ
 <td style="text-align:center">SQL定義ファイルの読み込み開始/読み込み中</td>
 <td style="text-align:center">-</td>
 <td style="text-align:center">-</td>
-<td style="text-align:center">デフォルトファイルパスの設定/<br\>デフォルト拡張子/<br\>空のSQLキャッシュの返却</br\></br\></td>
+<td style="text-align:center">デフォルトファイルパスの設定/<br>デフォルト拡張子/<br>空のSQLキャッシュの返却</td>
 <td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+<h2 id="システムプロパティ"><a href="#システムプロパティ" class="headerlink" title="システムプロパティ"></a>システムプロパティ</h2><p>uroboroSQLではシステムプロパティを指定することで動作を変更することができます。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">プロパティ名</th>
+<th style="text-align:left">説明</th>
+<th style="text-align:left">初期値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">uroborosql.sql.coverage</td>
+<td style="text-align:left">SQLカバレッジを出力するかどうかのフラグ。<code>true</code>の場合はSQLカバレッジを出力します。<br>文字列として<code>jp.co.future.uroborosql.coverage.CoverageHandler</code>インタフェースの<br>実装クラスが設定された場合はそのクラスを利用してカバレッジの収集を行います。</td>
+<td style="text-align:left">なし</td>
+</tr>
+<tr>
+<td style="text-align:left">uroborosql.sql.coverage.file</td>
+<td style="text-align:left">指定されたPATH(ファイル)に SQLカバレッジのCobertura形式のxmlレポートを出力します。</td>
+<td style="text-align:left">./target/coverage/sql-cover.xml</td>
+</tr>
+<tr>
+<td style="text-align:left">uroborosql.sql.coverage.dir</td>
+<td style="text-align:left">指定されたPATH(フォルダ)にSQLカバレッジのHTMLレポートを出力します。</td>
+<td style="text-align:left">./target/coverage/sql</td>
+</tr>
+<tr>
+<td style="text-align:left">uroborosql.entity.cache.size</td>
+<td style="text-align:left">Entityクラス情報のキャッシュサイズを指定します。<br>キャッシュサイズを超えるEntityクラスの読み込みがあった場合は古い情報から破棄されます。</td>
+<td style="text-align:left">30</td>
 </tr>
 </tbody>
 </table>
@@ -440,7 +565,7 @@ SQLカバレッジ
       </div>
       <br>
       <ul class="copyright">
-          <li>&copy; 2017 Future Architect. All rights reserved</li>
+          <li>&copy; 2018 Future Architect. All rights reserved</li>
           <li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
       </ul>
   </div>

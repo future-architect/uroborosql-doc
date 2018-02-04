@@ -18,7 +18,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="Why uroboroSQL?"/>
+        <meta property="og:title" content="License"/>
     
 
     <!--Open Graph Site Name-->
@@ -31,7 +31,7 @@
 
     <!-- Title -->
     
-    <title>Why uroboroSQL? - uroboroSQL ドキュメント</title>
+    <title>License - uroboroSQL ドキュメント</title>
 
     <!-- Custom CSS -->
     <!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -128,7 +128,7 @@
                 <!-- Main Content -->
                 
 
-    <h1>Why uroboroSQL?</h1>
+    <h1>License</h1>
 
 
 
@@ -136,23 +136,11 @@
 
 
 <!-- Content -->
-<hr>
-<ul>
-<li><a href="#uroboroSQLとは">uroboroSQLとは</a></li>
-<li><a href="#uroboroSQLを使う理由？">uroboroSQLを使う理由？</a></li>
-</ul>
-<hr>
-<h2 id="uroboroSQLとは"><a href="#uroboroSQLとは" class="headerlink" title="uroboroSQLとは"></a>uroboroSQLとは</h2><p>uroboroSQLは、Java8対応の2Way-SQLが利用可能なシンプルなSQL実行ライブラリです。</p>
-<p>フューチャーアーキテクト社内にて、2006-2007年頃にS2Daoを参考に開発されて、プロジェクトで利用され、現在まで改善が続けられてきました。社内では、Webアプリケーションフレームワークや各種設計開発支援ツールと連携・統合される形で利用されています。</p>
-<p>とはいえ、社内で秘伝のタレ化していることは否めず、開発フェーズでは、開発パートナーさんからも「ググれない」から、使い方がわからないいう声もちらほら。だったら、OSS化してしまえということのが公開のきっかけです。</p>
-<h2 id="uroboroSQLを使う理由？"><a href="#uroboroSQLを使う理由？" class="headerlink" title="uroboroSQLを使う理由？"></a>uroboroSQLを使う理由？</h2><p>JavaからRDBにアクセスするとき、Java標準のJPA(Java Persistence API)の実装であるEclipseLink、OpenJPAはもとより、歴史のあるORMとしてHibernate、MyBatis、SpringJDBCといったグローバルで使われているものもありますし、日本でよく使われてきたS2Dao、S2JDBC、DBflute、Domaといったものもあります。</p>
-<p>こういった数多のDB系ライブラリ・フレームワークの中で、解決したい領域もそれぞれですが、uroboroSQLは主にSQL中心の設計コンセプトを採用しています。Javaを中心に考えてSQLを組み立てるという思想ではなく、SQLに足りないところをJavaで補うという思想です。</p>
-<p>これはエンタープライズシステムにおいて、ORマッパーやクエリビルダでは実装しきれない、hint句による実行計画の指定や分析関数の利用など複雑かつDBプロダクト依存のSQLを使う場合に有効と考えています。</p>
-<p>そのため、uroboroSQLはSQLは2Way-SQL方式で記述ができるものの、ORMでよくあるエンティティクラスとリレーションをたどって遅延ロードして子エンティティを取得するなどの機能は有していません。（単純なエンティティクラスへのマッピングは提供しています）</p>
-<p>その分、エンタープライズで培われたノウハウとして、区分値サポート、リトライ、フィルターによるカスタマイズなどの機能を充実させています。また、2Way-SQLのIF分岐に対してカバレッジを取れるようにするという、品質視点での機能があるのも特徴です。</p>
-<p><strong>SQLの能力を最大限活かしつつ、生産性と品質を高めたい</strong></p>
-<p>それがuroboroSQLの最大の関心事なのです。</p>
-<div style="font-size:130%; font-weight:bold;"><br>  <a href="../getting_started" style="float:right">Getting Started &#62;&#62;</a><br></div>
+<p>MIT License</p>
+<p>Copyright (c) 2018</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy<br>of this software and associated documentation files (the “Software”), to deal<br>in the Software without restriction, including without limitation the rights<br>to use, copy, modify, merge, publish, distribute, sublicense, and/or sell<br>copies of the Software, and to permit persons to whom the Software is<br>furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all<br>copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<br>IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,<br>FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE<br>AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER<br>LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,<br>OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE<br>SOFTWARE.</p>
 
 
 <!-- Tags -->

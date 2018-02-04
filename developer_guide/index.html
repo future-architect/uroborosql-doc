@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--Description-->
     
-        <meta name="description" content="This section is still under construction.&amp;#60;&amp;#60; 高度な操作uroboroSQLについて &amp;#62;&amp;#62;">
+        <meta name="description" content="uroboroSQLの公式ドキュメントサイトです。">
     
 
     <!--Author-->
@@ -22,7 +22,7 @@
     
 
     <!--Open Graph Site Name-->
-    <meta property="og:site_name" content="uroboroSQL"/>
+    <meta property="og:site_name" content="uroboroSQL ドキュメント"/>
 
     <!--Page Cover-->
     
@@ -31,7 +31,7 @@
 
     <!-- Title -->
     
-    <title>開発者ガイド - uroboroSQL</title>
+    <title>開発者ガイド - uroboroSQL ドキュメント</title>
 
     <!-- Custom CSS -->
     <!-- <link rel="stylesheet" href="/css/main.css"> -->
@@ -117,6 +117,7 @@
         <li><a href="/uroborosql-doc/basics/">基本操作</a></li>
         <li><a href="/uroborosql-doc/advanced/">高度な操作</a></li>
         <li><a href="/uroborosql-doc/developer_guide/">開発者ガイド</a></li>
+        <li><a href="/uroborosql-doc/license/">License</a></li>
         <li><a href="/uroborosql-doc/about_uroborosql/">uroboroSQLについて</a></li>
     </ul>
 </nav>
@@ -136,7 +137,47 @@
 
 <!-- Content -->
 <hr>
-<h2 id="This-section-is-still-under-construction"><a href="#This-section-is-still-under-construction" class="headerlink" title="This section is still under construction."></a>This section is still under construction.</h2><div style="font-size:130%; font-weight:bold;"><br><a href="../advanced" style="float:left">&#60;&#60; 高度な操作</a><a href="../about_uroborosql" style="float:right">uroboroSQLについて &#62;&#62;</a><br></div>
+<ul>
+<li><a href="#ソースコードの取得">ソースコードの取得</a></li>
+<li><a href="#ソースのビルド">ソースのビルド</a></li>
+<li><a href="#テスト">テスト</a></li>
+<li><a href="#Mavenローカルリポジトリへのインストール">Mavenローカルリポジトリへのインストール</a></li>
+<li><a href="#IDE">IDE</a></li>
+<li><a href="#Continuous Integration">Continuous Integration</a></li>
+<li><a href="#Issue Management">Issue Management</a></li>
+</ul>
+<hr>
+<p>uroboroSQLを開発する人向けのガイドです</p>
+<h2 id="ソースコードの取得"><a href="#ソースコードの取得" class="headerlink" title="ソースコードの取得"></a>ソースコードの取得</h2><p><a href="https://github.com/future-architect/uroborosql" target="_blank" rel="external">GitHub</a>からソースをクローンする。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/future-architect/uroborosql.git</div></pre></td></tr></table></figure>
+<h2 id="ソースのビルド"><a href="#ソースのビルド" class="headerlink" title="ソースのビルド"></a>ソースのビルド</h2><p>ビルドには<a href="https://maven.apache.org/" target="_blank" rel="external">Apache Maven</a>を利用します。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn compile</div></pre></td></tr></table></figure>
+<h2 id="テスト"><a href="#テスト" class="headerlink" title="テスト"></a>テスト</h2><p>テストは<a href="http://junit.org/junit4/" target="_blank" rel="external">JUnit</a>で行います。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn test</div></pre></td></tr></table></figure>
+<p>カバレッジは<a href="http://www.eclemma.org/jacoco/" target="_blank" rel="external">Jacoco</a>で確認することができます。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn test jacoco:report</div></pre></td></tr></table></figure>
+<p>target/site/jacoco フォルダにjacocoカバレッジレポートが出力されます。</p>
+<p>開発を行う際は、Jadocコメントが正しく記載されているようにしてください。<br>javadocプラグインでjavadocを生成し、エラーが出力されないことを確認してください。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn javadoc:javadoc</div></pre></td></tr></table></figure>
+<h2 id="Mavenローカルリポジトリへのインストール"><a href="#Mavenローカルリポジトリへのインストール" class="headerlink" title="Mavenローカルリポジトリへのインストール"></a>Mavenローカルリポジトリへのインストール</h2><figure class="highlight cmd"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn install</div></pre></td></tr></table></figure>
+<h2 id="IDE"><a href="#IDE" class="headerlink" title="IDE"></a>IDE</h2><h3 id="Eclipse"><a href="#Eclipse" class="headerlink" title="Eclipse"></a>Eclipse</h3><p>クローンしたフォルダをEclipseの既存Mavenプロジェクトとしてインポートしてください。<br>MavenのinitializeフェーズでEclipseプロジェクトの文字コードをUTF-8にする設定が入っているので、インポートが完了すれば開発が始められる状態になります。</p>
+<h3 id="Intellij"><a href="#Intellij" class="headerlink" title="Intellij"></a>Intellij</h3><p>Import Project でクローンしたフォルダを指定してください。<br>Import project from external model でMavenを選択してください。<br>プロジェクトが読み込まれると開発が始められる状態になります。</p>
+<h2 id="Continuous-Integration"><a href="#Continuous-Integration" class="headerlink" title="Continuous Integration"></a>Continuous Integration</h2><p>Continuous Integration(CI)は<a href="https://travis-ci.org/future-architect/uroborosql" target="_blank" rel="external">Travis CI</a>で行っています。</p>
+<p>CIの状況確認は以下で行います。</p>
+<ul>
+<li><a href="https://travis-ci.org/future-architect/uroborosql" target="_blank" rel="external">https://travis-ci.org/future-architect/uroborosql</a></li>
+</ul>
+<p>また、CIと合わせてカバレッジレポートを<a href="https://coveralls.io/github/future-architect/uroborosql" target="_blank" rel="external">Coveralls</a>で公開しています。</p>
+<ul>
+<li><a href="https://coveralls.io/github/future-architect/uroborosql" target="_blank" rel="external">https://coveralls.io/github/future-architect/uroborosql</a></li>
+</ul>
+<h2 id="Issue-Management"><a href="#Issue-Management" class="headerlink" title="Issue Management"></a>Issue Management</h2><p>IssueとPullRequestはGithubの機能を利用しています。<br>コメントは英語で記載をお願いします。（Google翻訳がお勧めです）</p>
+<ul>
+<li><a href="https://github.com/future-architect/uroborosql/issues" target="_blank" rel="external">https://github.com/future-architect/uroborosql/issues</a></li>
+<li><a href="https://github.com/future-architect/uroborosql/pulls" target="_blank" rel="external">https://github.com/future-architect/uroborosql/pulls</a></li>
+</ul>
+<hr>
+<div style="font-size:130%; font-weight:bold;"><br><a href="../advanced" style="float:left">&#60;&#60; 高度な操作</a><a href="../about_uroborosql" style="float:right">uroboroSQLについて &#62;&#62;</a><br></div>
 
 
 <!-- Tags -->
@@ -214,7 +255,7 @@
       </div>
       <br>
       <ul class="copyright">
-          <li>&copy; 2017 Future Architect. All rights reserved</li>
+          <li>&copy; 2018 Future Architect. All rights reserved</li>
           <li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
       </ul>
   </div>
