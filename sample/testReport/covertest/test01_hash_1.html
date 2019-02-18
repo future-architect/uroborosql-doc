@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
     <title>uroboroSQL code coverage report for covertest/test01_hash_1</title>
     <link rel="stylesheet" href="../style.css">
     <script src="../jquery-3.2.0.min.js"></script>
@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="global-header">
-    <img class="icon" src="../icon.png" />
+    <img class="icon" src="../icon.png">
     <span class="title">uroboroSQL coverage</span>
 </div>
 <h1>covertest/test01_hash_1</h1>
@@ -78,15 +78,15 @@ FROM
     TEST    T
 WHERE
     1       =   1
-<span class="not-covered-branch" title="branch not covered" >/*IF SF.isNotEmpty(id) */</span>
-    <span class="not-covered-branch" title="branch not covered" >/*IF id &lt; 100 */</span>
+<span class="not-covered-branch" title="branch not covered">/*IF SF.isNotEmpty(id) */</span>
+    <span class="not-covered-branch" title="branch not covered">/*IF id &lt; 100 */</span>
 AND T.ID    =   /*id*/0
-    /*ELSE*/<span class="not-covered" title="statement not covered" ></span>
-<span class="not-covered" title="statement not covered" >AND T.ID    =   100</span>
+    /*ELSE*/<span class="not-covered" title="statement not covered"></span>
+<span class="not-covered" title="statement not covered">AND T.ID    =   100</span>
     /*END*/
 /*END*/
-<span class="not-covered-branch" title="branch not covered" >/*IF SF.isNotEmpty(name) */</span><span class="not-covered" title="statement not covered" ></span>
-<span class="not-covered" title="statement not covered" >AND T.NAME  =   /*name*/''</span>
+<span class="not-covered-branch" title="branch not covered">/*IF SF.isNotEmpty(name) */</span><span class="not-covered" title="statement not covered"></span>
+<span class="not-covered" title="statement not covered">AND T.NAME  =   /*name*/''</span>
 /*END*/
 ORDER BY
     T.ID

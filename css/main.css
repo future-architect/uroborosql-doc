@@ -3561,6 +3561,7 @@ h2.contents {
 }
 .sns-area li {
 	height: 25px;
+	display: flex;
 }
 
 @media screen and (max-width: 480px) {
