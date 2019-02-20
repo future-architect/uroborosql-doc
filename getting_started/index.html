@@ -149,12 +149,17 @@
 </ul>
 <hr>
 <h2 id="環境設定"><a href="#環境設定" class="headerlink" title="環境設定"></a>環境設定</h2><h3 id="ビルドツールの設定"><a href="#ビルドツールの設定" class="headerlink" title="ビルドツールの設定"></a>ビルドツールの設定</h3><p>uroboroSQLをMavenプロジェクトに組み込むには、<strong>pom.xml</strong>に以下の記述を加えて下さい。<br>uroboroSQLは<a href="https://search.maven.org/#search%7Cga%7C1%7Curoborosql" target="_blank" rel="noopener">Maven Central Repository</a>で公開されています。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>jp.co.future<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>uroborosql<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.6.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>jp.co.future<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>uroborosql<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.10.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Gradleプロジェクトの場合は、<strong>build.gradle</strong>のdependencies内に以下の記述を加えて下さい。</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">compile</span> <span class="keyword">group</span>: <span class="string">'jp.co.future'</span>, name: <span class="string">'uroborosql'</span>, version: <span class="string">'0.6.1'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">compile</span> <span class="keyword">group</span>: <span class="string">'jp.co.future'</span>, name: <span class="string">'uroborosql'</span>, version: <span class="string">'0.10.1'</span></span><br></pre></td></tr></table></figure>
 <h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><p>事前準備として、</p>
 <ul>
-<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">JDK8</a></li>
+<li>Java8 or 11のいずれかのJDKディストリビューション<ul>
+<li><a href="https://adoptopenjdk.net/index.html" target="_blank" rel="noopener">AdobtOpenJDK</a></li>
+<li><a href="https://aws.amazon.com/jp/corretto/" target="_blank" rel="noopener">Amazon Corretto</a></li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">Oracle JDK</a></li>
+</ul>
+</li>
 <li><a href="https://maven.apache.org/download.cgi" target="_blank" rel="noopener">Apache Maven</a></li>
 </ul>
 <p>をインストールしてください。</p>
