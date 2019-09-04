@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'OGNL式言語'
+  - name: og:url
+    content: '/uroborosql-doc/background/ognl.html'
+---
 # OGNL式言語
 
 **uroboroSQL**では、条件分岐の式として[OGNL式言語](https://github.com/jkuhnert/ognl)を利用することができます。  

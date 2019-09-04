@@ -1,6 +1,11 @@
 ---
-title: 高度な操作
+meta:
+  - name: og:title
+    content: '高度な操作'
+  - name: og:url
+    content: '/uroborosql-doc/advanced/'
 ---
+# 高度な操作
 
 ## SQLファイルの解決ルール
 

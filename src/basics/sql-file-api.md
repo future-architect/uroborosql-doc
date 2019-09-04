@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'SQLファイルインタフェース'
+  - name: og:url
+    content: '/uroborosql-doc/basics/sql-file-api.html'
+---
 # SQLファイルインタフェース
 
 ## SQLによる検索(`SqlAgent#query`, `SqlAgent#queryWith`)

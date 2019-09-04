@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'トランザクション'
+  - name: og:url
+    content: '/uroborosql-doc/basics/transaction.html'
+---
 # トランザクション
 
 **uroboroSQL**ではローカルトランザクションを提供します。  

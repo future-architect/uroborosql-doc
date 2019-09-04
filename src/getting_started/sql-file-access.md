@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'SQLファイルを使用したDBアクセス'
+  - name: og:url
+    content: '/uroborosql-doc/getting_started/sql-file-access.html'
+---
 # SQLファイルを使用したDBアクセス
 
 ## SqlConfigの生成

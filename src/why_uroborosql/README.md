@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'uroboroSQLとは'
+  - name: og:url
+    content: '/uroborosql-doc/why_uroborosql/'
+---
 # uroboroSQLとは
 
 **uroboroSQL**は2Way-SQLが利用可能なJava製のシンプルなSQL実行ライブラリです。

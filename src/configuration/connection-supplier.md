@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'ConnectionSupplier'
+  - name: og:url
+    content: '/uroborosql-doc/configuration/connection-supplier.html'
+---
 # ConnectionSupplier
 
 DB接続を行う際のコネクションを提供するクラスです。

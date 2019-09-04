@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'SqlAgentFactory'
+  - name: og:url
+    content: '/uroborosql-doc/configuration/sql-agent-factory.html'
+---
 # SqlAgentFactory
 
 SQL実行を行うクラスである`SqlAgent`を生成するファクトリクラスです。SQL実行時の挙動を変更するための初期値の設定が行えます。

@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: '事前準備'
+  - name: og:url
+    content: '/uroborosql-doc/basics/'
+---
 # 事前準備
 
 **uroboroSQL**を利用した基本的なDB操作を説明します。

@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'SqlFilterManager'
+  - name: og:url
+    content: '/uroborosql-doc/configuration/sql-filter-manager.html'
+---
 # SqlFilterManager
 
 ## SQLフィルター

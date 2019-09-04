@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'Developer Tools'
+  - name: og:url
+    content: '/uroborosql-doc/developer_tools/'
+---
 # Developer Tools
 
 ![uroboroSQL formatter](./uroboroSQLformatter_logo.png)

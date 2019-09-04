@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: '開発者ガイド'
+  - name: og:url
+    content: '/uroborosql-doc/developer_guide/'
+---
 # 開発者ガイド
 
 uroboroSQLを開発する人向けのガイドです

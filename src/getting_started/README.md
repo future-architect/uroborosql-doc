@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: '環境設定'
+  - name: og:url
+    content: '/uroborosql-doc/getting_started/'
+---
 # 環境設定
 
 ## ビルドツールの設定

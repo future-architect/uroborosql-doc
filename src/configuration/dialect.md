@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'Dialect'
+  - name: og:url
+    content: '/uroborosql-doc/configuration/dialect.html'
+---
 # Dialect
 
 複数のDBを対象とするアプリケーションを作成する場合、DB毎のSQL文法の差異を吸収するため

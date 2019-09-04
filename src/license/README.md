@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'License'
+  - name: og:url
+    content: '/uroborosql-doc/license/'
+---
 # License
 
 MIT License

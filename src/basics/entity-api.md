@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'DAOインタフェース'
+  - name: og:url
+    content: '/uroborosql-doc/basics/entity-api.html'
+---
 # DAOインタフェース
 
 **uroboroSQL**はDAO(Data Access Object)を用いた単一テーブルへのCRUDに対応しています。

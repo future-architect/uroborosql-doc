@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'SQL-REPL'
+  - name: og:url
+    content: '/uroborosql-doc/getting_started/sql-repl.html'
+---
 # SQL-REPL
 
 ここまではJavaアプリケーションから**uroboroSQL**を利用する場合の説明でした。

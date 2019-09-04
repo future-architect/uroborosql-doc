@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'SqlManager'
+  - name: og:url
+    content: '/uroborosql-doc/configuration/sql-manager.html'
+---
 # SqlManager
 
 `SqlManager`はSQLファイルを管理するクラスです。２つのクラスが提供されています。

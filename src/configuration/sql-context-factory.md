@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'SqlContextFactory'
+  - name: og:url
+    content: '/uroborosql-doc/configuration/sql-context-factory.html'
+---
 # SqlContextFactory
 
 SQL構造を表現するクラスである`SqlContext`を生成するファクトリクラスです。生成されるSQLの挙動を変更するための設定が行えます。

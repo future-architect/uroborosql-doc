@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'エンティティクラスを使用したDBアクセス'
+  - name: og:url
+    content: '/uroborosql-doc/getting_started/entity-access.html'
+---
 # エンティティクラスを使用したDBアクセス
 
 **uroboroSQL**ではSQLファイルを使用したDBアクセスの他にエンティティクラスを使用したDBアクセスも提供しています。（[EntityApiSample.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/EntityApiSample.java)を参照）

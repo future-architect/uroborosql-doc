@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: 'SqlConfigの生成'
+  - name: og:url
+    content: '/uroborosql-doc/configuration/'
+---
 # SqlConfigの生成
 
 **uroboroSQL**ではSqlConfigを生成するタイミングで各種の設定を行うことによりライブラリの動作や実行されるSQLを変更することができます。

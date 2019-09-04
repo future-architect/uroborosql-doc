@@ -1,6 +1,11 @@
 ---
-title: uroboroSQLについて
+meta:
+  - name: og:title
+    content: 'uroboroSQLについて'
+  - name: og:url
+    content: '/uroborosql-doc/about/'
 ---
+# uroboroSQLについて
 
 ## GitHub
 

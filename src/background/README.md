@@ -1,3 +1,10 @@
+---
+meta:
+  - name: og:title
+    content: '2WaySQL'
+  - name: og:url
+    content: '/uroborosql-doc/background/'
+---
 # 2WaySQL
 
 **uroboroSQL**の基本操作について説明する前に**uroboroSQL**を利用する上で必要になる項目について説明します。

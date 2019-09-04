@@ -11,6 +11,11 @@ features:
   - title: 区分値サポート
     details: 2Way-SQLのライブラリを使用していると、それぞれのSQLで区分値や定数などをいちいちパラメータに指定するのがわずらわしいと思ったことはありませんか？エンタープライズで使われてOSS化したuroboroSQLでは、SQLファイルの中で定数クラスや列挙体を指定することにより、呼び出し時の実装をシンプルにします。
 footer: MIT Licensed | ©2018-2019 Future Corporation. All rights reserved.
+meta:
+  - name: og:title
+    content: 'uroboroSQL'
+  - name: og:url
+    content: '/uroborosql-doc/'
 ---
 
 ![GitHub stars](https://img.shields.io/github/stars/future-architect/uroborosql.svg?style=social&label=Stars)
