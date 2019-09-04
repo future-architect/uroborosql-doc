@@ -14,6 +14,7 @@
     "cross-env": "^5.0.1",
     "markdown-it-task-lists": "^2.1.1",
     "mermaid": "^8.2.0",
-    "vuepress": "^1.0.3"
+    "vuepress": "^1.0.3",
+    "@vuepress/plugin-google-analytics": "^1.0.3"
   }
 }

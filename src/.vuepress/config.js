@@ -4,7 +4,6 @@ module.exports = {
   base: process.env.VUEPRESS_BASE || '/uroborosql-doc/',
   title: 'uroboroSQL',
   description: 'uroboroSQLはJava製のシンプルなSQL実行ライブラリです',
-  ga: 'UA-93486523-1',
   serviceWorker: false,
   markdown: {
     // 行番号。表示すると狭いので削除したほうがいいならこの記述を削除
@@ -19,6 +18,11 @@ module.exports = {
     ['meta', { name: 'og:type', content: 'website' }],
     ['meta', { name: 'og:description', content: 'uroboroSQLDeveloper-oriented and SQL centric database access library.' }],
     ['meta', { name: 'og:image', content: 'https://future-architect.github.io/uroborosql-doc/images/logo.png' }]
+  ],
+  plugins: [
+    ['@vuepress/google-analytics', {
+      ga: 'UA-93486523-1'
+    }]
   ],
   locales: {
     '/': {
