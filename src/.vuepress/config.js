@@ -24,7 +24,8 @@ module.exports = {
   evergreen: true,
   themeConfig: {
     logo: '/images/logo.png',
-    repo: 'https://github.com/future-architect/uroborosql-doc',
+    repo: 'https://github.com/future-architect/uroborosql',
+    docsRepo: 'https://github.com/future-architect/uroborosql-doc',
     docsDir: 'src',
     editLinks: true,
     lastUpdated: true,
