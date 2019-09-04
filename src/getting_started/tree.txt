@@ -1,0 +1,52 @@
+uroborosql-sample
+├─REPL
+│      repl.properties
+│      
+└─src
+   └─main
+       ├─java
+       │  └─jp
+       │      └─co
+       │          └─future
+       │              └─uroborosql
+       │                  └─sample
+       │                      │  AbstractApiSample.java
+       │                      │  Main.java
+       │                      │  EntityApiSample.java
+       │                      │  SqlFileApiSample.java
+       │                      │  
+       │                      ├─entity
+       │                      │      Department.java
+       │                      │      Employee.java
+       │                      │      DeptEmp.java
+       │                      │      
+       │                      └─type
+       │                              Gender.java
+       │                              
+       └─resources
+           │  logback.xml
+           │  
+           ├─data
+           │      department.tsv
+           │      dept_emp.tsv
+           │      employee.tsv
+           │      
+           └─sql
+               ├─ddl
+               │      create_tables.sql
+               │      
+               ├─setup
+               │       insert_data.sql
+               │      
+               ├─department
+               │      insert_department.sql
+               │      select_department.sql
+               │      
+               ├─employee
+               │      insert_employee.sql
+               │      select_employee.sql
+               │      update_employee.sql
+               │      
+               └─relation
+                      insert_dept_emp.sql
+                      select_dept_emp.sql

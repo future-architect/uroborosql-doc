@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>2WaySQL | uroboroSQL</title>
+    <meta name="description" content="uroboroSQLはJava製のシンプルなSQL実行ライブラリです">
+    <link rel="icon" href="/uroborosql-doc/favicon.ico">
+    
+    <link rel="preload" href="/uroborosql-doc/assets/css/0.styles.38a4235c.css" as="style"><link rel="preload" href="/uroborosql-doc/assets/js/app.f3f7a782.js" as="script"><link rel="preload" href="/uroborosql-doc/assets/js/2.8444be12.js" as="script"><link rel="preload" href="/uroborosql-doc/assets/js/11.74b6b5ce.js" as="script"><link rel="prefetch" href="/uroborosql-doc/assets/js/10.f694afb8.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/12.35fd6585.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/13.24a5b3ad.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/14.5838c9c0.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/15.9fecd75c.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/16.f4f67d10.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/17.05d985b2.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/18.3e6c4559.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/19.601ccc73.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/20.08ca8522.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/21.2218b907.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/22.7c11c6af.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/23.4fb4381c.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/24.7791e944.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/25.9728c212.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/26.e3e42435.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/27.639dfda7.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/28.e3e8708c.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/29.4df936d8.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/3.89d4ae17.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/30.7e246c47.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/31.ee020ea9.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/32.ab7b2f99.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/4.0cfa12b6.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/5.0a54625c.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/6.020f46a7.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/7.31d82dc5.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/8.aaf4c696.js"><link rel="prefetch" href="/uroborosql-doc/assets/js/9.a38451f5.js">
+    <link rel="stylesheet" href="/uroborosql-doc/assets/css/0.styles.38a4235c.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/uroborosql-doc/" class="home-link router-link-active"><img src="/uroborosql-doc/images/logo.png" alt="uroboroSQL" class="logo"> <span class="site-name can-hide">uroboroSQL</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/uroborosql-doc/" class="nav-link">Home</a></div><div class="nav-item"><a href="/uroborosql-doc/getting_started/" class="nav-link">Getting Started</a></div><div class="nav-item"><a href="/uroborosql-doc/basics/" class="nav-link">基本操作</a></div><div class="nav-item"><a href="/uroborosql-doc/configuration/" class="nav-link">設定</a></div><div class="nav-item"><a href="/uroborosql-doc/advanced/" class="nav-link">高度な操作</a></div><div class="nav-item"><a href="/uroborosql-doc/developer_tools/" class="nav-link">Developer Tools</a></div> <a href="https://github.com/future-architect/uroborosql-doc" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/uroborosql-doc/" class="nav-link">Home</a></div><div class="nav-item"><a href="/uroborosql-doc/getting_started/" class="nav-link">Getting Started</a></div><div class="nav-item"><a href="/uroborosql-doc/basics/" class="nav-link">基本操作</a></div><div class="nav-item"><a href="/uroborosql-doc/configuration/" class="nav-link">設定</a></div><div class="nav-item"><a href="/uroborosql-doc/advanced/" class="nav-link">高度な操作</a></div><div class="nav-item"><a href="/uroborosql-doc/developer_tools/" class="nav-link">Developer Tools</a></div> <a href="https://github.com/future-architect/uroborosql-doc" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Why uroboroSQL</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Getting Started</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>前提知識</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/uroborosql-doc/background/" class="active sidebar-link">2WaySQL</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/uroborosql-doc/background/#_2waysqlとは" class="sidebar-link">2WaySQLとは</a></li><li class="sidebar-sub-header"><a href="/uroborosql-doc/background/#バインドパラメータ" class="sidebar-link">バインドパラメータ</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/uroborosql-doc/background/#in句の利用方法" class="sidebar-link">IN句の利用方法</a></li><li class="sidebar-sub-header"><a href="/uroborosql-doc/background/#like句の利用方法" class="sidebar-link">LIKE句の利用方法</a></li></ul></li><li class="sidebar-sub-header"><a href="/uroborosql-doc/background/#バインド出来るパラメータの型" class="sidebar-link">バインド出来るパラメータの型</a></li><li class="sidebar-sub-header"><a href="/uroborosql-doc/background/#置換文字列" class="sidebar-link">置換文字列</a></li><li class="sidebar-sub-header"><a href="/uroborosql-doc/background/#条件分岐" class="sidebar-link">条件分岐</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/uroborosql-doc/background/#記述方法" class="sidebar-link">記述方法</a></li></ul></li><li class="sidebar-sub-header"><a href="/uroborosql-doc/background/#範囲の有効化" class="sidebar-link">範囲の有効化</a></li><li class="sidebar-sub-header"><a href="/uroborosql-doc/background/#不要なカンマの除去" class="sidebar-link">不要なカンマの除去</a></li></ul></li><li><a href="/uroborosql-doc/background/ognl.html" class="sidebar-link">OGNL式言語</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>基本操作</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>設定</span> <span class="arrow right"></span></p> <!----></section></li><li><a href="/uroborosql-doc/advanced/" class="sidebar-link">高度な操作</a></li><li><a href="/uroborosql-doc/developer_tools/" class="sidebar-link">Developer Tools</a></li><li><a href="/uroborosql-doc/developer_guide/" class="sidebar-link">開発者ガイド</a></li><li><a href="/uroborosql-doc/license/" class="sidebar-link">License</a></li><li><a href="/uroborosql-doc/about/" class="sidebar-link">uroboroSQLについて</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="_2waysql"><a href="#_2waysql" aria-hidden="true" class="header-anchor">#</a> 2WaySQL</h1> <p><strong>uroboroSQL</strong>の基本操作について説明する前に<strong>uroboroSQL</strong>を利用する上で必要になる項目について説明します。</p> <h2 id="_2waysqlとは"><a href="#_2waysqlとは" aria-hidden="true" class="header-anchor">#</a> 2WaySQLとは</h2> <p>2WaySQLは普通のSQL文をファイルに保存したものです。そのままSQLクライアントツールで実行することもできますし、<strong>uroboroSQL</strong>で読み込んで実行することも出来ます。<br>
+（２つの実行方法があることから<strong>2Way</strong>SQLと呼ばれます）</p> <h2 id="バインドパラメータ"><a href="#バインドパラメータ" aria-hidden="true" class="header-anchor">#</a> バインドパラメータ</h2> <p>SQLにバインドするパラメータを <code>/*parameter name*/</code>の形式で指定することができます。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  department
+<span class="token keyword">where</span>
+  dept_no    <span class="token operator">=</span>  <span class="token comment">/*dept_no*/</span><span class="token number">10</span>
+<span class="token operator">AND</span>  dept_name  <span class="token operator">=</span>  <span class="token comment">/*dept_name*/</span><span class="token string">'Sales'</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><p>上の例では、<code>/*dept_no*/</code>, <code>/*dept_name*/</code> がバインドパラメータで、<strong>uroboroSQL</strong>から実行される際はこの部分が<code>?</code>に置き換わり、後ろの<code>10</code>や<code>'Sales'</code>が削除されます。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  department
+<span class="token keyword">where</span>
+  dept_no    <span class="token operator">=</span>  ?<span class="token comment">/*dept_no*/</span>
+<span class="token operator">and</span>  dept_name  <span class="token operator">=</span>  ?<span class="token comment">/*dept_name*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><h3 id="in句の利用方法"><a href="#in句の利用方法" aria-hidden="true" class="header-anchor">#</a> IN句の利用方法</h3> <p>List型の値をIN句のバインドパラメータとして指定することもできます。</p> <div class="warning custom-block"><p>IN句にバインドパラメータを指定する場合、バインドパラメータの後ろに<code>()</code>を記述する必要があります。</p></div> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token keyword">where</span>
+<span class="token comment">/*IF gender_list != null*/</span>
+<span class="token operator">and</span>  emp<span class="token punctuation">.</span>gender  <span class="token operator">in</span>  <span class="token comment">/*gender_list*/</span><span class="token punctuation">(</span><span class="token string">'M'</span><span class="token punctuation">)</span>
+<span class="token comment">/*END*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><p>上の例に<code>gender_list</code>として{&quot;M&quot;, &quot;F&quot;}を指定すると以下のように変換されます。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token keyword">where</span>
+<span class="token comment">/*IF gender_list != null*/</span>
+<span class="token operator">and</span>  emp<span class="token punctuation">.</span>gender  <span class="token operator">in</span>  <span class="token punctuation">(</span>?<span class="token punctuation">,</span> ?<span class="token punctuation">)</span><span class="token comment">/*gender_list*/</span>
+<span class="token comment">/*END*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><h3 id="like句の利用方法"><a href="#like句の利用方法" aria-hidden="true" class="header-anchor">#</a> LIKE句の利用方法</h3> <p>LIKE句に対してバインドパラメータを使用する場合は、以下のように<a href="/uroborosql-doc/background/ognl.html#stringfunction-sf">StringFunction</a>を使って記述してください。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token keyword">where</span>
+<span class="token comment">/*IF first_name != null*/</span>
+<span class="token operator">and</span>  emp<span class="token punctuation">.</span>first_name <span class="token operator">like</span> <span class="token comment">/*SF.contains(first_name)*/</span><span class="token string">''</span> <span class="token keyword">escape</span> <span class="token string">'$'</span>
+<span class="token comment">/*END*/</span>
+<span class="token comment">/*IF last_name != null*/</span>
+<span class="token operator">and</span>  emp<span class="token punctuation">.</span>last_name  <span class="token operator">like</span> <span class="token comment">/*SF.startsWith(last_name)*/</span><span class="token string">''</span> <span class="token keyword">escape</span> <span class="token string">'$'</span>
+<span class="token comment">/*END*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><p>上の例で、バインドパラメータ <code>first_name</code>に<code>a</code>, <code>last_name</code>に<code>D</code>を指定した場合は以下のようになります。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token keyword">where</span>
+    emp<span class="token punctuation">.</span>first_name <span class="token operator">like</span> <span class="token string">'%a%'</span> <span class="token keyword">escape</span> <span class="token string">'$'</span>
+<span class="token operator">and</span> emp<span class="token punctuation">.</span>last_name  <span class="token operator">like</span> <span class="token string">'D%'</span> <span class="token keyword">escape</span> <span class="token string">'$'</span>
+<span class="token comment">/*END*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><p>上の例で、ワイルドカードを含む例としてバインドパラメータ <code>first_name</code>に<code>a%</code>, <code>last_name</code>に<code>D_</code>を指定した場合は以下のようになります。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token keyword">where</span>
+    emp<span class="token punctuation">.</span>first_name <span class="token operator">like</span> <span class="token string">'%a$%%'</span> <span class="token keyword">escape</span> <span class="token string">'$'</span> <span class="token comment">-- %がエスケープされる</span>
+<span class="token operator">and</span> emp<span class="token punctuation">.</span>last_name  <span class="token operator">like</span> <span class="token string">'D$_%'</span> <span class="token keyword">escape</span> <span class="token string">'$'</span>  <span class="token comment">-- _がエスケープされる</span>
+<span class="token comment">/*END*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><div class="tip custom-block"><p>ワイルドカード（<code>%</code>や<code>_</code>）を含む文字列がバインドパラメータに指定された場合でも、<a href="/uroborosql-doc/background/ognl.html#stringfunction-sf">StringFunction</a>を利用することで文字列のエスケープ処理が適切に行われます。</p></div> <div class="warning custom-block"><p>エスケープキャラクタ（上記の例では<code>$</code>）はDB毎の設定（<a href="/uroborosql-doc/configuration/dialect.html#dialect">Dialect</a>）によって変わります。<br>
+現在の設定では、Oracleの場合は<code>\</code>, その他のDBでは<code>$</code>となります。</p></div> <h2 id="バインド出来るパラメータの型"><a href="#バインド出来るパラメータの型" aria-hidden="true" class="header-anchor">#</a> バインド出来るパラメータの型</h2> <p>バインドパラメータに指定できるJava型は以下になります。</p> <ul><li>プリミティブ型とそのラッパー型（ただし char と java.lang.Character は除く）</li> <li>java.math.BigDecimal</li> <li>java.math.BigInteger</li> <li>java.lang.String</li> <li>byte[]</li> <li>java.sql.Date</li> <li>java.sql.Time</li> <li>java.sql.Timestamp</li> <li>java.sql.Array</li> <li>java.sql.Ref</li> <li>java.sql.Blob</li> <li>java.sql.Clob</li> <li>java.sql.SQLXML</li> <li>java.sql.Struct</li> <li>列挙型(enum)</li> <li>java.util.Date</li> <li>java.util.Optional</li> <li>java.util.OptionalInt</li> <li>java.util.OptionalLong</li> <li>java.util.OptionalDouble</li> <li>java.time.LocalDateTime</li> <li>java.time.OffsetDateTime</li> <li>java.time.ZonedDateTime</li> <li>java.time.LocalDate</li> <li>java.time.LocalTime</li> <li>java.time.OffsetTime</li> <li>java.time.Year</li> <li>java.time.YearMonth</li> <li>java.time.MonthDay</li> <li>java.time.Month</li> <li>java.time.DayOfWeek</li></ul> <h2 id="置換文字列"><a href="#置換文字列" aria-hidden="true" class="header-anchor">#</a> 置換文字列</h2> <p>置換文字列を使うとSQLを動的に変更することができます。</p> <p>置換文字列は <code>/*$parameter name*/</code> もしくは <code>/*#parameter name*/</code>と記述します。<br> <code>/*#parameter name*/</code> と記述した場合は、置換文字列の前後を<code>'</code>(シングルクォート)で囲みます。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>    <span class="token comment">/*$table_name*/</span>
+<span class="token keyword">where</span>
+  gender  <span class="token operator">=</span>  <span class="token comment">/*#gender*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p>上の例では、<code>table_name</code>や<code>gender</code>に設定した値でSQLが置換されます。</p> <ul><li><code>table_name</code>に<code>employee</code>, <code>gender</code>に<code>M</code>を設定した場合</li></ul> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>  employee
+<span class="token keyword">where</span>
+  gender  <span class="token operator">=</span>  <span class="token string">'M'</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p>という風に置換されたSQLが実行されることになります。</p> <div class="danger custom-block"><p class="custom-block-title">注意</p> <p>置換文字列はSQLインジェクションなど脆弱性の原因となる可能性があります。十分に注意を払ったうえで利用してください</p></div> <div class="tip custom-block"><p>置換文字列はSQLインジェクションを防ぐため、変換の際にシングルクォート<code>'</code>を<code>''</code>にエスケープします</p></div> <div class="warning custom-block"><p>置換文字列はバインドパラメータとしてではなく実行されるSQLを構築する時点で置換される点に注意してください。<br>
+データベースによってはSQL文が動的に変わることで解析結果のキャッシュが適用されず、<br>
+解析処理が都度実行されることでCPUに負荷をかける可能性があります。</p></div> <h2 id="条件分岐"><a href="#条件分岐" aria-hidden="true" class="header-anchor">#</a> 条件分岐</h2> <p><code>/*IF*/</code>, <code>/*ELIF*/</code>, <code>/*ELSE*/</code>, <code>/*END*/</code> を使用してSQLを動的に変更することができます。</p> <h3 id="記述方法"><a href="#記述方法" aria-hidden="true" class="header-anchor">#</a> 記述方法</h3> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token comment">/*IF [評価式]*/</span>
+<span class="token comment">-- IFの評価式が真の場合に適用されるSQL</span>
+<span class="token comment">/*ELIF [評価式]*/</span>
+<span class="token comment">-- ELIFの評価式が真の場合に適用されるSQL</span>
+<span class="token comment">/*ELSE*/</span>
+<span class="token comment">-- IF,ELIFの評価式が偽の場合に適用されるSQL</span>
+<span class="token comment">/*END*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><p><code>/*IF*/</code>, <code>/*ELIF*/</code>の評価式としてOGNL式言語を利用します。
+（ OGNL式言語の説明は<a href="/uroborosql-doc/background/ognl.html#ognl式言語">こちら</a> )<br>
+また、標準でSF関数(<em>S</em>tring <em>F</em>unction)を使うことができます。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token keyword">where</span>
+<span class="token comment">/*IF SF.isNotEmpty(birth_date_from) and SF.isNotEmpty(birth_date_to)*/</span>
+<span class="token operator">and</span>  emp<span class="token punctuation">.</span>birth_date  <span class="token operator">between</span>  <span class="token comment">/*birth_date_from*/</span><span class="token string">'1990-01-01'</span>  <span class="token operator">and</span>  <span class="token comment">/*birth_date_to*/</span><span class="token string">'1999-12-31'</span>
+<span class="token comment">/*ELIF SF.isNotEmpty(birth_date_from)*/</span>
+<span class="token operator">and</span>  emp<span class="token punctuation">.</span>birth_date  <span class="token operator">&gt;=</span>    <span class="token comment">/*birth_date_from*/</span><span class="token string">'1990-01-01'</span>
+<span class="token comment">/*ELIF SF.isNotEmpty(birth_date_to)*/</span>
+<span class="token operator">and</span>  emp<span class="token punctuation">.</span>birth_date  <span class="token operator">&lt;</span>    <span class="token comment">/*birth_date_to*/</span><span class="token string">'1999-12-31'</span>
+<span class="token comment">/*ELSE*/</span>
+<span class="token comment">/*END*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br></div></div><p>上の例ではIFの評価式として<code>SF.isNotEmpty()</code>を使用してバインドパラメータが<code>null</code>または<code>&quot;&quot;</code>でないことを評価しています。</p> <p>バインドパラメータとして<code>birth_date_from</code>に<code>2000-01-01</code>, <code>birth_date_to</code>に<code>2010-12-31</code>を指定した場合、生成されるSQLは以下のようになります。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token keyword">where</span>
+  emp<span class="token punctuation">.</span>birth_date  <span class="token operator">between</span>  ?<span class="token comment">/*birth_date_from*/</span>  <span class="token operator">and</span>  ?<span class="token comment">/*birth_date_to*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><p>最後にバインドパラメータが評価され、実行されるSQLが以下になります。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token keyword">where</span>
+  emp<span class="token punctuation">.</span>birth_date  <span class="token operator">between</span>  <span class="token string">'2000-01-01'</span><span class="token comment">/*birth_date_from*/</span>  <span class="token operator">and</span>  <span class="token string">'2010-12-31'</span><span class="token comment">/*birth_date_to*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><p>ここで<code>emp.birth_date</code>の前にあった<code>and</code>が消えていることに注目してください。</p> <div class="tip custom-block"><p><strong>uroboroSQL</strong>では動的SQLを生成する際、WHERE句の後ろに<code>and</code>や<code>or</code>が来る場合はそれを削除してSQL文として正しい状態にします</p></div> <p>ただし、上の加工前SQLのようにSQL文として不正な状態になってしまうのでSQLクライアントツールからは実行できないという欠点もあります。<br>
+このようにSQL文として不正になることを防ぐために、WHERE句のあとに他に影響を与えない評価を入れる方法があります。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token keyword">where</span>
+  <span class="token number">1</span>        <span class="token operator">=</span>    <span class="token number">1</span>  <span class="token comment">// &lt;-- 必ずtrueとなる評価を入れる</span>
+<span class="token comment">/*IF SF.isNotEmpty(birth_date_from) and SF.isNotEmpty(birth_date_to)*/</span>
+<span class="token operator">and</span>  emp<span class="token punctuation">.</span>birth_date  <span class="token operator">between</span>  <span class="token comment">/*birth_date_from*/</span><span class="token string">'1990-01-01'</span>  <span class="token operator">and</span>  <span class="token comment">/*birth_date_to*/</span><span class="token string">'1999-12-31'</span>
+<span class="token comment">/*ELIF SF.isNotEmpty(birth_date_from)*/</span>
+<span class="token operator">and</span>  emp<span class="token punctuation">.</span>birth_date  <span class="token operator">&gt;=</span>    <span class="token comment">/*birth_date_from*/</span><span class="token string">'1990-01-01'</span>
+<span class="token comment">/*ELIF SF.isNotEmpty(birth_date_to)*/</span>
+<span class="token operator">and</span>  emp<span class="token punctuation">.</span>birth_date  <span class="token operator">&lt;</span>    <span class="token comment">/*birth_date_to*/</span><span class="token string">'1999-12-31'</span>
+<span class="token comment">/*ELSE*/</span>
+<span class="token comment">/*END*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><h2 id="範囲の有効化"><a href="#範囲の有効化" aria-hidden="true" class="header-anchor">#</a> 範囲の有効化</h2> <p><code>/*BEGIN*/</code>, <code>/*END*/</code> で囲まれた範囲は、その中の<code>/*IF*/</code>, <code>/*ELIF*/</code>のうち、どれか1つでも真(true)になった場合に出力されます。<br>
+範囲内の全ての評価式が偽（false）の場合、<code>/*BEGIN*/</code>, <code>/*END*/</code> で囲まれた範囲は出力されません。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token comment">/*BEGIN*/</span>
+<span class="token keyword">where</span>
+<span class="token comment">/*IF SF.isNotEmpty(first_name)*/</span>
+<span class="token operator">and</span>  emp<span class="token punctuation">.</span>first_name  <span class="token operator">=</span>  <span class="token comment">/*first_name*/</span><span class="token string">'Bob'</span>
+<span class="token comment">/*END*/</span>
+<span class="token comment">/*IF SF.isNotEmpty(last_name)*/</span>
+<span class="token operator">and</span>  emp<span class="token punctuation">.</span>last_name  <span class="token operator">=</span>  <span class="token comment">/*last_name*/</span><span class="token string">'Smith'</span>
+<span class="token comment">/*END*/</span>
+<span class="token comment">/*END*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br></div></div><p>上の例で、バインドパラメータ <code>first_name</code>に<code>Willson</code>, <code>last_name</code>に<code>null</code>を指定した場合は以下のようになります。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token keyword">where</span>
+  emp<span class="token punctuation">.</span>first_name  <span class="token operator">=</span>  ?<span class="token comment">/*first_name*/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><p>バインドパラメータ <code>first_name</code>, <code>last_name</code>ともに<code>null</code>を指定した場合は以下のようになります。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  <span class="token operator">*</span>
+<span class="token keyword">from</span>
+  employee  emp
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p><code>/*BEGIN*/</code>,<code>/*END*/</code>で囲まれた<code>where</code>が出力されていないことがわかります。</p> <h2 id="不要なカンマの除去"><a href="#不要なカンマの除去" aria-hidden="true" class="header-anchor">#</a> 不要なカンマの除去</h2> <p>IF分岐を使って動的なSQLを構築する場合、カンマの有無が問題になる場合があります。<br>
+以下のSQLを例として説明します。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+<span class="token comment">/*IF detail*/</span>
+<span class="token punctuation">,</span>  first_name
+<span class="token punctuation">,</span>  last_name
+<span class="token punctuation">,</span>  birth_date
+<span class="token punctuation">,</span>  gender
+<span class="token comment">/*END*/</span>
+<span class="token punctuation">,</span>  emp_no
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token keyword">order</span> <span class="token keyword">by</span>
+<span class="token comment">/*IF detail*/</span>
+<span class="token punctuation">,</span>  birth_date
+<span class="token comment">/*END*/</span>
+<span class="token punctuation">,</span>  emp_no
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br></div></div><p>ここでバインドパラメータ<code>detail</code>に<code>true</code>を指定した場合、生成されるSQLは以下になります。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+<span class="token punctuation">,</span>  first_name
+<span class="token punctuation">,</span>  last_name
+<span class="token punctuation">,</span>  birth_date
+<span class="token punctuation">,</span>  gender
+<span class="token punctuation">,</span>  emp_no
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token keyword">order</span> <span class="token keyword">by</span>
+<span class="token punctuation">,</span>  birth_date
+<span class="token punctuation">,</span>  emp_no
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><p>このSQLでは<code>select</code>の直後や<code>order by</code>の直後にカンマが出現しておりSQL文として不正であるため、SQLの実行に失敗します。<br>
+これを避けるため<strong>uroboroSQL</strong>では、生成後のSQLに含まれる不要なカンマを除去するようになっています。</p> <p>実際に生成されるSQLは以下になります。</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+  first_name     <span class="token comment">-- 先頭のカンマが除去される</span>
+<span class="token punctuation">,</span>  last_name
+<span class="token punctuation">,</span>  birth_date
+<span class="token punctuation">,</span>  gender
+<span class="token punctuation">,</span>  emp_no
+<span class="token keyword">from</span>
+  employee  emp
+<span class="token keyword">order</span> <span class="token keyword">by</span>
+  birth_date     <span class="token comment">-- 先頭のカンマが除去される</span>
+<span class="token punctuation">,</span>  emp_no
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><p>カンマが除去されるのは、以下の予約語の直後にカンマが出現した場合です（大文字小文字の区別無し）。</p> <ul><li>SELECT</li> <li>ORDER BY</li> <li>GROUP BY</li> <li>(</li> <li>SET</li></ul></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/future-architect/uroborosql-doc/edit/master/src/background/README.md" target="_blank" rel="noopener noreferrer">Edit this page</a> <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></div> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/uroborosql-doc/getting_started/sql-repl.html" class="prev">
+          SQL-REPL
+        </a></span> <span class="next"><a href="/uroborosql-doc/background/ognl.html">
+          OGNL式言語
+        </a>
+        →
+      </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/uroborosql-doc/assets/js/app.f3f7a782.js" defer></script><script src="/uroborosql-doc/assets/js/2.8444be12.js" defer></script><script src="/uroborosql-doc/assets/js/11.74b6b5ce.js" defer></script>
+  </body>
+</html>
