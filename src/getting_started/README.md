@@ -101,7 +101,7 @@ mvn -PrunMain
 
 ではサンプルアプリケーションの構成を見ていきましょう。
 
-<<<@/docs/getting_started/tree.txt
+<<<@/src/getting_started/tree.txt
 
 主要なファイルの説明です
 

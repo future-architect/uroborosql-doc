@@ -23,7 +23,7 @@ mvn -PREPL
 
 実行すると以下のようにタイトル表示とコマンド説明、設定値の情報が表示され、そのあとコマンド入力状態になります。
 
-<<<@/docs/getting_started/repl/prompt.sh
+< <<@/src/getting_started/repl/prompt.sh
 
 **REPL**を立ち上げた状態では接続したDB（H2DB メモリDB）には何もない状態なので、まずはテーブルを作成します。
 サンプルアプリケーションで利用できるSQLファイルを確認しましょう。
@@ -34,7 +34,7 @@ uroborosql > list[Enter]
 
 と入力してください。
 
-<<<@/docs/getting_started/repl/list.sh
+<<<@/src/getting_started/repl/list.sh
 
 ロード済みのSQLファイルの`SQL名`がわかります。
 テーブルを作成するために`ddl/create_tables`を実行します。
@@ -78,7 +78,7 @@ uroborosql > update ddl/create_tables
 
 もう一度`[Enter]`を入力するとSQLが実行されます。
 
-<<<@/docs/getting_started/repl/create_tables.sql
+<<<@/src/getting_started/repl/create_tables.sql
 
 
 `ddl/create_tables`が実行され、DBにテーブルが作成されました。
@@ -90,7 +90,7 @@ uroborosql > update ddl/create_tables
 uroborosql > update setup/insert_data[Enter]
 ```
 
-<<<@/docs/getting_started/repl/insert_data.sql
+<<<@/src/getting_started/repl/insert_data.sql
 
 これでテーブルに初期データが挿入されました。
 では、挿入したデータを検索してみましょう。
@@ -102,7 +102,7 @@ uroborosql > update setup/insert_data[Enter]
 uroborosql > query department/select_department[Enter]
 ```
 
-<<<@/docs/getting_started/repl/select_department_1.sql
+<<<@/src/getting_started/repl/select_department_1.sql
 
 ここではバインドパラメータを指定しなかったため、絞込み条件のないSQLが実行され検索結果として4件のデータが取得できました。
 
@@ -122,7 +122,7 @@ uroborosql > query department/select_department[Enter]
 uroborosql > query department/select_department deptNo=1[Enter]
 ```
 
-<<<@/docs/getting_started/repl/select_department_2.sql
+<<<@/src/getting_started/repl/select_department_2.sql
 
 `deptNo`に`1`を指定して検索しています。
 この時、SQL文の評価式である/\*IF SF.isNotEmpty(deptNo)\*/が`true`となりSQLのwhere句に`dept_no`の条件が追加されバインドパラメータがバインドされます。  
@@ -138,7 +138,7 @@ uroborosql > query department/select_department deptNo=1[Enter]
 uroborosql > query department/select_department deptNo=1 deptName=sales[Enter]
 ```
 
-<<<@/docs/getting_started/repl/select_department_3.sql
+<<<@/src/getting_started/repl/select_department_3.sql
 
 **REPL**を終了する場合はコマンド`quit`,もしくは`exit`を入力してください。
 
