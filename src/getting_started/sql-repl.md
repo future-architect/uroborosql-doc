@@ -23,7 +23,7 @@ mvn -PREPL
 
 実行すると以下のようにタイトル表示とコマンド説明、設定値の情報が表示され、そのあとコマンド入力状態になります。
 
-< <<@/src/getting_started/repl/prompt.sh
+<<<@/src/getting_started/repl/prompt.sh
 
 **REPL**を立ち上げた状態では接続したDB（H2DB メモリDB）には何もない状態なので、まずはテーブルを作成します。
 サンプルアプリケーションで利用できるSQLファイルを確認しましょう。
