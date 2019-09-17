@@ -33,7 +33,12 @@ SqlConfig config = UroboroSQL.builder(...)
     // 最大リトライ回数
     .setDefaultMaxRetryCount(3)
     // リトライ間隔
-    .setDefaultSqlRetryWaitTime(10))
+    .setDefaultSqlRetryWaitTime(10)
+    // トランザクション内での更新を強制するかどうか
+    .setForceUpdateWithinTransaction(true)
+    // 明示的な行ロック時の待機時間(s)デフォルト値
+    .setDefaultForUpdateWaitSeconds(10)
+    )
   ).build();
 ```
 
@@ -283,3 +288,27 @@ try (SqlAgent agent = config.agent()) {
     .count();
 }
 ```
+
+## トランザクション内での更新を強制するかどうか <Badge text="0.14.0+" vertical="middle"/>
+
+::: warning
+🚧 準備中
+:::
+
+## 明示的な行ロック時の待機時間(s)のデフォルト値設定 <Badge text="0.14.0+" vertical="middle"/>
+
+`SqlEntityQuery#forUpdateWait()`による明示的な行ロックをおこなう場合の待機時間を指定することができます。
+
+```java
+SqlConfig config = UroboroSQL.builder(...)
+  // SqlAgentFactoryの設定
+  .setSqlAgentFactory(new SqlAgentFactoryImpl()
+    // 明示的な行ロック時の待機時間(s)デフォルト値
+    .setDefaultForUpdateWaitSeconds(10)
+    )
+  ).build();
+```
+
+待機時間の初期値を設定することで`SqlEntityQuery#forUpdateWait()`を発行する際に適用され、
+待機時間を都度指定する必要がなくなります。  
+`SqlEntityQuery#forUpdateWait(int)`を使って個別に待機時間を指定した場合は個別設定が優先されます。

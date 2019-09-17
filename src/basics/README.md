@@ -113,7 +113,7 @@ Map<String, Object> department = agent.query("department/select_department")
 |:---|:---|
 |SqlFluent#param(String key, Object value)|バインドパラメータや置換文字列として使用するキーと値のセットを設定する|
 |SqlFluent#param(String key, Supplier<Object&gt; supplier)|supplierの評価結果をキーの値としてパラメータに設定する <Badge text="0.10.1+"/>|
-|SqlFluent#paramList(String key, Object... value)|IN句のバインドパラメータに使用するキーと値のセットを設定する|
+|~~SqlFluent#paramList(String key, Object... value)~~|IN句のバインドパラメータに使用するキーと値のセットを設定する。<br><Badge text="0.14.0+" /> から非推奨。かわりに`param()`に`Arrays.asList()`もしくは`List.of()`を使って`List型`に詰めて設定する|
 |SqlFluent#paramMap(Map<String, ?&gt; paramMap)|引数のMapのKey/Valueのセットをパラメータに設定する|
 |SqlFluent#paramBean(Object bean)|引数として渡されたObjectのフィールド名と値のセットをパラメータに設定する|
 

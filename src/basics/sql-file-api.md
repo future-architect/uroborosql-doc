@@ -539,7 +539,7 @@ try (SqlAgent agent = config.agent()) {
 }
 ```
 
-## プロシージャの実行(`SqlAgent#proc`, `SqlAgent#procWith`)
+## ストアドプロシージャの実行(`SqlAgent#proc`, `SqlAgent#procWith`)
 
 **uroboroSQL**では、SQLの検索/更新のほかDBが提供するストアドプロシージャの呼び出し用APIも提供しています。
 
@@ -557,7 +557,7 @@ try (SqlAgent agent = config.agent()) {
 |Procedure#call()|Map<String, Object>|
 
 ストアドプロシージャからの戻り値を取得する場合は　`SqlFluent#outParam()`でパラメータを指定します。  
-`SqlFluent#outParam()`で指定したキーと実行したプロシージャ内でそのキーに設定された値が、戻り値の`Map<String, Object>`として取得できます。
+`SqlFluent#outParam()`で指定したキーと実行したストアドプロシージャ内でそのキーに設定された値が、戻り値の`Map<String, Object>`として取得できます。
 
 ```java
 // Procedureインタフェースのインスタンスを取得

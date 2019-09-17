@@ -30,6 +30,12 @@ SqlConfig config = UroboroSQL
     .addUpdateAutoParameterBinder((ctx) -> ctx.paramIfAbsent("upd_datetime", LocalDateTime.now()))
     // パラメータ変換クラスの登録
     .addBindParamMapper(new CustomBindParamMapper())
+    // ResultSetTypeの初期値
+    // java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.TYPE_SCROLL_SENSITIVE のいづれか
+    .setDefaultResultSetType(ResultSet.TYPE_FORWARD_ONLY)
+    // ResultSetConcurrencyの初期値
+    // java.sql.ResultSet.CONCUR_READ_ONLY, java.sql.ResultSet.CONCUR_UPDATABLE のいづれか
+    .setDefaultResultSetConcurrency(ResultSet.CONCUR_READ_ONLY)
   ).build();
 ```
 
@@ -301,3 +307,39 @@ SqlConfig config = UroboroSQL
 Name name = new Name("Bob", "Smith");
 agent.update("insert_user").param("name", name).count();
 ```
+
+## java.sql.ResultSetの挙動設定 <Badge text="0.14.0+"/>
+
+検索SQLの発行で取得する`java.util.ResultSet`の挙動を変更することができます。
+
+```java
+// create SqlConfig
+SqlConfig config = UroboroSQL
+  .builder(...)
+  // SqlContextFactoryの設定
+  .setSqlContextFactory(new SqlContextFactoryImpl()
+    // ResultSetTypeの初期値
+    // java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.TYPE_SCROLL_SENSITIVE のいづれか
+    .setDefaultResultSetType(ResultSet.TYPE_FORWARD_ONLY)
+    // ResultSetConcurrencyの初期値
+    // java.sql.ResultSet.CONCUR_READ_ONLY, java.sql.ResultSet.CONCUR_UPDATABLE のいづれか
+    .setDefaultResultSetConcurrency(ResultSet.CONCUR_READ_ONLY)
+  ).build();
+```
+
+### DefaultResultSetType
+
+`java.sql.ResultSet`のカーソルの型を指定します。
+|型|説明|初期値|
+|:--|:--|:--:|
+|java.sql.ResultSet#TYPE_FORWARD_ONLY|カーソルは最初から最後まで順方向にしか移動できません。|◯|
+|java.sql.ResultSet#TYPE_SCROLL_INSENSITIVE|カーソルは順方向・逆方向いずれにも移動可能です。ただし他による変更を反映しません。||
+|java.sql.ResultSet#TYPE_SCROLL_SENSITIVE|カーソルは順方向・逆方向いずれにも移動可能です。また他による変更も反映します。||
+
+### DefaultResultSetConcurrency
+
+`java.sql.ResultSet`の変更可能性を指定します。
+|型|説明|初期値|
+|:--|:--|:--:|
+|java.sql.ResultSet.CONCUR_READ_ONLY|カーソルはデータの読み出ししかサポートしません。|◯|
+|java.sql.ResultSet.CONCUR_UPDATABLE|カーソルは変更可能です。カーソルを用いたデータの挿入・変更・削除がサポートされます。||

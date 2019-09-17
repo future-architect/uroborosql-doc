@@ -115,7 +115,7 @@ agent.query(Employee.class).where("first_name ='Bob'").where("last_name = 'Smith
 
 #### ソート順や取得データの件数、開始位置の指定 <Badge text="0.11.0+"/>
 
-`SqlEntityQuery`では抽出条件に加えて検索結果のソート順や取得件数の制限、開始位置の指定が行えます。
+`SqlEntityQuery`では抽出条件に加えて検索結果のソート順や取得件数の制限、開始位置の指定、明示的なロック指定が行えます。
 
 |条件指定メソッド記述例|生成されるSQL|補足説明|
 |:-------|:---------------|:-------------|
@@ -125,6 +125,10 @@ agent.query(Employee.class).where("first_name ='Bob'").where("last_name = 'Smith
 |desc("col1", Nulls.FIRST)| order by col1 desc NULLS FIRST|複数回`asc()`が呼び出された場合は呼び出し順に並べる|
 |limit(10)|LIMIT 10|接続しているDBで`limit`句が使用できない場合は`UroborosqlRuntimeException`がスローされる|
 |offset(10)|OFFSET 10|接続しているDBで`offset`句が使用できない場合は`UroborosqlRuntimeException`がスローされる|
+|forUpdate()<Badge text="0.14.0+" vertical="middle"/>|FOR UPDATE|接続しているDBで`FOR UPDATE`句が使用できない場合は`UroborosqlRuntimeException`がスローされる|
+|forUpdateNoWait()<Badge text="0.14.0+" vertical="middle"/>|FOR UPDATE NOWAIT|接続しているDBで`FOR UPDATE NOWAIT`句が使用できない場合は`UroborosqlRuntimeException`がスローされる|
+|forUpdateWait()<Badge text="0.14.0+" vertical="middle"/>|FOR UPDATE WAIT 10|接続しているDBで`FOR UPDATE WAIT`句が使用できない場合は`UroborosqlRuntimeException`がスローされる|
+|forUpdateWait(30)<Badge text="0.14.0+" vertical="middle"/>|FOR UPDATE WAIT 30|接続しているDBで`FOR UPDATE WAIT`句が使用できない場合は`UroborosqlRuntimeException`がスローされる|
 
 ```java
 // birth_dateの降順、first_nameの昇順でソートした結果を List<Employee>で取得
@@ -132,6 +136,9 @@ agent.query(Employee.class).desc("birth_date").asc("first_name").collect();
 
 // emp_no の昇順でソートした結果の3行目から5件取得
 agent.query(Employee.class).asc("emp_no").offset(3).limit(5).collect();
+
+// 明示的な行ロックを行う
+agent.query(Employee.class).forUpdate().collect();
 ```
 
 #### 集約関数 <Badge text="0.12.0+"/>
