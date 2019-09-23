@@ -63,18 +63,23 @@ public class SqliteDialect extends AbstractDialect {
 |:---|:---|:---|
 |supportsBulkInsert()|boolean|`BULK INSERT`をサポートするかどうか|
 |supportsLimitClause()|boolean|`LIMIT`句をサポートするかどうか|
-|supportsNullValuesOrdering()|boolean|SELECT句のO`RDER BY`でNULL値の順序を指定できるか（NULLS FIRST/LAST）|
+|supportsNullValuesOrdering()|boolean|`SELECT`句の`ORDER BY`でNULL値の順序を指定できるか（NULLS FIRST/LAST）|
 |supportsIdentity()|boolean|データベースのIDカラムを使用したID自動採番をサポートしているか|
 |supportsSequence()|boolean|データベースのシーケンスを使用したID自動採番をサポートしているか|
+|supportsForUpdate()|boolean|明示的な行ロックをサポートしているか|
+|supportsForUpdateNoWait()|boolean|明示的な行ロック（待機なし）をサポートしているか|
+|supportsForUpdateWait()|boolean|明示的な行ロック（待機あり）をサポートしているか|
 |isRemoveTerminator() |boolean|実行するSQLに記述されている終端文字(`;`)を削除するかどうか|
 |isRollbackToSavepointBeforeRetry()|boolean|リトライする前に設定したSavepointまでロールバックするかどうか|
 |getSequenceNextValSql(String sequenceName)|String|シーケンスを取得するためのSQL文を取得する|
 |getLimitClause(long limit, long offset)|String|`LIMIT`句（と`OFFSET`句）を取得する|
+|escapeLikePattern(CharSequence pattern)|String|`LIKE`演算子のパターン文字列をエスケープする|
 |getJavaType(JDBCType jdbcType, String jdbcTypeName)|JavaType|引数で渡ってきたJavaTypeを変換したJavaTypeを取得する。（DB固有のJava型変換を行う場合に実装）|
 |getJavaType(int jdbcType, String jdbcTypeName)|JavaType|引数で渡ってきたJavaTypeを変換したJavaTypeを取得する。（DB固有のJava型変換を行う場合に実装）|
 |getDatabaseName()|String|データベースを判別するための文字列を取得する|
 |getDatabaseType()|String|データベースの種別を表す名前を取得する|
 |getEscapeChar()|char|`LIKE`句で指定するエスケープキャラクタを取得する|
+|addForUpdateClause(StringBuilder sql, ForUpdateType forUpdateType, int waitSeconds)|StringBuilder|`FOR UPDATE`句の文字列をSQLに追加する|
 
 `Dialect`インタフェースのデフォルト実装や`AbstractDialect`クラスを参考に、上記のメソッドのうち変更が必要なメソッドの実装を行ってください。
 
