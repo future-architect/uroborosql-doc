@@ -19,3 +19,5 @@ meta:
 ---
 
 ![GitHub stars](https://img.shields.io/github/stars/future-architect/uroborosql.svg?style=social&label=Stars)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/jp.co.future/uroborosql/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/jp.co.future/uroborosql)
+[![Javadocs](https://www.javadoc.io/badge/jp.co.future/uroborosql.svg)](https://www.javadoc.io/doc/jp.co.future/uroborosql)
