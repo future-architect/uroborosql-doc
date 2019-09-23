@@ -289,15 +289,43 @@ try (SqlAgent agent = config.agent()) {
 }
 ```
 
-## トランザクション内での更新を強制するかどうか <Badge text="0.14.0+" vertical="middle"/>
+## DB更新処理をトランザクション内のみに強制 <Badge text="0.14.0+" />
 
-::: warning
-🚧 準備中
-:::
+複数のDB更新処理をまとめて行う際、途中で例外が発生するとDBデータが不整合な状態になる場合があります。このようなデータ不整合を防ぐためには[トランザクション](../transaction.md#トランザクション)を利用します。  
+しかし、通常の設定ではトランザクションを開始しない状態でもDB更新処理を行うことが可能になっているため不具合に気付きにくいという問題があります。  
+**uroboroSQL**ではトランザクションを開始していない状態でDB更新処理が行なわれた場合に例外をスローするオプションを提供しています。このオプションを使用することでDBデータの整合性を維持しやすくなります。
 
-## 明示的な行ロック時の待機時間(s)のデフォルト値設定 <Badge text="0.14.0+" vertical="middle"/>
+```java
+SqlConfig config = UroboroSQL.builder(...)
+  // SqlAgentFactoryの設定
+  .setSqlAgentFactory(new SqlAgentFactoryImpl()
+    // トランザクション内での更新を強制するかどうか
+    .setForceUpdateWithinTransaction(true)
+    )
+  ).build();
+```
 
-`SqlEntityQuery#forUpdateWait()`による明示的な行ロックをおこなう場合の待機時間を指定することができます。
+`SqlAgentFactory#setForceUpdateWithinTransaction()`に`true`を指定することでトランザクションを開始していない状態でDB更新処理が行なわれた場合に`UroborosqlTransactionException`がスローされます。
+
+```java
+agent.required(() -> { // トランザクション開始
+  // トランザクション内でのDB更新なのでOK
+  agent.updateWith("insert into employee (emp_no) values (/*emp_no*/1001)")
+    .param("emp_no", 1)
+    .count();
+  });
+});　// トランザクション終了
+
+// トランザクション外でのDB更新なので UroborosqlTransactionException がスローされる
+agent.updateWith("insert into department (dept_no, dept_name) values (/*dept_no*/1111, /*dept_name*/'Sales')")
+  .param("dept_no", 2)
+  .param("dept_name", "export")
+  .count();
+```
+
+## 明示的な行ロック時の待機時間(s)のデフォルト値設定 <Badge text="0.14.0+" />
+
+`SqlEntityQuery#forUpdateWait()`による明示的な行ロックをおこなう際の待機時間を指定することができます。
 
 ```java
 SqlConfig config = UroboroSQL.builder(...)

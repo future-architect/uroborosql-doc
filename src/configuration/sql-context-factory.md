@@ -327,7 +327,7 @@ SqlConfig config = UroboroSQL
   ).build();
 ```
 
-### DefaultResultSetType
+### カーソル型の初期値（DefaultResultSetType）
 
 `java.sql.ResultSet`のカーソルの型を指定します。
 |型|説明|初期値|
@@ -336,7 +336,7 @@ SqlConfig config = UroboroSQL
 |java.sql.ResultSet#TYPE_SCROLL_INSENSITIVE|カーソルは順方向・逆方向いずれにも移動可能です。ただし他による変更を反映しません。||
 |java.sql.ResultSet#TYPE_SCROLL_SENSITIVE|カーソルは順方向・逆方向いずれにも移動可能です。また他による変更も反映します。||
 
-### DefaultResultSetConcurrency
+### 変更可能性の初期値（DefaultResultSetConcurrency）
 
 `java.sql.ResultSet`の変更可能性を指定します。
 |型|説明|初期値|
