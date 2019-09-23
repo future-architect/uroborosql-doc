@@ -230,6 +230,117 @@ try (SqlAgent agent = config.agent()) {
 }
 ```
 
+### 先頭１件取得（`SqlQuery#one`)
+
+|メソッド名|戻り値の型|
+|:---|:---|
+|SqlQuery#one()|Map<String, Object>|
+|SqlQuery#one(CaseFormat)|Map<String, Object>|
+|SqlQuery#one(Class<T&gt;)|T|
+
+検索結果の1件目を取得します。[find()](#先頭取得（sqlquery-first)と違い、実行するSQLで複数件の検索結果を返す場合は例外をスローします。  
+結果を取得できない（検索結果が0件）場合、`jp.co.future.uroborosql.exception.DataNotFoundException`をスローします。  
+検索結果が2件以上存在する場合、`jp.co.future.uroborosql.exception.DataNotUniqueException`をスローします。  
+
+::: tip
+メモリ上には最大1件分のデータしか格納しないため、検索結果が大量になる場合でもメモリ使用量を気にせず呼び出すことができます。
+:::
+
+引数なし
+
+```java
+try (SqlAgent agent = config.agent()) {
+  Map<String, Object> department =
+    agent.query("department/select_department").one();
+} catch (DataNotFoundException | DataNotUniqueException ex) {
+  ex.printStackTrace();
+}
+
+// 結果(department)
+ {"DEPT_NO"=1, "DEPT_NAME"="sales"}
+```
+
+引数に`jp.co.future.uroborosql.utils.CaseFormat`を指定することで、Mapのキー名に対する書式を変更することができます。
+
+`CaseFormat.CAMEL_CASE`指定
+
+```java
+try (SqlAgent agent = config.agent()) {
+  Map<String, Object> department =
+    agent.query("department/select_department").one(CaseFormat.CAMEL_CASE);
+} catch (DataNotFoundException | DataNotUniqueException ex) {
+  ex.printStackTrace();
+}
+// 結果(department)
+ {"deptNo"=1, "deptName"="sales"}
+```
+
+引数にエンティティクラスを指定すると、検索結果をエンティティクラスのインスタンスの形で取得することができます。
+
+エンティティクラス
+
+```java
+try (SqlAgent agent = config.agent()) {
+  Department department =
+    agent.query("department/select_department").one(Department.class);
+} catch (DataNotFoundException | DataNotUniqueException ex) {
+  ex.printStackTrace();
+}
+```
+
+### 先頭１件取得（`SqlQuery#findOne`)
+
+|メソッド名|戻り値の型|
+|:---|:---|
+|SqlQuery#findOne()|Optional<Map<String, Object>>|
+|SqlQuery#findOne(CaseFormat)|Optional<Map<String, Object>>|
+|SqlQuery#findOne(Class<T&gt;)|Optional<T&gt;|
+
+検索結果の1件目をOptionalの形式で取得します。  
+検索結果が2件以上存在する場合、`jp.co.future.uroborosql.exception.DataNotUniqueException`をスローします。  
+メモリ上には最大1件分のデータしか格納しないため、検索結果が大量になる場合でもメモリ使用量を気にせず呼び出すことができます。
+
+引数なし
+
+```java
+try (SqlAgent agent = config.agent()) {
+  Optional<Map<String, Object>> department =
+    agent.query("department/select_department").findOne();
+} catch (DataNotUniqueException ex) {
+  ex.printStackTrace();
+}
+// 結果(department)
+ {"DEPT_NO"=1, "DEPT_NAME"="sales"}
+```
+
+引数に`jp.co.future.uroborosql.utils.CaseFormat`を指定することで、Mapのキー名に対する書式を変更することができます。
+
+`CaseFormat.CAMEL_CASE`指定
+
+```java
+try (SqlAgent agent = config.agent()) {
+  Optional<Map<String, Object>> department =
+    agent.query("department/select_department").findOne(CaseFormat.CAMEL_CASE);
+} catch (DataNotUniqueException ex) {
+  ex.printStackTrace();
+}
+// 結果(department)
+ {"deptNo"=1, "deptName"="sales"}
+```
+
+引数にエンティティクラスを指定すると、検索結果をエンティティクラスのインスタンスの形で取得することができます。
+
+エンティティクラス
+
+```java
+try (SqlAgent agent = config.agent()) {
+  Department department =
+    agent.query("department/select_department").findOne(Department.class).orElse(null);
+} catch (DataNotUniqueException ex) {
+  ex.printStackTrace();
+}
+```
+
 ### Stream取得(`SqlQuery#stream`)
 
 |メソッド名|戻り値の型|
@@ -308,8 +419,9 @@ try (SqlAgent agent = config.agent()) {
 ::: danger 注意
 戻り値として取得されるStreamインスタンスは内部にResultSetリソースを保持しています。このResultSetはデータを最後まで読み込むか`Stream#close()`が呼ばれたタイミングでリソースのクローズを行います。(Stream生成時、Stream#onClose()にResultSetリソースの`closeHandler`を登録します)  
 そのため、取得したStreamで全データを扱う終端処理(collectなど)を行うか、try-with-resourcesの利用やStream#close()の明示的な呼び出しによるStreamのクローズを行わないとResultSetリソースがクローズされずカーソルのリークが発生します。
-
-また、取得したStreamのクローズより先にSqlAgentインスタンスがクローズ、または破棄された場合、Streamの内部に保持しているResultSetリソースもクローズされてしまい不正な動作となります。StreamインスタンスとそのStreamを生成したSqlAgentインスタンスの生存期間を合わせる、もしくはSqlAgentインスタンスの生存期間を長くしてください。
+:::
+::: danger 注意
+取得したStreamのクローズより先にSqlAgentインスタンスがクローズ、または破棄された場合、Streamの内部に保持しているResultSetリソースもクローズされてしまい不正な動作となります。StreamインスタンスとそのStreamを生成したSqlAgentインスタンスの生存期間を合わせる、もしくはSqlAgentインスタンスの生存期間を長くしてください。
 :::
 
 Streamのクローズ
@@ -333,8 +445,9 @@ try (SqlAgent agent = config.agent()) {
 
 ::: danger 注意
  ResultSetリソースのクローズは各自で行う必要があります。
-
-また、ResultSetリソースのクローズより先にSqlAgentインスタンスがクローズ、または破棄された場合、ResultSetリソースもクローズされてしまい不正な動作となります。ResultSetリソースとそのResultSetを生成したSqlAgentインスタンスの生存期間を合わせる、もしくはSqlAgentインスタンスの生存期間を長くしてください。
+:::
+::: danger 注意
+ResultSetリソースのクローズより先にSqlAgentインスタンスがクローズ、または破棄された場合、ResultSetリソースもクローズされてしまい不正な動作となります。ResultSetリソースとそのResultSetを生成したSqlAgentインスタンスの生存期間を合わせる、もしくはSqlAgentインスタンスの生存期間を長くしてください。
 :::
 
 
@@ -502,7 +615,7 @@ int updateCount = agent.batch("department/update_department")
   .paramStream(agent.query("department/select_department")
     .stream(CaseFormat.LOWER_SNAKE_CASE).map(e -> {
       Map<String, Object> ans = new HashMap<>(e);
-      ans.replaceAll((k, v) -> v != null ? v.toString() + "_after" : "after");
+      ans.replaceAll((k, v) -> v != null ? v.toString() + "_after" : "after"); // 取得した検索結果の各行の値に "_after" を付与する
       return ans;
     }))
   .count();
@@ -539,7 +652,7 @@ try (SqlAgent agent = config.agent()) {
 }
 ```
 
-## プロシージャの実行(`SqlAgent#proc`, `SqlAgent#procWith`)
+## ストアドプロシージャの実行(`SqlAgent#proc`, `SqlAgent#procWith`)
 
 **uroboroSQL**では、SQLの検索/更新のほかDBが提供するストアドプロシージャの呼び出し用APIも提供しています。
 
@@ -556,8 +669,16 @@ try (SqlAgent agent = config.agent()) {
 |:---|:---|
 |Procedure#call()|Map<String, Object>|
 
-ストアドプロシージャからの戻り値を取得する場合は　`SqlFluent#outParam()`でパラメータを指定します。  
-`SqlFluent#outParam()`で指定したキーと実行したプロシージャ内でそのキーに設定された値が、戻り値の`Map<String, Object>`として取得できます。
+`Procedure`インタフェースでは、ストアドプロシージャからの戻り値を取得するためのAPIが提供されています。
+
+|メソッド|説明|
+|:---|:---|
+|SqlFluent#outParam(String, int)|ストアドプロシージャからの戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します|
+|SqlFluent#outParam(String, SQLType)|ストアドプロシージャからの戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します|
+|SqlFluent#inOutParam(String, int)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します|
+|SqlFluent#inOutParam(String, SQLType)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します|
+|SqlFluent#inOutParamIfAbsent(String, int)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>指定したパラメータ名のパラメータが事前に登録されていない場合に値を追加します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します|
+|SqlFluent#inOutParamIfAbsent(String, SQLType)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>指定したパラメータ名のパラメータが事前に登録されていない場合に値を追加します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します|
 
 ```java
 // Procedureインタフェースのインスタンスを取得

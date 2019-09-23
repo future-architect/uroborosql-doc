@@ -89,6 +89,8 @@ ddl/create_tables.sqlで作成したテーブルの構成は以下になりま�
 |SqlQuery#resultSet()|検索結果の`ResultSet`を取得する|
 |SqlQuery#first()|検索結果の１件目を取得する。取得できない場合は`RuntimeException`がスローされる|
 |SqlQuery#findFirst()|検索結果の１件目を取得する。戻り値は`Optional`|
+|SqlQuery#one()|検索結果の１件目を取得する。取得できない場合、もしくは２件以上取得出来た場合は`RuntimeException`がスローされる|
+|SqlQuery#findOne()|検索結果の１件目を取得する。戻り値は`Optional`。２件以上取得出来た場合は`RuntimeException`がスローされる|
 
 以下のように呼び出します。
 

@@ -82,10 +82,10 @@ from
   employee  emp
 where
 /*IF first_name != null*/
-and  emp.first_name like /*SF.contains(first_name)*/'' escape '$'
+and  emp.first_name like /*SF.contains(first_name)*/'' escape /*#ESC_CHAR*/'$'
 /*END*/
 /*IF last_name != null*/
-and  emp.last_name  like /*SF.startsWith(last_name)*/'' escape '$'
+and  emp.last_name  like /*SF.startsWith(last_name)*/'' escape /*#ESC_CHAR*/'$'
 /*END*/
 ```
 
@@ -121,7 +121,8 @@ and emp.last_name  like 'D$_%' escape '$'  -- _がエスケープされる
 
 ::: warning
 エスケープキャラクタ（上記の例では`$`）はDB毎の設定（[Dialect](../configuration/dialect.md#dialect)）によって変わります。  
-現在の設定では、Oracleの場合は`\`, その他のDBでは`$`となります。
+現在の設定では、Oracleの場合は`\`, その他のDBでは`$`となります。  
+`\`や`$`のかわりに`/*#ESC_CHAR*/`と記載することでDB毎の設定を気にせずにエスケープ文字を指定することができます。<Badge text="0.14.0+" vertical="middle"/>
 :::
 
 ## バインド出来るパラメータの型

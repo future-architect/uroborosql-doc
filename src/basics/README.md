@@ -95,7 +95,7 @@ SQLファイルの配置は設定によりカスタマイズが可能です。SQ
 
 ### 共通API
 
-検索([SqlQuery](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/SqlQuery.java))、更新([SqlUpdate](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/SqlUpdate.java))、バッチ更新([SqlBatch](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/SqlBatch.java))、プロシージャ実行([Procedure](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/Procedure.java))を行うクラスは、バインドパラメータや置換文字列の設定を行うためのAPI([SqlFluent](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/SqlFluent.java))を実装しています。
+検索([SqlQuery](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/SqlQuery.java))、更新([SqlUpdate](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/SqlUpdate.java))、バッチ更新([SqlBatch](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/SqlBatch.java))、ストアドプロシージャ実行([Procedure](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/Procedure.java))を行うクラスは、バインドパラメータや置換文字列の設定を行うためのAPI([SqlFluent](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/SqlFluent.java))を実装しています。
 
 バインドパラメータや置換文字列の設定はこのAPIを利用して設定を行ってください。  
 流れるAPI(Fluent API)を採用しているため、値の設定は連続して行うことができるようになっています。
@@ -111,10 +111,10 @@ Map<String, Object> department = agent.query("department/select_department")
 
 |主なメソッド|説明|
 |:---|:---|
-|SqlFluent#param(String key, Object value)|バインドパラメータや置換文字列として使用するキーと値のセットを設定する|
-|SqlFluent#param(String key, Supplier<Object&gt; supplier)|supplierの評価結果をキーの値としてパラメータに設定する <Badge text="0.10.1+"/>|
-|SqlFluent#paramList(String key, Object... value)|IN句のバインドパラメータに使用するキーと値のセットを設定する|
+|<V&gt; SqlFluent#param(String key, V value)|バインドパラメータや置換文字列として使用するキーと値のセットを設定する|
+|<V&gt; SqlFluent#param(String key, Supplier<V&gt; supplier)|supplierの評価結果をキーの値としてパラメータに設定する <Badge text="0.10.1+"/>|
+|~~<V&gt; SqlFluent#paramList(String key, V... value)~~|IN句のバインドパラメータに使用するキーと値のセットを設定する。<br><Badge text="0.14.0+" /> から非推奨。かわりに`param()`に`Arrays.asList()`もしくは`List.of()`を使って`List型`に詰めて設定してください|
 |SqlFluent#paramMap(Map<String, ?&gt; paramMap)|引数のMapのKey/Valueのセットをパラメータに設定する|
-|SqlFluent#paramBean(Object bean)|引数として渡されたObjectのフィールド名と値のセットをパラメータに設定する|
+|<V&gt; SqlFluent#paramBean(V bean)|引数として渡されたbeanのフィールド名と値のセットをパラメータに設定する|
 
 他にもパラメータの型に応じたパラメータ設定メソッドが提供されています。
