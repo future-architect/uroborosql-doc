@@ -54,7 +54,7 @@ public class Employee {
 
 |メソッド名|戻り値の型|
 |:---|:---|
-|SqlAgent#find(Class<E&gt;, Object...)|Optional<E&gt;|
+|SqlAgent#find(Class&lt;E&gt;, Object...)|Optional&lt;E&gt;|
 
 主キーを指定してエンティティを取得します。PKカラムの数と引数に指定するキーの数は合わせる必要があります。
 
@@ -67,7 +67,7 @@ Optional<Employee> employee = agent.find(Employee.class, 1);
 
 |メソッド名|戻り値の型|
 |:---|:---|
-|SqlAgent#query(Class<E&gt;)|SqlEntityQuery<E&gt;|
+|SqlAgent#query(Class&lt;E&gt;)|SqlEntityQuery&lt;E&gt;|
 
 エンティティクラスを利用した検索を行うためのオブジェクト（`SqlEntityQuery`)を取得します。  
 `SqlEntityQuery`に対して抽出条件の指定を行い、抽出条件に該当するエンティティを取得します。
@@ -98,6 +98,8 @@ Optional<Employee> employee = agent.find(Employee.class, 1);
 |isNull("col")|col is null||
 |isNotNull("col")|col is not null||
 |where("col = 1 or col = 2")|(col = 1 or col = 2) |もし複数回`where()`が呼び出された場合は条件を `AND` で結合する|
+|where("col = /\*col1\*/", "col1", 1)|(col = 1/\*col1\*/)|パラメータの指定（1件）付き|
+|where("col = /\*col1\*/ or col = /\*col2\*/", Map.of("col1", 1, "col2", 2))|(col = 1/\*col1\*/ or col = 2/\*col2\*/) |パラメータの指定（複数件）付き|
 
 ```java
 // emp_no = 1 のレコードをList<Employee>で取得
@@ -110,8 +112,13 @@ agent.query(Employee.class).in("emp_no", 10, 20).collect();
 agent.query(Employee.class).contains("first_name", "Bob").collect();
 
 // where句を直接記述(first_name = 'Bob' and last_name = 'Smith')した結果をList<Employee>で取得
-agent.query(Employee.class).where("first_name ='Bob'").where("last_name = 'Smith").collect();
+agent.query(Employee.class).where("first_name =''/*firstName*/", "firstName", "Bob").where("last_name = ''/*lastName*/", "lastName", "Smith").collect();
 ```
+
+::: danger 注意
+`SqlEntityQuery`に対して抽出条件を指定する場合`param`メソッドは使用しないでください。
+`SqlEntityQuery#param()`には`@Deprecated`が付与されており、将来削除される予定です。
+:::
 
 #### ソート順や取得データの件数、開始位置の指定 <Badge text="0.11.0+"/>
 
@@ -141,14 +148,31 @@ agent.query(Employee.class).asc("emp_no").offset(3).limit(5).collect();
 agent.query(Employee.class).forUpdate().collect();
 ```
 
+#### 検索結果の取得
+
+`SqlEntityQuery`から抽出条件に該当するエンティティを取得します。
+
+|メソッド|説明|
+|:--|:--|
+|collect()|検索結果をエンティティのリストとして取得する|
+|first()|検索結果の先頭行を取得する|
+|one()|検索結果の先頭行を取得する。検索結果が2件以上の場合`DataNonUniqueException`をスローする|
+|stream()|検索結果を`java.util.stream.Stream`として取得する|
+
+```java
+// List<Employee>で取得
+List<Enployee> employees = agent.query(Employee.class).collect();
+
+// 検索結果の先頭行を取得
+Optional<Enployee> employee = agent.query(Employee.class).first();
+```
+
 #### 集約関数 <Badge text="0.12.0+"/>
 
 `SqlEntityQuery`ではエンティティを取得する他に結果の集計を行うこともできます。
 
 |メソッド|説明|
 |:--|:--|
-|collect()|検索結果をエンティティのリストとして取得する|
-|stream()|検索結果を`java.util.stream.Stream`として取得する|
 |count()|検索結果の件数を取得する|
 |count(String col)|検索結果のうち、引数で指定したカラムがNULLでない行の件数を取得する|
 |sum(String col)|検索結果のうち、引数で指定したカラムの合計値を取得する|
@@ -158,9 +182,6 @@ agent.query(Employee.class).forUpdate().collect();
 |notExists(Runnable runnable)|検索結果が0件の場合に引数で渡した関数を実行する|
 
 ```java
-// List<Employee>で取得
-List<Enployee> employees = agent.query(Employee.class).collect();
-
 // 検索結果の件数を取得
 long count = agent.query(Employee.class).count();
 
@@ -168,22 +189,38 @@ long count = agent.query(Employee.class).count();
 agent.query(Employee.class).greaterThan("emp_no", 10).exists(() -> {
   log.info("Employee(emp_no > 10) exists.");
 });
-
 ```
+
+::: tip
+集約関数を使用すると、検索結果からEntityオブジェクトを生成しないためメモリ効率が良くなります。
+以下２つの処理結果は同じですが、メモリの使い方が違います。
+```java
+// collect()を使用すると、検索結果がエンティティに変換されるためメモリを使用する
+long count = agent.query(Employee.class).collect().size();
+
+// count()を使用すると件数のみ取得できる（エンティティは生成されない）
+long count = agent.query(Employee.class).count();
+```
+:::
 
 ## エンティティの挿入
 
-### 1件の挿入(`SqlAgent#insert`)
+### 1件の挿入(`SqlAgent#insert`/`SqlAgent#insertAndReturn`)
 
 |メソッド名|戻り値の型|
 |:---|:---|
-|SqlAgent#insert(Object)|int|
+|&lt;E&gt; SqlAgent#insert(E)|int|
+|&lt;E&gt; SqlAgent#insertAndReturn(E) <Badge text="0.15.0+"/>|E|
 
-エンティティクラスのインスタンスを使って１レコードの挿入を行います。
+エンティティクラスのインスタンスを使って１レコードの挿入を行います。  
+レコード挿入時、[@Id](#id-generatedvalue-sequencegenerator)アノテーションの指定があるフィールドに対するカラムは自動採番されます。  
+また、採番された値がエンティティの該当フィールドにも設定されます。
+
+`AndReturn`が付くメソッドでは、挿入したエンティティオブジェクトを戻り値として取得できるため、
+エンティティの挿入に続けて処理を行う場合に便利です。
 
 ```java
 Employee employee = new Employee();
-employee.setEmpNo(2);
 employee.setFirstName("Susan");
 employee.setLastName("Davis");
 employee.setBirthDate(LocalDate.of(1969, 2, 10));
@@ -191,31 +228,59 @@ employee.setGender(Gender.FEMALE); // MALE("M"), FEMALE("F"), OTHER("O")
 
 // 1件の挿入
 agent.insert(employee);
+System.out.println(employee.getEmpNo()); // 自動採番された値が出力される
 ```
 
-### 複数件の挿入(`SqlAgent#inserts`) <Badge text="0.10.0+"/>
+### 複数件の挿入(`SqlAgent#inserts`/`SqlAgent#insertsAndReturn`) <Badge text="0.10.0+"/>
 
 |メソッド名|戻り値の型|
 |:---|:---|
-|SqlAgent#inserts(Stream<E&gt;)|int|
-|SqlAgent#inserts(Stream<E&gt;, InsertsType)|int|
-|SqlAgent#inserts(Stream<E&gt;, InsertsCondition<? super E>)|int|
-|SqlAgent#inserts(Stream<E&gt;, InsertsCondition<? super E>, InsertsType)|int|
-|SqlAgent#inserts(Class<E&gt;, Stream<E&gt;)|int|
-|SqlAgent#inserts(Class<E&gt;, Stream<E&gt;, InsertsType)|int|
-|SqlAgent#inserts(Class<E&gt;, Stream<E&gt;, InsertsCondition<? super E>)|int|
-|SqlAgent#inserts(Class<E&gt;, Stream<E&gt;, InsertsCondition<? super E>, InsertsType)|int|
+|SqlAgent#inserts(Stream&lt;E&gt;)|int|
+|SqlAgent#inserts(Stream&lt;E&gt;, InsertsType)|int|
+|SqlAgent#inserts(Stream&lt;E&gt;, InsertsCondition<? super E>)|int|
+|SqlAgent#inserts(Stream&lt;E&gt;, InsertsCondition<? super E>, InsertsType)|int|
+|SqlAgent#insertsAndReturn(Stream&lt;E&gt;) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
+|SqlAgent#insertsAndReturn(Stream&lt;E&gt;, InsertsType) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
+|SqlAgent#insertsAndReturn(Stream&lt;E&gt;, InsertsCondition<? super E>) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
+|SqlAgent#insertsAndReturn(Stream&lt;E&gt;, InsertsCondition<? super E>, InsertsType) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
+|SqlAgent#inserts(Class&lt;E&gt;, Stream&lt;E&gt;)|int|
+|SqlAgent#inserts(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsType)|int|
+|SqlAgent#inserts(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsCondition<? super E>)|int|
+|SqlAgent#inserts(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsCondition<? super E>, InsertsType)|int|
+|SqlAgent#insertsAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
+|SqlAgent#insertsAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsType) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
+|SqlAgent#insertsAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsCondition<? super E>) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
+|SqlAgent#insertsAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsCondition<? super E>, InsertsType) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
 
 `java.util.stream.Stream`経由で渡される複数のエンティティインスタンスを挿入します。
 
+レコード挿入時、[@Id](#id-generatedvalue-sequencegenerator)アノテーションの指定があるフィールドに対するカラムは自動採番されます。  
+また、採番された値がエンティティの該当フィールドにも設定されます。
+
+`AndReturn`が付くメソッドでは、挿入したエンティティオブジェクトの`java.util.stream.Stream`を戻り値として取得できるため、 
+エンティティの挿入に続けて処理を行う場合に便利です。
+
+::: warning
+`AndReturn`の戻り値となる`Stream<E>`を生成する際、挿入したエンティティを全件メモリ上に保持します。
+大量データの挿入を行うとOOMEが発生する場合があるので、`insertsAndReturn`を使用する場合は挿入する
+データの件数に気をつけてください。件数が多い場合は一度`inserts`で挿入した後に、再度検索するといった方法を検討してください。
+:::
+
 ```java
-Stream<Employee> employees = agent.query(Employee.class)
-  .stream()
-  .map(e -> e.setEmpNo(e.getEmpNo() + 1000));
-  
-// 複数件の挿入
-agent.inserts(employees);
-}
+// 1件の挿入
+Department dept = new Department();
+dept.setDeptName("sales");
+agent.insert(dept);
+
+// 複数件の挿入(EmployeeとDeptEmpの挿入)
+agent.inserts(agent.insertsAndReturn(agent.query(Employee.class).stream())
+  .map(e -> {
+    DepEmp deptEmp = new DeptEmp();
+    deptEmp.setEmpNo(e.getEmpNo());
+    deptEmp.setDepNo(dept.getDepNo());
+    return deptEmp;
+  })
+);
 ```
 
 ### 挿入方法（InsertsType）の指定
@@ -258,21 +323,108 @@ agent.inserts(employees, (ctx, count, entity) -> count == 10);
 
 ## エンティティの更新
 
-### 1件の更新(`SqlAgent#update`)
+### 1件の更新(`SqlAgent#update`/`SqlAgent#updateAndReturn`)
 
 |メソッド名|戻り値の型|
 |:---|:---|
-|SqlAgent#update(Object)|int|
+|&lt;E&gt; SqlAgent#update(E)|int|
+|&lt;E&gt; SqlAgent#updateAndReturn(E) <Badge text="0.15.0+"/>|E|
 
 エンティティクラスのインスタンスを使って１レコードの更新を行います。
+
+レコード更新時、[@Version](#version)アノテーションの指定があるフィールドに対するカラムはカウントアップされます。  
+また、更新された値がエンティティの該当フィールドにも設定されます。
+
+`AndReturn`が付くメソッドでは、更新したエンティティオブジェクトを戻り値として取得できるため、 
+エンティティの更新に続けて処理を行う場合に便利です。
 
 ```java
 agent.find(Employee.class, 1).ifPresent(employee -> {
   employee.setLastName("Wilson");
+  System.out.println(employee.getLockVersion()); // 1
 
   // エンティティの更新
   agent.update(employee);
+  System.out.println(employee.getLockVersion()); // 2
 });
+```
+
+### 条件指定による複数件の更新(`SqlAgent#update`) <Badge text="0.15.0+"/>
+
+|メソッド名|戻り値の型|
+|:---|:---|
+|SqlAgent#update(Class<? extends E>)|SqlEntityUpdate&lt;E&gt;|
+
+更新対象のレコードを抽出する条件を指定して更新を行います。  
+抽出条件の指定方法は [抽出条件の指定](#抽出条件の指定) を参照してください。  
+また、`set()`メソッドで更新対象のフィールドと値を指定することができます。
+
+```java
+// first_name に 'Bob' を含むエンティティの性別を更新
+agent.update(Employee.class)
+  .contains("firstName", "Bob")
+  .set("gender", Gender.MALE)
+  .count();
+```
+
+### 複数件の更新(`SqlAgent#updates`/`SqlAgent#updatesAndReturn`) <Badge text="0.15.0+"/>
+
+|メソッド名|戻り値の型|
+|:---|:---|
+|SqlAgent#updates(Stream&lt;E&gt;)|int|
+|SqlAgent#updates(Stream&lt;E&gt;, UpdatesCondition<? super E>)|int|
+|SqlAgent#updatesAndReturn(Stream&lt;E&gt;)|Stream&lt;E&gt;|
+|SqlAgent#updatesAndReturn(Stream&lt;E&gt;, UpdatesCondition<? super E>)|Stream&lt;E&gt;|
+|SqlAgent#updates(Class&lt;E&gt;, Stream&lt;E&gt;)|int|
+|SqlAgent#updates(Class&lt;E&gt;, Stream&lt;E&gt;, UpdatesCondition<? super E>)|int|
+|SqlAgent#updatesAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;)|Stream&lt;E&gt;|
+|SqlAgent#updatesAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;, UpdatesCondition<? super E>)|Stream&lt;E&gt;|
+
+`java.util.stream.Stream`経由で渡される複数のエンティティインスタンスを使って更新します。
+
+::: tip
+`inserts`と違い必ずバッチSQL実行になります。
+:::
+
+レコード更新時、[@Version](#version)アノテーションの指定があるフィールドに対するカラムはカウントアップされます。  
+また、更新された値がエンティティの該当フィールドにも設定されます。
+
+`AndReturn`が付くメソッドでは、更新したエンティティオブジェクトの`java.util.stream.Stream`を戻り値として取得できるため、 
+エンティティの更新に続けて処理を行う場合に便利です。
+
+::: warning
+`AndReturn`の戻り値となる`Stream<E>`を生成する際、更新したエンティティを全件メモリ上に保持します。
+大量データの更新を行うとOOMEが発生する場合があるので、`updatesAndReturn`を使用する場合は更新する
+データの件数に気をつけてください。件数が多い場合は一度`updates`で更新した後に、再度検索するといった方法を検討してください。
+:::
+
+```java
+// 複数件の更新
+agent.updates(agent.query(Employee.class)
+  .stream()
+  .map(e -> {
+    e.setFirstName(e.getFirstName() + "_new");
+    return e;
+  })
+);
+```
+
+### 更新条件（UpdatesCondition）の指定
+
+更新用SQLの実行条件を指定します。  
+`UpdatesCondition<E>#test(SqlContext ctx, int count, E entity)`の戻り値が`true`の場合に更新用SQLを実行します。  
+`UpdatesCondition`はFunctionalInterfaceのためlambda式が利用できます。
+
+```java
+Stream<Employee> employees = agent.query(Employee.class)
+  .stream()
+  .map(e -> {
+    e.setFirstName(e.getFirstName() + "_new");
+    return e;
+  });
+  
+// 複数件の更新（10件毎に挿入）
+agent.updates(employees, (ctx, count, entity) -> count == 10);
 ```
 
 ## エンティティの削除
@@ -281,9 +433,13 @@ agent.find(Employee.class, 1).ifPresent(employee -> {
 
 |メソッド名|戻り値の型|
 |:---|:---|
-|SqlAgent#delete(Object)|int|
+|&lt;E&gt; SqlAgent#delete(E)|int|
+|&lt;E&gt; SqlAgent#deleteAndReturn(E) <Badge text="0.15.0+"/>|E|
 
 エンティティクラスのインスタンスを使って１レコードの削除を行います。
+
+`AndReturn`が付くメソッドでは、削除したエンティティオブジェクトを戻り値として取得できるため、
+エンティティの削除に続けて処理を行う場合に便利です。
 
 ```java
 agent.find(Employee.class, 1).ifPresent(employee -> {
@@ -307,14 +463,14 @@ agent.delete(Employee.class, 1, 2);
 
 |メソッド名|戻り値の型|
 |:---|:---|
-|SqlAgent#delete(Class<? extends E>)|SqlEntityDelete<E&gt;|
+|SqlAgent#delete(Class<? extends E>)|SqlEntityDelete&lt;E&gt;|
 
 削除対象のレコードを抽出する条件を指定して削除を行います。  
 抽出条件の指定方法は [抽出条件の指定](#抽出条件の指定) を参照してください。
 
 ```java
 // first_name = 'Bob' に該当するエンティティの削除
-agent.delete(Employee.class).contains("first_ame", "Bob").count();
+agent.delete(Employee.class).contains("firstName", "Bob").count();
 ```
 
 ## Entityアノテーション

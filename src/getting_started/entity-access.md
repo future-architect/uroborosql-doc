@@ -20,6 +20,7 @@ meta:
 |SqlEntityQuery#collect()|検索結果を`List<エンティティクラス>`の形式で取得する|
 |SqlEntityQuery#stream()|検索結果を`java.util.Stream`の形式で取得する|
 |SqlEntityQuery#first()|検索結果の１件目を取得する。戻り値は`Optional`|
+|SqlEntityQuery#one()|検索結果の１件目を取得する。検索結果が複数件になる場合は`DataNonUniqueException`をスローする。戻り値は`Optional`|
 
 まずはテーブルに紐づくエンティティクラスを作成します。
 
