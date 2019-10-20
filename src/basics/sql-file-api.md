@@ -673,12 +673,12 @@ try (SqlAgent agent = config.agent()) {
 
 |メソッド|説明|
 |:---|:---|
-|SqlFluent#outParam(String, int)|ストアドプロシージャからの戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します|
-|SqlFluent#outParam(String, SQLType)|ストアドプロシージャからの戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します|
-|SqlFluent#inOutParam(String, int)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します|
-|SqlFluent#inOutParam(String, SQLType)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します|
-|SqlFluent#inOutParamIfAbsent(String, int)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>指定したパラメータ名のパラメータが事前に登録されていない場合に値を追加します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します|
-|SqlFluent#inOutParamIfAbsent(String, SQLType)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>指定したパラメータ名のパラメータが事前に登録されていない場合に値を追加します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します|
+|ProcedureFluent#outParam(String, int)|ストアドプロシージャからの戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します|
+|ProcedureFluent#outParam(String, SQLType)|ストアドプロシージャからの戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します|
+|ProcedureFluent#inOutParam(String, int)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します|
+|ProcedureFluent#inOutParam(String, SQLType)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します|
+|ProcedureFluent#inOutParamIfAbsent(String, int)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>指定したパラメータ名のパラメータが事前に登録されていない場合に値を追加します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します|
+|ProcedureFluent#inOutParamIfAbsent(String, SQLType)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>指定したパラメータ名のパラメータが事前に登録されていない場合に値を追加します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します|
 
 ```java
 // Procedureインタフェースのインスタンスを取得
