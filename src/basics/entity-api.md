@@ -52,9 +52,9 @@ public class Employee {
 
 ### キーを指定した１件取得(`SqlAgent#find`)
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlAgent#find(Class&lt;E&gt;, Object...)|Optional&lt;E&gt;|
+| メソッド名                               | 戻り値の型        |
+| :--------------------------------------- | :---------------- |
+| SqlAgent#find(Class&lt;E&gt;, Object...) | Optional&lt;E&gt; |
 
 主キーを指定してエンティティを取得します。PKカラムの数と引数に指定するキーの数は合わせる必要があります。
 
@@ -65,41 +65,41 @@ Optional<Employee> employee = agent.find(Employee.class, 1);
 
 ### 条件指定検索(`SqlAgent#query`) <Badge text="0.11.0+"/>
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlAgent#query(Class&lt;E&gt;)|SqlEntityQuery&lt;E&gt;|
+| メソッド名                     | 戻り値の型              |
+| :----------------------------- | :---------------------- |
+| SqlAgent#query(Class&lt;E&gt;) | SqlEntityQuery&lt;E&gt; |
 
 エンティティクラスを利用した検索を行うためのオブジェクト（`SqlEntityQuery`)を取得します。  
 `SqlEntityQuery`に対して抽出条件の指定を行い、抽出条件に該当するエンティティを取得します。
 
 #### 抽出条件の指定
 
-|抽出条件指定メソッド記述例|生成されるwhere句の条件式|補足説明|
-|:-------|:---------------|:-------------|
-|equal("col", "value")|col = 'value'||
-|notEqual("col", "value")|col != 'value'||
-|greaterThan("col", 1)|col > 1||
-|lessThan("col", 1)|col < 1||
-|greaterEqual("col", 1)|col >= 1||
-|lessEqual("col", 1)|col <= 1||
-|in("col", "val1", "val2")|col in ('val1', 'val2')||
-|in("col", List.of("val1", "val2"))|col in ('val1', 'val2')||
-|notIn("col", "val1", "val2")|col not in ('val1', 'val2')||
-|notIn("col", List.of("val1", "val2"))|col not in ('val1', 'val2')||
-|like("col", "%val%")|like '%val%'|`val`はエスケープされない|
-|startsWith("col", "val")|like 'val%'|`val`はエスケープされる|
-|endsWith("col", "val")|like '%val'|`val`はエスケープされる|
-|contains("col", "val")|like '%val%'|`val`はエスケープされる|
-|notLike("col", "%val%")|not like '%val%'|`val`はエスケープされない|
-|notStartsWith("col", "val")|not like 'val%'|`val`はエスケープされる|
-|notEndsWith("col", "val")|not like '%val'|`val`はエスケープされる|
-|notContains("col", "val")|not like '%val%'|`val`はエスケープされる|
-|between("col", 1, 2)|col between 1 and 2||
-|isNull("col")|col is null||
-|isNotNull("col")|col is not null||
-|where("col = 1 or col = 2")|(col = 1 or col = 2) |もし複数回`where()`が呼び出された場合は条件を `AND` で結合する|
-|where("col = /\*col1\*/", "col1", 1)|(col = 1/\*col1\*/)|パラメータの指定（1件）付き|
-|where("col = /\*col1\*/ or col = /\*col2\*/", Map.of("col1", 1, "col2", 2))|(col = 1/\*col1\*/ or col = 2/\*col2\*/) |パラメータの指定（複数件）付き|
+| 抽出条件指定メソッド記述例                                                  | 生成されるwhere句の条件式                | 補足説明                                                       |
+| :-------------------------------------------------------------------------- | :--------------------------------------- | :------------------------------------------------------------- |
+| equal("col", "value")                                                       | col = 'value'                            |                                                                |
+| notEqual("col", "value")                                                    | col != 'value'                           |                                                                |
+| greaterThan("col", 1)                                                       | col > 1                                  |                                                                |
+| lessThan("col", 1)                                                          | col < 1                                  |                                                                |
+| greaterEqual("col", 1)                                                      | col >= 1                                 |                                                                |
+| lessEqual("col", 1)                                                         | col <= 1                                 |                                                                |
+| in("col", "val1", "val2")                                                   | col in ('val1', 'val2')                  |                                                                |
+| in("col", List.of("val1", "val2"))                                          | col in ('val1', 'val2')                  |                                                                |
+| notIn("col", "val1", "val2")                                                | col not in ('val1', 'val2')              |                                                                |
+| notIn("col", List.of("val1", "val2"))                                       | col not in ('val1', 'val2')              |                                                                |
+| like("col", "%val%")                                                        | like '%val%'                             | `val`はエスケープされない                                      |
+| startsWith("col", "val")                                                    | like 'val%'                              | `val`はエスケープされる                                        |
+| endsWith("col", "val")                                                      | like '%val'                              | `val`はエスケープされる                                        |
+| contains("col", "val")                                                      | like '%val%'                             | `val`はエスケープされる                                        |
+| notLike("col", "%val%")                                                     | not like '%val%'                         | `val`はエスケープされない                                      |
+| notStartsWith("col", "val")                                                 | not like 'val%'                          | `val`はエスケープされる                                        |
+| notEndsWith("col", "val")                                                   | not like '%val'                          | `val`はエスケープされる                                        |
+| notContains("col", "val")                                                   | not like '%val%'                         | `val`はエスケープされる                                        |
+| between("col", 1, 2)                                                        | col between 1 and 2                      |                                                                |
+| isNull("col")                                                               | col is null                              |                                                                |
+| isNotNull("col")                                                            | col is not null                          |                                                                |
+| where("col = 1 or col = 2")                                                 | (col = 1 or col = 2)                     | もし複数回`where()`が呼び出された場合は条件を `AND` で結合する |
+| where("col = /\*col1\*/", "col1", 1)                                        | (col = 1/\*col1\*/)                      | パラメータの指定（1件）付き                                    |
+| where("col = /\*col1\*/ or col = /\*col2\*/", Map.of("col1", 1, "col2", 2)) | (col = 1/\*col1\*/ or col = 2/\*col2\*/) | パラメータの指定（複数件）付き                                 |
 
 ```java
 // emp_no = 1 のレコードをList<Employee>で取得
@@ -124,18 +124,18 @@ agent.query(Employee.class).where("first_name =''/*firstName*/", "firstName", "B
 
 `SqlEntityQuery`では抽出条件に加えて検索結果のソート順や取得件数の制限、開始位置の指定、明示的なロック指定が行えます。
 
-|条件指定メソッド記述例|生成されるSQL|補足説明|
-|:-------|:---------------|:-------------|
-|asc("col1", "col2")| order by col1 asc, col2 asc|`NULLS`が有効な場合は`NULLS LAST`が出力される|
-|asc("col1", Nulls.FIRST)| order by col1 asc NULLS FIRST|複数回`asc()`が呼び出された場合は呼び出し順に並べる|
-|desc("col1", "col2")| order by col1 desc, col2 desc|`NULLS`が有効な場合は`NULLS LAST`が出力される|
-|desc("col1", Nulls.FIRST)| order by col1 desc NULLS FIRST|複数回`asc()`が呼び出された場合は呼び出し順に並べる|
-|limit(10)|LIMIT 10|接続しているDBで`limit`句が使用できない場合は`UroborosqlRuntimeException`がスローされる|
-|offset(10)|OFFSET 10|接続しているDBで`offset`句が使用できない場合は`UroborosqlRuntimeException`がスローされる|
-|forUpdate()<Badge text="0.14.0+" vertical="middle"/>|FOR UPDATE|接続しているDBで`FOR UPDATE`句が使用できない場合は`UroborosqlRuntimeException`がスローされる|
-|forUpdateNoWait()<Badge text="0.14.0+" vertical="middle"/>|FOR UPDATE NOWAIT|接続しているDBで`FOR UPDATE NOWAIT`句が使用できない場合は`UroborosqlRuntimeException`がスローされる|
-|forUpdateWait()<Badge text="0.14.0+" vertical="middle"/>|FOR UPDATE WAIT 10|接続しているDBで`FOR UPDATE WAIT`句が使用できない場合は`UroborosqlRuntimeException`がスローされる|
-|forUpdateWait(30)<Badge text="0.14.0+" vertical="middle"/>|FOR UPDATE WAIT 30|接続しているDBで`FOR UPDATE WAIT`句が使用できない場合は`UroborosqlRuntimeException`がスローされる|
+| 条件指定メソッド記述例                                     | 生成されるSQL                  | 補足説明                                                                                            |
+| :--------------------------------------------------------- | :----------------------------- | :-------------------------------------------------------------------------------------------------- |
+| asc("col1", "col2")                                        | order by col1 asc, col2 asc    | `NULLS`が有効な場合は`NULLS LAST`が出力される                                                       |
+| asc("col1", Nulls.FIRST)                                   | order by col1 asc NULLS FIRST  | 複数回`asc()`が呼び出された場合は呼び出し順に並べる                                                 |
+| desc("col1", "col2")                                       | order by col1 desc, col2 desc  | `NULLS`が有効な場合は`NULLS LAST`が出力される                                                       |
+| desc("col1", Nulls.FIRST)                                  | order by col1 desc NULLS FIRST | 複数回`asc()`が呼び出された場合は呼び出し順に並べる                                                 |
+| limit(10)                                                  | LIMIT 10                       | 接続しているDBで`limit`句が使用できない場合は`UroborosqlRuntimeException`がスローされる             |
+| offset(10)                                                 | OFFSET 10                      | 接続しているDBで`offset`句が使用できない場合は`UroborosqlRuntimeException`がスローされる            |
+| forUpdate()<Badge text="0.14.0+" vertical="middle"/>       | FOR UPDATE                     | 接続しているDBで`FOR UPDATE`句が使用できない場合は`UroborosqlRuntimeException`がスローされる        |
+| forUpdateNoWait()<Badge text="0.14.0+" vertical="middle"/> | FOR UPDATE NOWAIT              | 接続しているDBで`FOR UPDATE NOWAIT`句が使用できない場合は`UroborosqlRuntimeException`がスローされる |
+| forUpdateWait()<Badge text="0.14.0+" vertical="middle"/>   | FOR UPDATE WAIT 10             | 接続しているDBで`FOR UPDATE WAIT`句が使用できない場合は`UroborosqlRuntimeException`がスローされる   |
+| forUpdateWait(30)<Badge text="0.14.0+" vertical="middle"/> | FOR UPDATE WAIT 30             | 接続しているDBで`FOR UPDATE WAIT`句が使用できない場合は`UroborosqlRuntimeException`がスローされる   |
 
 ```java
 // birth_dateの降順、first_nameの昇順でソートした結果を List<Employee>で取得
@@ -152,12 +152,12 @@ agent.query(Employee.class).forUpdate().collect();
 
 `SqlEntityQuery`から抽出条件に該当するエンティティを取得します。
 
-|メソッド|説明|
-|:--|:--|
-|collect()|検索結果をエンティティのリストとして取得する|
-|first()|検索結果の先頭行を取得する|
-|one()|検索結果の先頭行を取得する。検索結果が2件以上の場合`DataNonUniqueException`をスローする|
-|stream()|検索結果を`java.util.stream.Stream`として取得する|
+| メソッド  | 説明                                                                                    |
+| :-------- | :-------------------------------------------------------------------------------------- |
+| collect() | 検索結果をエンティティのリストとして取得する                                            |
+| first()   | 検索結果の先頭行を取得する                                                              |
+| one()     | 検索結果の先頭行を取得する。検索結果が2件以上の場合`DataNonUniqueException`をスローする |
+| stream()  | 検索結果を`java.util.stream.Stream`として取得する                                       |
 
 ```java
 // List<Employee>で取得
@@ -171,15 +171,15 @@ Optional<Enployee> employee = agent.query(Employee.class).first();
 
 `SqlEntityQuery`ではエンティティを取得する他に結果の集計を行うこともできます。
 
-|メソッド|説明|
-|:--|:--|
-|count()|検索結果の件数を取得する|
-|count(String col)|検索結果のうち、引数で指定したカラムがNULLでない行の件数を取得する|
-|sum(String col)|検索結果のうち、引数で指定したカラムの合計値を取得する|
-|min(String col)|検索結果のうち、引数で指定したカラムの最小値を取得する|
-|max(String col)|検索結果のうち、引数で指定したカラムの最大値を取得する|
-|exists(Runnable runnable)|検索結果が1件以上ある場合に引数で渡した関数を実行する|
-|notExists(Runnable runnable)|検索結果が0件の場合に引数で渡した関数を実行する|
+| メソッド                     | 説明                                                               |
+| :--------------------------- | :----------------------------------------------------------------- |
+| count()                      | 検索結果の件数を取得する                                           |
+| count(String col)            | 検索結果のうち、引数で指定したカラムがNULLでない行の件数を取得する |
+| sum(String col)              | 検索結果のうち、引数で指定したカラムの合計値を取得する             |
+| min(String col)              | 検索結果のうち、引数で指定したカラムの最小値を取得する             |
+| max(String col)              | 検索結果のうち、引数で指定したカラムの最大値を取得する             |
+| exists(Runnable runnable)    | 検索結果が1件以上ある場合に引数で渡した関数を実行する              |
+| notExists(Runnable runnable) | 検索結果が0件の場合に引数で渡した関数を実行する                    |
 
 ```java
 // 検索結果の件数を取得
@@ -207,10 +207,10 @@ long count = agent.query(Employee.class).count();
 
 ### 1件の挿入(`SqlAgent#insert`/`SqlAgent#insertAndReturn`)
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|&lt;E&gt; SqlAgent#insert(E)|int|
-|&lt;E&gt; SqlAgent#insertAndReturn(E) <Badge text="0.15.0+"/>|E|
+| メソッド名                                                    | 戻り値の型 |
+| :------------------------------------------------------------ | :--------- |
+| &lt;E&gt; SqlAgent#insert(E)                                  | int        |
+| &lt;E&gt; SqlAgent#insertAndReturn(E) <Badge text="0.15.0+"/> | E          |
 
 エンティティクラスのインスタンスを使って１レコードの挿入を行います。  
 レコード挿入時、[@Id](#id-generatedvalue-sequencegenerator)アノテーションの指定があるフィールドに対するカラムは自動採番されます。  
@@ -233,24 +233,24 @@ System.out.println(employee.getEmpNo()); // 自動採番された値が出力さ
 
 ### 複数件の挿入(`SqlAgent#inserts`/`SqlAgent#insertsAndReturn`) <Badge text="0.10.0+"/>
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlAgent#inserts(Stream&lt;E&gt;)|int|
-|SqlAgent#inserts(Stream&lt;E&gt;, InsertsType)|int|
-|SqlAgent#inserts(Stream&lt;E&gt;, InsertsCondition<? super E>)|int|
-|SqlAgent#inserts(Stream&lt;E&gt;, InsertsCondition<? super E>, InsertsType)|int|
-|SqlAgent#insertsAndReturn(Stream&lt;E&gt;) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
-|SqlAgent#insertsAndReturn(Stream&lt;E&gt;, InsertsType) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
-|SqlAgent#insertsAndReturn(Stream&lt;E&gt;, InsertsCondition<? super E>) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
-|SqlAgent#insertsAndReturn(Stream&lt;E&gt;, InsertsCondition<? super E>, InsertsType) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
-|SqlAgent#inserts(Class&lt;E&gt;, Stream&lt;E&gt;)|int|
-|SqlAgent#inserts(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsType)|int|
-|SqlAgent#inserts(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsCondition<? super E>)|int|
-|SqlAgent#inserts(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsCondition<? super E>, InsertsType)|int|
-|SqlAgent#insertsAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
-|SqlAgent#insertsAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsType) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
-|SqlAgent#insertsAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsCondition<? super E>) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
-|SqlAgent#insertsAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsCondition<? super E>, InsertsType) <Badge text="0.15.0+"/>|Stream&lt;E&gt;|
+| メソッド名                                                                                                                   | 戻り値の型      |
+| :--------------------------------------------------------------------------------------------------------------------------- | :-------------- |
+| SqlAgent#inserts(Stream&lt;E&gt;)                                                                                            | int             |
+| SqlAgent#inserts(Stream&lt;E&gt;, InsertsType)                                                                               | int             |
+| SqlAgent#inserts(Stream&lt;E&gt;, InsertsCondition<? super E>)                                                               | int             |
+| SqlAgent#inserts(Stream&lt;E&gt;, InsertsCondition<? super E>, InsertsType)                                                  | int             |
+| SqlAgent#insertsAndReturn(Stream&lt;E&gt;) <Badge text="0.15.0+"/>                                                           | Stream&lt;E&gt; |
+| SqlAgent#insertsAndReturn(Stream&lt;E&gt;, InsertsType) <Badge text="0.15.0+"/>                                              | Stream&lt;E&gt; |
+| SqlAgent#insertsAndReturn(Stream&lt;E&gt;, InsertsCondition<? super E>) <Badge text="0.15.0+"/>                              | Stream&lt;E&gt; |
+| SqlAgent#insertsAndReturn(Stream&lt;E&gt;, InsertsCondition<? super E>, InsertsType) <Badge text="0.15.0+"/>                 | Stream&lt;E&gt; |
+| SqlAgent#inserts(Class&lt;E&gt;, Stream&lt;E&gt;)                                                                            | int             |
+| SqlAgent#inserts(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsType)                                                               | int             |
+| SqlAgent#inserts(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsCondition<? super E>)                                               | int             |
+| SqlAgent#inserts(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsCondition<? super E>, InsertsType)                                  | int             |
+| SqlAgent#insertsAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;) <Badge text="0.15.0+"/>                                           | Stream&lt;E&gt; |
+| SqlAgent#insertsAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsType) <Badge text="0.15.0+"/>                              | Stream&lt;E&gt; |
+| SqlAgent#insertsAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsCondition<? super E>) <Badge text="0.15.0+"/>              | Stream&lt;E&gt; |
+| SqlAgent#insertsAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;, InsertsCondition<? super E>, InsertsType) <Badge text="0.15.0+"/> | Stream&lt;E&gt; |
 
 `java.util.stream.Stream`経由で渡される複数のエンティティインスタンスを挿入します。
 
@@ -287,10 +287,10 @@ agent.inserts(agent.insertsAndReturn(agent.query(Employee.class).stream())
 
 `InsertsType`を指定することで実行される挿入用のSQLを変更することが出来ます。
 
-|InsertsType|説明|
-|:---|:---|
-|BULK|`insert into ... values ( ... ), ( ... )`という風にvaluesに複数行の値を出力し一度に複数レコードを挿入する。<br>DBがこの記法をサポートしている場合に指定可能。DBが未サポートの場合、指定しても`BATCH`として実行される。|
-|BATCH|`java.sql.PreparedStatement#executeBatch()`を使用したバッチSQL実行|
+| InsertsType | 説明                                                                                                                                                                                                                   |
+| :---------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| BULK        | `insert into ... values ( ... ), ( ... )`という風にvaluesに複数行の値を出力し一度に複数レコードを挿入する。<br>DBがこの記法をサポートしている場合に指定可能。DBが未サポートの場合、指定しても`BATCH`として実行される。 |
+| BATCH       | `java.sql.PreparedStatement#executeBatch()`を使用したバッチSQL実行                                                                                                                                                     |
 
 ```java
 Stream<Employee> employees = agent.query(Employee.class)
@@ -325,10 +325,10 @@ agent.inserts(employees, (ctx, count, entity) -> count == 10);
 
 ### 1件の更新(`SqlAgent#update`/`SqlAgent#updateAndReturn`)
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|&lt;E&gt; SqlAgent#update(E)|int|
-|&lt;E&gt; SqlAgent#updateAndReturn(E) <Badge text="0.15.0+"/>|E|
+| メソッド名                                                    | 戻り値の型 |
+| :------------------------------------------------------------ | :--------- |
+| &lt;E&gt; SqlAgent#update(E)                                  | int        |
+| &lt;E&gt; SqlAgent#updateAndReturn(E) <Badge text="0.15.0+"/> | E          |
 
 エンティティクラスのインスタンスを使って１レコードの更新を行います。
 
@@ -351,9 +351,9 @@ agent.find(Employee.class, 1).ifPresent(employee -> {
 
 ### 条件指定による複数件の更新(`SqlAgent#update`) <Badge text="0.15.0+"/>
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlAgent#update(Class<? extends E>)|SqlEntityUpdate&lt;E&gt;|
+| メソッド名                          | 戻り値の型               |
+| :---------------------------------- | :----------------------- |
+| SqlAgent#update(Class<? extends E>) | SqlEntityUpdate&lt;E&gt; |
 
 更新対象のレコードを抽出する条件を指定して更新を行います。  
 抽出条件の指定方法は [抽出条件の指定](#抽出条件の指定) を参照してください。  
@@ -369,16 +369,16 @@ agent.update(Employee.class)
 
 ### 複数件の更新(`SqlAgent#updates`/`SqlAgent#updatesAndReturn`) <Badge text="0.15.0+"/>
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlAgent#updates(Stream&lt;E&gt;)|int|
-|SqlAgent#updates(Stream&lt;E&gt;, UpdatesCondition<? super E>)|int|
-|SqlAgent#updatesAndReturn(Stream&lt;E&gt;)|Stream&lt;E&gt;|
-|SqlAgent#updatesAndReturn(Stream&lt;E&gt;, UpdatesCondition<? super E>)|Stream&lt;E&gt;|
-|SqlAgent#updates(Class&lt;E&gt;, Stream&lt;E&gt;)|int|
-|SqlAgent#updates(Class&lt;E&gt;, Stream&lt;E&gt;, UpdatesCondition<? super E>)|int|
-|SqlAgent#updatesAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;)|Stream&lt;E&gt;|
-|SqlAgent#updatesAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;, UpdatesCondition<? super E>)|Stream&lt;E&gt;|
+| メソッド名                                                                              | 戻り値の型      |
+| :-------------------------------------------------------------------------------------- | :-------------- |
+| SqlAgent#updates(Stream&lt;E&gt;)                                                       | int             |
+| SqlAgent#updates(Stream&lt;E&gt;, UpdatesCondition<? super E>)                          | int             |
+| SqlAgent#updatesAndReturn(Stream&lt;E&gt;)                                              | Stream&lt;E&gt; |
+| SqlAgent#updatesAndReturn(Stream&lt;E&gt;, UpdatesCondition<? super E>)                 | Stream&lt;E&gt; |
+| SqlAgent#updates(Class&lt;E&gt;, Stream&lt;E&gt;)                                       | int             |
+| SqlAgent#updates(Class&lt;E&gt;, Stream&lt;E&gt;, UpdatesCondition<? super E>)          | int             |
+| SqlAgent#updatesAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;)                              | Stream&lt;E&gt; |
+| SqlAgent#updatesAndReturn(Class&lt;E&gt;, Stream&lt;E&gt;, UpdatesCondition<? super E>) | Stream&lt;E&gt; |
 
 `java.util.stream.Stream`経由で渡される複数のエンティティインスタンスを使って更新します。
 
@@ -431,10 +431,10 @@ agent.updates(employees, (ctx, count, entity) -> count == 10);
 
 ### 1件の削除(`SqlAgent#delete`)
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|&lt;E&gt; SqlAgent#delete(E)|int|
-|&lt;E&gt; SqlAgent#deleteAndReturn(E) <Badge text="0.15.0+"/>|E|
+| メソッド名                                                    | 戻り値の型 |
+| :------------------------------------------------------------ | :--------- |
+| &lt;E&gt; SqlAgent#delete(E)                                  | int        |
+| &lt;E&gt; SqlAgent#deleteAndReturn(E) <Badge text="0.15.0+"/> | E          |
 
 エンティティクラスのインスタンスを使って１レコードの削除を行います。
 
@@ -450,9 +450,9 @@ agent.find(Employee.class, 1).ifPresent(employee -> {
 
 ### PKを指定した複数件の削除(`SqlAgent#delete`) <Badge text="0.11.0+"/>
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlAgent#delete(Class<? extends E>, Object...)|int|
+| メソッド名                                     | 戻り値の型 |
+| :--------------------------------------------- | :--------- |
+| SqlAgent#delete(Class<? extends E>, Object...) | int        |
 
 ```java
 // PK(emp_no) = 1 or 2 のエンティティの削除
@@ -461,9 +461,9 @@ agent.delete(Employee.class, 1, 2);
 
 ### 条件指定による複数件の削除(`SqlAgent#delete`) <Badge text="0.11.0+"/>
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlAgent#delete(Class<? extends E>)|SqlEntityDelete&lt;E&gt;|
+| メソッド名                          | 戻り値の型               |
+| :---------------------------------- | :----------------------- |
+| SqlAgent#delete(Class<? extends E>) | SqlEntityDelete&lt;E&gt; |
 
 削除対象のレコードを抽出する条件を指定して削除を行います。  
 抽出条件の指定方法は [抽出条件の指定](#抽出条件の指定) を参照してください。
@@ -471,6 +471,27 @@ agent.delete(Employee.class, 1, 2);
 ```java
 // first_name = 'Bob' に該当するエンティティの削除
 agent.delete(Employee.class).contains("firstName", "Bob").count();
+```
+
+### 全ての行を削除（`SqlAgent#truncate`） <Badge text="0.17.0+"/>
+
+| メソッド名                            | 戻り値の型 |
+| :------------------------------------ | :--------- |
+| SqlAgent#truncate(Class<? extends E>) | SqlAgent   |
+
+エンティティクラスとマッピングされているテーブルの全てのレコードを`TRUNCATE`文により削除します。
+一般的に大量レコードの削除は、`TRUNCATE`文による削除のほうが性能上有利ですが、ロールバックできませんので、注意してください。
+
+`SqlAgent#truncate`は、`SqlAgent`を戻り値として返すため、`SqlAgent#truncate`に続けて、`SqlAgent#inserts`をつなげることにより、
+テーブルの洗い替えを実装することが可能です。
+
+```java
+// 全てのレコードを削除
+agent.truncate(Employee.class);
+
+// テーブルの洗い替え
+agent.truncate(Employee.class)
+     .inserts(employees.stream());
 ```
 
 ## Entityアノテーション
@@ -482,10 +503,10 @@ DAOインタフェースで利用するエンティティクラスではテー�
 エンティティクラスに紐づけるテーブル名を指定します。  
 テーブル名と名前が一致しないエンティティクラスにマッピングしたい場合に利用します。
 
-|属性名|型|必須|説明|初期値|
-|:---|:---|:--:|:---|:---|
-|name|String|-|マッピングするテーブル名。指定しない場合はクラス名をスネークケースにしたテーブルとマッピングする|なし|
-|schema|String|-|マッピングするテーブルの所属するスキーマ名|なし|
+| 属性名 | 型     | 必須  | 説明                                                                                             | 初期値 |
+| :----- | :----- | :---: | :----------------------------------------------------------------------------------------------- | :----- |
+| name   | String |   -   | マッピングするテーブル名。指定しない場合はクラス名をスネークケースにしたテーブルとマッピングする | なし   |
+| schema | String |   -   | マッピングするテーブルの所属するスキーマ名                                                       | なし   |
 
 ```java
 import jp.co.future.uroborosql.mapping.annotations.Table;
@@ -508,9 +529,9 @@ public class CustomEmployee {
 フィールドに紐づけるカラム名を指定します。  
 カラム名と名前が一致しないフィールドにマッピングしたい場合に利用します。
 
-|属性名|型|必須|説明|初期値|
-|:---|:---|:--:|:---|:---|
-|name|String|〇|マッピングするカラム名|なし|
+| 属性名 | 型     | 必須  | 説明                   | 初期値 |
+| :----- | :----- | :---: | :--------------------- | :----- |
+| name   | String |  〇   | マッピングするカラム名 | なし   |
 
 ```java
 import jp.co.future.uroborosql.mapping.annotations.Table;
@@ -531,12 +552,12 @@ public class Employee {
 
 独自に作成した型(ドメインクラス)のフィールドにカラムをマッピングする場合に指定します。
 
-|属性名|型|必須|説明|初期値|
-|:---|:---|:--:|:---|:---|
-|valueType|Class<?>|〇|ドメインクラスを生成するのに必要な値の型|なし|
-|factoryMethod|String|-|ドメインクラスを生成・取得するメソッド名。指定しない場合はコンストラクタが呼び出される。|""|
-|toJdbcMethod|String|-|JDBCが受け付けられる値に変換するメソッド名|"getValue"|
-|nullable|boolean|-|null可かどうかの指定|false|
+| 属性名        | 型       | 必須  | 説明                                                                                     | 初期値     |
+| :------------ | :------- | :---: | :--------------------------------------------------------------------------------------- | :--------- |
+| valueType     | Class<?> |  〇   | ドメインクラスを生成するのに必要な値の型                                                 | なし       |
+| factoryMethod | String   |   -   | ドメインクラスを生成・取得するメソッド名。指定しない場合はコンストラクタが呼び出される。 | ""         |
+| toJdbcMethod  | String   |   -   | JDBCが受け付けられる値に変換するメソッド名                                               | "getValue" |
+| nullable      | boolean  |   -   | null可かどうかの指定                                                                     | false      |
 
 例
 
@@ -579,10 +600,10 @@ public class Employee {
 INSERT/UPDATEの対象から除外したいケースで利用します。
 :::
 
-|属性名|型|必須|説明|初期値|
-|:---|:---|:--:|:---|:---|
-|insert|boolean|-|`agent#insert()`実行時にフィールドを無視するかどうか。`true`の場合は無視する。|true|
-|update|boolean|-|`agent#update()`実行時にフィールドを無視するかどうか。`true`の場合は無視する。|true|
+| 属性名 | 型      | 必須  | 説明                                                                           | 初期値 |
+| :----- | :------ | :---: | :----------------------------------------------------------------------------- | :----- |
+| insert | boolean |   -   | `agent#insert()`実行時にフィールドを無視するかどうか。`true`の場合は無視する。 | true   |
+| update | boolean |   -   | `agent#update()`実行時にフィールドを無視するかどうか。`true`の場合は無視する。 | true   |
 
 例
 
@@ -611,21 +632,31 @@ public class Employee {
 ### `@Version`
 
 このアノテーションが付与されたフィールドは楽観ロック用のバージョン情報を保持するフィールドになります。  
-UPDATE時にはSET句で+1され、WHERE句の検索条件に追加されてSQLを実行し更新件数が0の場合には`OptimisticLockException`をスローします。
+デフォルト(`LockVersionOptimisticLockSupplier`)ではUPDATE時にはSET句で+1され、WHERE句の検索条件に追加されてSQLを実行し更新件数が0の場合には`OptimisticLockException`をスローします。
 
 ::: warning
 `@Version`を付与するフィールドにマッピングされるDBカラムの型は数値型でなければなりません。
 :::
 
-|属性名|型|必須|説明|初期値|
-|:---|:---|:--:|:---|:---|
-|なし|-|-|-|-|
+| 属性名                           | 型                     | 必須  | 説明                 | 初期値                            |
+| :------------------------------- | :--------------------- | :---: | :------------------- | :-------------------------------- |
+| supplier<Badge text="0.17.0+"/> | OptimisticLockSupplier |   -   | バージョン情報カラム | LockVersionOptimisticLockSupplier |
+
+#### サプライヤの種類
+
+| サプライヤ型                            | 概要                       | 説明                                                                                          |
+| --------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------- |
+| LockVersionOptimisticLockSupplier       | ロックバージョン           | UPDATEのSET句で`+1`がセットされます。                                                         |
+| CyclicLockVersionOptimisticLockSupplier | 循環式ロックバージョン     | UPDATEのSET句で`バージョン情報カラム名 % 数値カラムの最大値 + 1`がセットされます。            |
+| TimestampOptimisticLockSupplier         | タイムスタンプ             | UPDATEのSET句でタイムスタンプ(`System.currentTimeMillis()`)がセットされます。                 |
+| FieldIncrementOptimisticLockSupplier    | フィールド値インクリメント | UPDATEのSET句で2WaySQLのバインド変数を利用して、`バージョン情報カラム名＋1`がセットされます。 |
 
 例
 
 ```java
 import jp.co.future.uroborosql.mapping.annotations.Table;
 import jp.co.future.uroborosql.mapping.annotations.Version;
+import jp.co.future.uroborosql.mapping.TimestampOptimisticLockSupplier;
 
 @Table
 public class Employee {
@@ -635,7 +666,7 @@ public class Employee {
 
 　　// 途中略
 
-  @version
+  @Version(supplier = TimestampOptimisticLockSupplier.class)
   private long lockVersion = 0;
 
   // 以下略
@@ -648,19 +679,19 @@ public class Employee {
 `@Id`と`@GeneratedValue`は必ずセットでフィールドに付与する必要があります。  
 `@GeneratedValue`のstrategy属性が`GenerationType.SEQUENCE`の場合に`@SequenceGenerator`を付与してシーケンスの生成方法を指定する必要があります。
 
-|アノテーション|説明|
-|:---|:---|
-|@Id|エンティティの主キーを識別するアノテーション|
-|@GeneratedValue|主キーの値の生成戦略を指定するアノテーション|
-|@SequenceGenerator|SEQUENCEによるID生成を設定するアノテーション|
+| アノテーション     | 説明                                         |
+| :----------------- | :------------------------------------------- |
+| @Id                | エンティティの主キーを識別するアノテーション |
+| @GeneratedValue    | 主キーの値の生成戦略を指定するアノテーション |
+| @SequenceGenerator | SEQUENCEによるID生成を設定するアノテーション |
 
-|アノテーション|属性名|型|必須|説明|初期値|
-|:---|:---|:---|:--:|:---|:---|
-|@Id|なし|-|-|-|-|
-|@GeneratedValue|strategy|GenerationType|-|主キー生成戦略の型。`GenerationType.IDENTITY`, `GenerationType.SEQUENCE`のいずれかを指定|GenerationType.IDENTITY|
-|@SequenceGenerator|sequence|String|〇|シーケンス名|なし|
-|@SequenceGenerator|catalog|String|-|シーケンスが所属するカタログ名|""|
-|@SequenceGenerator|schema|String|-|シーケンスが所属するスキーマ名|""|
+| アノテーション     | 属性名   | 型             | 必須  | 説明                                                                                     | 初期値                  |
+| :----------------- | :------- | :------------- | :---: | :--------------------------------------------------------------------------------------- | :---------------------- |
+| @Id                | なし     | -              |   -   | -                                                                                        | -                       |
+| @GeneratedValue    | strategy | GenerationType |   -   | 主キー生成戦略の型。`GenerationType.IDENTITY`, `GenerationType.SEQUENCE`のいずれかを指定 | GenerationType.IDENTITY |
+| @SequenceGenerator | sequence | String         |  〇   | シーケンス名                                                                             | なし                    |
+| @SequenceGenerator | catalog  | String         |   -   | シーケンスが所属するカタログ名                                                           | ""                      |
+| @SequenceGenerator | schema   | String         |   -   | シーケンスが所属するスキーマ名                                                           | ""                      |
 
 ```java
 import jp.co.future.uroborosql.mapping.annotations.Table;
