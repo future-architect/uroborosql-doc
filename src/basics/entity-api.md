@@ -480,7 +480,11 @@ agent.delete(Employee.class).contains("firstName", "Bob").count();
 | SqlAgent#truncate(Class<? extends E>) | SqlAgent   |
 
 エンティティクラスとマッピングされているテーブルの全てのレコードを`TRUNCATE`文により削除します。
-一般的に大量レコードの削除は、`TRUNCATE`文による削除のほうが性能上有利ですが、ロールバックできませんので、注意してください。
+一般的に大量レコードの削除は、`TRUNCATE`文による削除のほうが性能上有利ですが、DBMSによってはロールバックできませんので、注意してください。
+
+:::tip
+PostgreSQLは、`TRUNCATE`文のロールバック可能です。
+:::
 
 `SqlAgent#truncate`は、`SqlAgent`を戻り値として返すため、`SqlAgent#truncate`に続けて、`SqlAgent#inserts`をつなげることにより、
 テーブルの洗い替えを実装することが可能です。
