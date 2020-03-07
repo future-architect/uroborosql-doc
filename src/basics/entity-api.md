@@ -148,16 +148,38 @@ agent.query(Employee.class).asc("emp_no").offset(3).limit(5).collect();
 agent.query(Employee.class).forUpdate().collect();
 ```
 
+#### オプティマイザーヒントの指定 <Badge text="0.18.0+"/>
+
+`SqlEntityQuery#hint()`を使用することで、SQLに対してオプティマイザーヒントを指定することができます。
+
+```java
+SqlAgent agent = ...
+agent.query(User.class).hint("ORDERED").lessThan("age", 30).collect();
+```
+
+出力されるSQL(Oracleの場合)
+
+```sql
+select /*+ ORDERED */ id, name, age, ... from user where age < 30
+```
+
+::: warning 注意
+オプティマイザーヒントの指定は、利用するDBがオプティマイザーヒントをサポートしている場合に有効になります。  
+また、指定可能なヒント句は利用するDBに依存します。
+:::
+
+
 #### 検索結果の取得
 
 `SqlEntityQuery`から抽出条件に該当するエンティティを取得します。
 
-| メソッド  | 説明                                                                                    |
-| :-------- | :-------------------------------------------------------------------------------------- |
-| collect() | 検索結果をエンティティのリストとして取得する                                            |
-| first()   | 検索結果の先頭行を取得する                                                              |
-| one()     | 検索結果の先頭行を取得する。検索結果が2件以上の場合`DataNonUniqueException`をスローする |
-| stream()  | 検索結果を`java.util.stream.Stream`として取得する                                       |
+| メソッド                                                                        | 説明                                                                                    |
+| :------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------- |
+| collect()                                                                       | 検索結果をエンティティのリストとして取得する                                            |
+| first()                                                                         | 検索結果の先頭行を取得する                                                              |
+| one()                                                                           | 検索結果の先頭行を取得する。検索結果が2件以上の場合`DataNonUniqueException`をスローする |
+| Stream&lt;C&gt; select(String col, Class&lt;C&gt; type) <Badge text="0.18.0+"/> | 検索結果の指定したカラムの値を`java.util.stream.Stream`として取得する。                 |
+| stream()                                                                        | 検索結果を`java.util.stream.Stream`として取得する                                       |
 
 ```java
 // List<Employee>で取得
@@ -165,6 +187,11 @@ List<Enployee> employees = agent.query(Employee.class).collect();
 
 // 検索結果の先頭行を取得
 Optional<Enployee> employee = agent.query(Employee.class).first();
+
+// 検索結果（カラム値）の取得
+String employeeName = agent.query(Employee.class)
+    .equal("employeeId", 1)
+    .select("employeeName", String.class).findFirst().get();
 ```
 
 #### 集約関数 <Badge text="0.12.0+"/>
@@ -194,6 +221,7 @@ agent.query(Employee.class).greaterThan("emp_no", 10).exists(() -> {
 ::: tip
 集約関数を使用すると、検索結果からEntityオブジェクトを生成しないためメモリ効率が良くなります。
 以下２つの処理結果は同じですが、メモリの使い方が違います。
+
 ```java
 // collect()を使用すると、検索結果がエンティティに変換されるためメモリを使用する
 long count = agent.query(Employee.class).collect().size();
@@ -201,6 +229,7 @@ long count = agent.query(Employee.class).collect().size();
 // count()を使用すると件数のみ取得できる（エンティティは生成されない）
 long count = agent.query(Employee.class).count();
 ```
+
 :::
 
 ## エンティティの挿入
@@ -213,8 +242,13 @@ long count = agent.query(Employee.class).count();
 | &lt;E&gt; SqlAgent#insertAndReturn(E) <Badge text="0.15.0+"/> | E          |
 
 エンティティクラスのインスタンスを使って１レコードの挿入を行います。  
-レコード挿入時、[@Id](#id-generatedvalue-sequencegenerator)アノテーションの指定があるフィールドに対するカラムは自動採番されます。  
-また、採番された値がエンティティの該当フィールドにも設定されます。
+
+* [@Id](#id-generatedvalue-sequencegenerator)アノテーションの指定があるフィールド
+* 対するカラムが自動採番となっているフィールド
+
+の型がprimitive型の場合、もしくはフィールドの値が`null`の場合、カラムの値は挿入時に自動採番されます。  
+また、挿入により採番された値がエンティティの該当フィールドにも設定されます。  
+フィールドに値を指定した場合は自動採番カラムであっても指定した値が挿入されます。  
 
 `AndReturn`が付くメソッドでは、挿入したエンティティオブジェクトを戻り値として取得できるため、
 エンティティの挿入に続けて処理を行う場合に便利です。
@@ -254,13 +288,26 @@ System.out.println(employee.getEmpNo()); // 自動採番された値が出力さ
 
 `java.util.stream.Stream`経由で渡される複数のエンティティインスタンスを挿入します。
 
-レコード挿入時、[@Id](#id-generatedvalue-sequencegenerator)アノテーションの指定があるフィールドに対するカラムは自動採番されます。  
-また、採番された値がエンティティの該当フィールドにも設定されます。
+
+* [@Id](#id-generatedvalue-sequencegenerator)アノテーションの指定があるフィールド
+* 対するカラムが自動採番となっているフィールド
+
+の型がprimitive型の場合、もしくはフィールドの値が`null`の場合、カラムの値は挿入時に自動採番されます。  
+また、挿入により採番された値がエンティティの該当フィールドにも設定されます。  
+フィールドに値を指定した場合は自動採番カラムであっても指定した値が挿入されます。  
+
+::: warning 注意
+複数件の挿入で生成されるSQLでは、行毎のフィールドの値の有無を変更することができません。  
+最初に挿入するエンティティで`@Id`の指定があるフィールドや自動採番カラムに対するフィールドに値を設定する場合は、
+2件目以降のエンティティにも必ず値を設定するようにしてください。  
+また、最初に挿入するエンティティで`@Id`の指定があるフィールドや自動採番カラムに対するフィールドの値に`null`を設定する場合は、
+2件目以降のエンティティで値を設定していても無視されて自動採番されます。  
+:::
 
 `AndReturn`が付くメソッドでは、挿入したエンティティオブジェクトの`java.util.stream.Stream`を戻り値として取得できるため、 
 エンティティの挿入に続けて処理を行う場合に便利です。
 
-::: warning
+::: warning 注意
 `AndReturn`の戻り値となる`Stream<E>`を生成する際、挿入したエンティティを全件メモリ上に保持します。
 大量データの挿入を行うとOOMEが発生する場合があるので、`insertsAndReturn`を使用する場合は挿入する
 データの件数に気をつけてください。件数が多い場合は一度`inserts`で挿入した後に、再度検索するといった方法を検討してください。
@@ -334,6 +381,11 @@ agent.inserts(employees, (ctx, count, entity) -> count == 10);
 
 レコード更新時、[@Version](#version)アノテーションの指定があるフィールドに対するカラムはカウントアップされます。  
 また、更新された値がエンティティの該当フィールドにも設定されます。
+
+::: warning 補足
+エンティティクラスのインスタンスを使った１レコードの更新では、`@Id`を指定したフィールドに対するカラムや自動採番カラムは更新できません。  
+`@Id`を指定したフィールドに対するカラムや自動採番カラムを更新する場合は、後述する[条件指定による複数件の更新](#条件指定による複数件の更新-sqlagent-update)を使用してください。
+:::
 
 `AndReturn`が付くメソッドでは、更新したエンティティオブジェクトを戻り値として取得できるため、 
 エンティティの更新に続けて処理を行う場合に便利です。
@@ -642,8 +694,8 @@ public class Employee {
 `@Version`を付与するフィールドにマッピングされるDBカラムの型は数値型でなければなりません。
 :::
 
-| 属性名                           | 型                     | 必須  | 説明                 | 初期値                            |
-| :------------------------------- | :--------------------- | :---: | :------------------- | :-------------------------------- |
+| 属性名                          | 型                     | 必須  | 説明                 | 初期値                            |
+| :------------------------------ | :--------------------- | :---: | :------------------- | :-------------------------------- |
 | supplier<Badge text="0.17.0+"/> | OptimisticLockSupplier |   -   | バージョン情報カラム | LockVersionOptimisticLockSupplier |
 
 #### サプライヤの種類

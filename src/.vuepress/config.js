@@ -70,7 +70,7 @@ module.exports = {
         collapsable: true,
         children: [
           '/background/',
-          '/background/ognl',
+          '/background/el',
         ]
       },
       {

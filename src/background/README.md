@@ -73,7 +73,7 @@ and  emp.gender  in  (?, ?)/*gender_list*/
 
 ### LIKE句の利用方法
 
-LIKE句に対してバインドパラメータを使用する場合は、以下のように[StringFunction](./ognl.md#stringfunction-sf)を使って記述してください。
+LIKE句に対してバインドパラメータを使用する場合は、以下のように[StringFunction](./el.md#stringfunction-sf)を使って記述してください。
 
 ```sql
 select
@@ -116,7 +116,7 @@ and emp.last_name  like 'D$_%' escape '$'  -- _がエスケープされる
 ```
 
 ::: tip
-ワイルドカード（`%`や`_`）を含む文字列がバインドパラメータに指定された場合でも、[StringFunction](./ognl.md#stringfunction-sf)を利用することで文字列のエスケープ処理が適切に行われます。
+ワイルドカード（`%`や`_`）を含む文字列がバインドパラメータに指定された場合でも、[StringFunction](./el.md#stringfunction-sf)を利用することで文字列のエスケープ処理が適切に行われます。
 :::
 
 ::: warning
@@ -220,8 +220,8 @@ where
 /*END*/
 ```
 
-`/*IF*/`, `/*ELIF*/`の評価式としてOGNL式言語を利用します。
-（ OGNL式言語の説明は[こちら](./ognl.md#ognl式言語) )  
+`/*IF*/`, `/*ELIF*/`の評価式として式言語を利用します。
+（ 式言語の説明は[こちら](./el.md#式言語) )  
 また、標準でSF関数(*S*tring *F*unction)を使うことができます。
 
 ```sql
