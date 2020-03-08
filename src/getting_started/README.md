@@ -61,9 +61,6 @@ meta:
 Gradleプロジェクトの場合は、**build.gradle**のdependencies内に以下のライブラリ依存関係を追加してください。
 
 ```groovy
-<<<<<<< HEAD
-compile group: 'jp.co.future', name: 'uroborosql', version: '0.17.0'
-=======
 compile group: 'jp.co.future', name: 'uroborosql', version: '0.18.0'
 
 // 式言語ライブラリとしてOGNLを使用する場合
@@ -71,7 +68,6 @@ compile group: 'ognl', name: 'ognl', version: '3.1.23'
 // 式言語ライブラリとしてSpring Expression Language(SpEL)を使用する場合
 compile group: 'org.springframework', name: 'spring-expression', version: '5.2.3.RELEASE'
 
->>>>>>> add v0.18.0 feature
 // REPLを使用する場合
 compile group: 'org.jline', name: 'jline', version: '3.11.0'
 compile group: 'org.fusesource.jansi', name: 'jansi', version: '1.18'
