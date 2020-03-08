@@ -42,7 +42,7 @@ SqlConfig config = UroboroSQL.builder(...)
   ).build();
 ```
 
-## フェッチサイズと検索タイムアウト設定
+## フェッチサイズと検索タイムアウト設定 ( `SqlAgentFactory#setFetchSize` / `SqlAgentFactory#setQueryTimeout`  )
 
 `SqlAgent`で検索処理を行う際、データベースから一度に取得する行数（`fetchSize`）や
 検索タイムアウト時間（秒）（`queryTimeout`）の初期値を指定することが出来ます。
@@ -63,7 +63,7 @@ SqlConfig config = UroboroSQL.builder(...)
 fetchSizeは、[Statement.setFetchSize](https://docs.oracle.com/javase/jp/8/docs/api/java/sql/Statement.html#setFetchSize-int-)に渡される値です。collect/foreachメソッドで返却される結果セットの行数を制限する設定ではありません。
 :::
 
-## 例外発生時のログ出力を行うかどうかを設定
+## 例外発生時のログ出力を行うかどうかを設定 ( `SqlAgentFactory#setOutputExceptionLog` )
 
 SQL実行時にSQL例外が発生した場合に、発生した例外と実行したSQLの詳細情報を出力するかどうかを指定できます。
 指定しない場合`false`になります。
@@ -77,7 +77,7 @@ SqlConfig config = UroboroSQL.builder(...)
   ).build();
 ```
 
-## SQL_IDの置換文字列設定
+## SQL_IDの置換文字列設定 ( `SqlAgentFactory#setSqlIdKeyName` )
 
 SQL文に特定の置換文字列をSQLコメントとして記述することで、SQL実行時に実行したSQLの元となるSQLファイルを特定するための
 情報（SQL_ID）を埋め込むことが出来ます。SQL_IDを埋め込むことでSQLログやDBのSQL履歴で実行されたSQLの元となるファイルを
@@ -137,7 +137,7 @@ where
   dept.dept_no  = 1/*deptNo*/
 ```
 
-## CaseFormatの初期値設定
+## CaseFormatの初期値設定 ( `SqlAgentFactory#setDefaultMapKeyCaseFormat` )
 
 SQLによる検索で、以下のメソッドを使用して`List<Map<String, Object>>`や`Map<String, Object>`を取得する際、
 取得したMapのキー名に対する書式の初期値を指定することが出来ます。
@@ -187,7 +187,7 @@ agent.query("department/select_department").collect();
 ]
 ```
 
-## 複数件挿入時の挿入方法の初期値設定
+## 複数件挿入時の挿入方法の初期値設定 ( `SqlAgentFactory#setDefaultInsertsType` )
 
 `SqlAgent#inserts()`メソッドで使用する[InsertsType](../basics/entity-api.md#挿入方法（insertstype）の指定)の初期値を設定することが出来ます。
 指定しない場合`InsertsType.BULK`になります。
@@ -203,7 +203,7 @@ SqlConfig config = UroboroSQL.builder(...)
 
 
 
-## SQL実行のリトライ
+## SQL実行のリトライ ( `SqlAgentFactory#setSqlRetryCodeList` / `SqlAgentFactory#setDefaultMaxRetryCount` / `SqlAgentFactory#setDefaultSqlRetryWaitTime` )
 
 SQLを実行した際、タイミングによって発生する例外（テーブルロックエラーなど）の場合はリトライを行い、
 できるだけ正常に処理を終了させたい場合があります。  
@@ -289,7 +289,7 @@ try (SqlAgent agent = config.agent()) {
 }
 ```
 
-## DB更新処理をトランザクション内のみに強制 <Badge text="0.14.0+" />
+## DB更新処理をトランザクション内のみに強制 ( `SqlAgentFactory#setForceUpdateWithinTransaction` ) <Badge text="0.14.0+" />
 
 複数のDB更新処理をまとめて行う際、途中で例外が発生するとDBデータが不整合な状態になる場合があります。このようなデータ不整合を防ぐためには[トランザクション](../transaction.md#トランザクション)を利用します。  
 しかし、通常の設定ではトランザクションを開始しない状態でもDB更新処理を行うことが可能になっているため不具合に気付きにくいという問題があります。  
@@ -323,7 +323,7 @@ agent.updateWith("insert into department (dept_no, dept_name) values (/*dept_no*
   .count();
 ```
 
-## 明示的な行ロック時の待機時間(s)のデフォルト値設定 <Badge text="0.14.0+" />
+## 明示的な行ロック時の待機時間(s)のデフォルト値設定 ( `SqlAgentFactory#setDefaultForUpdateWaitSeconds` ) <Badge text="0.14.0+" />
 
 `SqlEntityQuery#forUpdateWait()`による明示的な行ロックをおこなう際の待機時間を指定することができます。
 

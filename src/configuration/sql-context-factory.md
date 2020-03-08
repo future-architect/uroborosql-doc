@@ -39,7 +39,7 @@ SqlConfig config = UroboroSQL
   ).build();
 ```
 
-## 区分値定数や列挙型の利用
+## 区分値定数や列挙型の利用 ( `SqlContextFactory#setConstantClassNames` / `SqlContextFactory#setEnumConstantPackageNames`)
 
 これまでSQLの開発では、区分値や定数値などの固定値がマジックナンバーとしてSQL文内に埋め込まれていました。  
 しかしマジックナンバーの記述は可読性が悪く仕様変更時の影響調査が困難なため不具合の温床となっていました。
@@ -221,7 +221,7 @@ where
   emp.gender    =  /*#CLS_GENDER_FEMALE*/'F'  -- 列挙型定数パラメータの指定
 ```
 
-## 自動パラメータバインド関数の設定 <Badge text="0.6.1+" />
+## 自動パラメータバインド関数の設定 ( `SqlContextFactory#addQueryAutoParameterBinder` / `SqlContextFactory#addUpdateAutoParameterBinder` ) <Badge text="0.6.1+" />
 
 アプリケーションで使用する各テーブルに共通項目（登録日時、更新日時など）が定義されている場合、
 INSERT文やUPDATE文を実行する際には毎回これらの共通項目に対するパラメータを指定する必要が出てきます。  
@@ -253,7 +253,7 @@ SqlConfig config = UroboroSQL
 関数の評価は、SQL生成処理（SQL文内の`/*IF*/`や`/*BEGIN*/`、`/*parameter_name*/`の評価）の直前に行われます。
 :::
 
-## バインドパラメータ変換クラスの設定 <Badge text="0.6.1+" />
+## バインドパラメータ変換クラスの設定 ( `SqlContextFactory#addBindParamMapper` ) <Badge text="0.6.1+" />
 
 SQLを実行する際、独自に作成したクラスをバインドしたい場合があります。
 そういったケースに対応できるよう**uroboroSQL**ではバインドパラメータをJDBCが受け入れられる型に変換するためのクラスを

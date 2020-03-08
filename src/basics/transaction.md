@@ -10,7 +10,7 @@ meta:
 **uroboroSQL**ではローカルトランザクションを提供します。  
 トランザクションを利用することで、エラー発生時でも一部のデータだけ登録を成功させるといった細かな制御ができるようになります。
 
-## トランザクションの開始と終了
+## トランザクションの開始と終了 ( `SqlAgent#required` / `SqlAgent#requiredNew` / `SqlAgent#notSupported` )
 
 **uroboroSQL**で提供するトランザクションのレベルは以下の3つです
 
@@ -46,7 +46,7 @@ agent.required(() -> {
 [DB更新処理をトランザクション内のみに強制](../configuration/sql-agent-factory.md#db更新処理をトランザクション内のみに強制)を参照してください。
 :::
 
-## コミットとロールバック
+## コミットとロールバック ( `SqlAgent#commit` / `SqlAgent#setRollbackOnly` )
 
 トランザクションのlambda式が正常に終了すればトランザクションはコミットされます。  
 トランザクションのlambda式が例外をスローした場合はトランザクションをロールバックします。  
@@ -81,7 +81,7 @@ agent.required(() -> {
 });
 ```
 
-## セーブポイント
+## セーブポイント ( `SqlAgent#setSavepoint` / `SqlAgent#rollback` / `SqlAgent#releaseSavepoint`)
 
 トランザクション内にセーブポイントを設けることで、トランザクション内の特定の操作のみ取り消すといった細かな制御ができます。
 
@@ -112,7 +112,7 @@ PostgreSQLについては、自動的にセーブポイントを利用したト�
 詳細は、[PostgreSQLのトランザクション内SQLエラー対応](../advanced/README.md#postgresqlのトランザクション内sqlエラー対応)を参照してください。
 :::
 
-## エラーハンドリング
+## エラーハンドリング ( `UroborosqlSQLException` )
 
 **uroboroSQL**からSQLを実行した際にSQLExceptionがスローされると、
 そのSQLExceptionを内部に保持する`UroborosqlSQLException`が呼び出し元に返却されます。  
