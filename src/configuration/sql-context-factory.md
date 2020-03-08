@@ -39,7 +39,7 @@ SqlConfig config = UroboroSQL
   ).build();
 ```
 
-## 区分値定数や列挙型の利用 ( `SqlContextFactory#setConstantClassNames` / `SqlContextFactory#setEnumConstantPackageNames`)
+## 区分値定数や列挙型の利用 ( `SqlContextFactory#setConstantClassNames` /`#setEnumConstantPackageNames`)
 
 これまでSQLの開発では、区分値や定数値などの固定値がマジックナンバーとしてSQL文内に埋め込まれていました。  
 しかしマジックナンバーの記述は可読性が悪く仕様変更時の影響調査が困難なため不具合の温床となっていました。
@@ -221,7 +221,7 @@ where
   emp.gender    =  /*#CLS_GENDER_FEMALE*/'F'  -- 列挙型定数パラメータの指定
 ```
 
-## 自動パラメータバインド関数の設定 ( `SqlContextFactory#addQueryAutoParameterBinder` / `SqlContextFactory#addUpdateAutoParameterBinder` ) <Badge text="0.6.1+" />
+## 自動パラメータバインド関数の設定 ( `SqlContextFactory#addQueryAutoParameterBinder` /`#addUpdateAutoParameterBinder` ) <Badge text="0.6.1+" />
 
 アプリケーションで使用する各テーブルに共通項目（登録日時、更新日時など）が定義されている場合、
 INSERT文やUPDATE文を実行する際には毎回これらの共通項目に対するパラメータを指定する必要が出てきます。  
@@ -327,7 +327,7 @@ SqlConfig config = UroboroSQL
   ).build();
 ```
 
-### カーソル型の初期値（DefaultResultSetType）
+### カーソル型の初期値（`DefaultResultSetType`）
 
 `java.sql.ResultSet`のカーソルの型を指定します。
 |型|説明|初期値|
@@ -336,7 +336,7 @@ SqlConfig config = UroboroSQL
 |java.sql.ResultSet#TYPE_SCROLL_INSENSITIVE|カーソルは順方向・逆方向いずれにも移動可能です。ただし他による変更を反映しません。||
 |java.sql.ResultSet#TYPE_SCROLL_SENSITIVE|カーソルは順方向・逆方向いずれにも移動可能です。また他による変更も反映します。||
 
-### 変更可能性の初期値（DefaultResultSetConcurrency）
+### 変更可能性の初期値（`DefaultResultSetConcurrency`）
 
 `java.sql.ResultSet`の変更可能性を指定します。
 |型|説明|初期値|

@@ -78,22 +78,20 @@ PostgreSQLでは、１つのトランザクション内でSQLエラーが発生�
 
 ```java
 agent.required(() -> { // トランザクション開始
-  try {
-    agent.setSavepoint("sp"); // savepointの設定
+  agent.savepointScope(() -> {
+    // savepointScopeの開始
     agent.update("example/insert_product")
       .param("product_id", 1)
       .count();
-    agent.releaseSavepoint("sp"); // savepointの解放
-  } catch (UroborosqlSQLException ex) {
-    ex.printStackTrace();
-    agent.rollback("sp"); // 指定したsavepointまでロールバック
-  }
-  // 後続処理
-  int count = agent.update("department/insert_department")
-    .param("dept_no", 1)
-    .param("dept_name", "Sales")
-    .count();
-    ・・・
+  });
+  agent.savepointScope(() -> {
+    // 後続処理
+    int count = agent.update("department/insert_department")
+      .param("dept_no", 1)
+      .param("dept_name", "Sales")
+      .count();
+      ・・・
+  });
 });
 ```
 
@@ -159,25 +157,25 @@ SQLカバレッジを有効にするとアプリケーションが実行して�
 **uroboroSQL**ではログ出力ライブラリとしてSLF4Jを使用しています。SLF4Jの詳細は[公式のドキュメント](https://www.slf4j.org/)を参照して下さい。  
 **uroboroSQL**で出力されるログ内容は以下表の通りです。
 
-|クラス名|TRACE|DEBUG|INFO|WARN|ERROR|FATAL|
-|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-|AbstractAgent|変換前SQL|実行時SQL|-|-|-|-|
-|DebugSqlFilter|-|パラメーター/<br>対象データ数/<br>実行結果|-|-|-|-|
-|IfNode|-|評価式/<br>判定結果/<br>パラメーター|-|-|-|-|
-|Parameter|-|パラメーターの設定|-|サブパラメーター値にNULLを設定|-|-|
-|SecretColumnSqlFilter|-|バッチ処理追加件数/<br>ストアドプロシージャ出力パラメーター|-|-|-|-|
-|SqlAgent|ステートメントのクローズ|処理実行アナウンス/<br>リトライ実行アナウンス/<br>SQL実行時間|-|-|エラーメッセージ|-|
-|SqlContext|-|バッチ処理追加件数/<br>ストアドプロシージャ出力パラメーター|-|-|-|-|
-|SqlContextFactory|-|定数パラメーター|-|定数名の重複|エラーメッセージ|-|
-|SqlLoader|SQL定義ファイルの読み込み完了|SQL定義ファイルの読み込み開始/読み込み中|-|-|デフォルトファイルパスの設定/<br>デフォルト拡張子/<br>空のSQLキャッシュの返却|-|
+|       クラス名        |             TRACE             |                             DEBUG                             | INFO  |              WARN              |                                     ERROR                                     | FATAL |
+| :-------------------: | :---------------------------: | :-----------------------------------------------------------: | :---: | :----------------------------: | :---------------------------------------------------------------------------: | :---: |
+|     AbstractAgent     |           変換前SQL           |                           実行時SQL                           |   -   |               -                |                                       -                                       |   -   |
+|    DebugSqlFilter     |               -               |          パラメーター/<br>対象データ数/<br>実行結果           |   -   |               -                |                                       -                                       |   -   |
+|        IfNode         |               -               |             評価式/<br>判定結果/<br>パラメーター              |   -   |               -                |                                       -                                       |   -   |
+|       Parameter       |               -               |                      パラメーターの設定                       |   -   | サブパラメーター値にNULLを設定 |                                       -                                       |   -   |
+| SecretColumnSqlFilter |               -               |  バッチ処理追加件数/<br>ストアドプロシージャ出力パラメーター  |   -   |               -                |                                       -                                       |   -   |
+|       SqlAgent        |   ステートメントのクローズ    | 処理実行アナウンス/<br>リトライ実行アナウンス/<br>SQL実行時間 |   -   |               -                |                               エラーメッセージ                                |   -   |
+|      SqlContext       |               -               |  バッチ処理追加件数/<br>ストアドプロシージャ出力パラメーター  |   -   |               -                |                                       -                                       |   -   |
+|   SqlContextFactory   |               -               |                       定数パラメーター                        |   -   |          定数名の重複          |                               エラーメッセージ                                |   -   |
+|       SqlLoader       | SQL定義ファイルの読み込み完了 |           SQL定義ファイルの読み込み開始/読み込み中            |   -   |               -                | デフォルトファイルパスの設定/<br>デフォルト拡張子/<br>空のSQLキャッシュの返却 |   -   |
 
 ## システムプロパティ
 
 **uroboroSQL**ではシステムプロパティを指定することで動作を変更することができます。
 
-|プロパティ名|説明|初期値|
-|:---|:---|:---|
-|uroborosql.sql.coverage|SQLカバレッジを出力するかどうかのフラグ。`true`の場合はSQLカバレッジを出力します。<br>文字列として`jp.co.future.uroborosql.coverage.CoverageHandler`インタフェースの<br>実装クラスが設定された場合はそのクラスを利用してカバレッジの収集を行います。|なし|
-|uroborosql.sql.coverage.file|指定されたPATH(ファイル)に SQLカバレッジのCobertura形式のxmlレポートを出力します。|./target/coverage/sql-cover.xml|
-|uroborosql.sql.coverage.dir|指定されたPATH(フォルダ)にSQLカバレッジのHTMLレポートを出力します。|./target/coverage/sql|
-|uroborosql.entity.cache.size|Entityクラス情報のキャッシュサイズを指定します。<br>キャッシュサイズを超えるEntityクラスの読み込みがあった場合は古い情報から破棄されます。|30|
+| プロパティ名                 | 説明                                                                                                                                                                                                                                                 | 初期値                          |
+| :--------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------ |
+| uroborosql.sql.coverage      | SQLカバレッジを出力するかどうかのフラグ。`true`の場合はSQLカバレッジを出力します。<br>文字列として`jp.co.future.uroborosql.coverage.CoverageHandler`インタフェースの<br>実装クラスが設定された場合はそのクラスを利用してカバレッジの収集を行います。 | なし                            |
+| uroborosql.sql.coverage.file | 指定されたPATH(ファイル)に SQLカバレッジのCobertura形式のxmlレポートを出力します。                                                                                                                                                                   | ./target/coverage/sql-cover.xml |
+| uroborosql.sql.coverage.dir  | 指定されたPATH(フォルダ)にSQLカバレッジのHTMLレポートを出力します。                                                                                                                                                                                  | ./target/coverage/sql           |
+| uroborosql.entity.cache.size | Entityクラス情報のキャッシュサイズを指定します。<br>キャッシュサイズを超えるEntityクラスの読み込みがあった場合は古い情報から破棄されます。                                                                                                           | 30                              |

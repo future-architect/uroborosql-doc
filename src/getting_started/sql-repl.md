@@ -82,6 +82,19 @@ uroborosql > update ddl/create_tables
 
 
 `ddl/create_tables`が実行され、DBにテーブルが作成されました。
+
+では次に作成されたテーブルの定義情報を確認します。  
+テーブル定義情報の確認には`desc`コマンドを使用します。
+ここでは`EMPLOYEE`テーブルの定義情報を確認してみましょう。
+
+```sh
+uroborosql > desc EMPLOYEE[Enter]
+```
+
+<<<@/src/getting_started/repl/desc.sql
+
+EMPLOYEEテーブルの定義情報が表形式で表示されました。
+
 続いて初期データを投入しましょう。
 
 `setup/insert_data`を実行します。
@@ -94,6 +107,15 @@ uroborosql > update setup/insert_data[Enter]
 
 これでテーブルに初期データが挿入されました。
 では、挿入したデータを検索してみましょう。
+
+検索を行う前に、検索を行うSQLの内容を確認してみましょう。  
+SQLの内容を確認するには`view`コマンドを使用します。
+
+```sh
+uroborosql > view department/select_department[Enter]
+```
+
+<<<@/src/getting_started/repl/view.sql
 
 検索を行う場合は`query`コマンドを使用します。
 `query`の後に実行する`SQL名`を指定します。
@@ -117,6 +139,25 @@ uroborosql > query department/select_department[Enter]
 が表示されるので、SQLがどういう風に実行され、どういう値が取得できるのかが良く分かるようになっています。
 
 次にバインドパラメータを指定して検索してみましょう。
+
+検索するSQLにどのようなバインドパラメータや条件分岐があるかを確認するには`parse`コマンドを使用します。
+
+```sh
+uroborosql > parse department/select_department[Enter]
+```
+
+<<<@/src/getting_started/repl/parse.sql
+
+`parse`コマンドの結果は以下のようになります。
+
+* `SQL` : 解析対象のSQL
+* `BRANCHES` : 条件分岐
+* `BIND_PARAMS` : バインドパラメータ
+
+条件分岐では `BEGIN`のスコープ（{}で囲まれた中）に２つのIF分岐が並んでいることがわかります。  
+また、バインドパラメータでは `deptNo`と`deptName`があることがわかります。
+
+`parse`コマンドで確認したバインドパラメータを指定して検索を行います。
 
 ```sh
 uroborosql > query department/select_department deptNo=1[Enter]
@@ -151,19 +192,20 @@ SQL REPL end.
 
 **REPL**には他にも以下のコマンドがあります。
 
-|コマンド|説明|
-|:----|:----|
-|query|検索SQLを実行します|
-|update|更新SQL（insert/update/delete）やDDLを実行します|
-|view|SQL名で指定したSQLの内容を表示します|
-|list|使用可能なSQL名の一覧を表示します|
-|history|実行したコマンドの履歴を表示します|
-|driver|使用可能なJDBCドライバーの一覧を表示します|
-|desc|指定したテーブルの定義情報を表示します|
-|generate|指定したテーブルに対するselect/insert/update/deleteを行うSQLを生成します|
-|cls|コンソール画面のクリア|
-|exit|REPLを終了します|
-|help|利用できるコマンドの説明を表示します|
+| コマンド | 説明                                                                          |
+| :------- | :---------------------------------------------------------------------------- |
+| query    | 検索SQLを実行します                                                           |
+| update   | 更新SQL（insert/update/delete）やDDLを実行します                              |
+| view     | SQL名で指定したSQLの内容を表示します                                          |
+| list     | 使用可能なSQL名の一覧を表示します                                             |
+| history  | 実行したコマンドの履歴を表示します                                            |
+| driver   | 使用可能なJDBCドライバーの一覧を表示します                                    |
+| desc     | 指定したテーブルの定義情報を表示します                                        |
+| generate | 指定したテーブルに対するselect/insert/update/deleteを行うSQLを生成します      |
+| parse    | 指定したSQLで使用されているバインドパラメータやIF分岐条件を抽出して表示します |
+| cls      | コンソール画面のクリア                                                        |
+| exit     | REPLを終了します                                                              |
+| help     | 利用できるコマンドの説明を表示します                                          |
 
 ## REPLの設定
 
@@ -207,12 +249,20 @@ db.password=
 sql.additionalClassPath=${user.home}/.m2/repository/com/h2database/h2/1.4.192/h2-1.4.192.jar
 ```
 
-|プロパティ名|説明|
-|:---|:---|
-|db.url|DB接続URL|
-|db.user|DB接続ユーザ|
-|db.password|DB接続パスワード|
-|sql.additionalClassPath|**REPL**起動時に起動時クラスパス以外でクラスパスに追加する場所。`;`で区切ることで複数指定可。SQLファイルのルート（sqlフォルダの親フォルダ）をクラスパスに追加することで、自動的にSQLファイルがロードされます。合わせて接続するDBのJDBCドライバを含むJarを指定することで動的にJDBCドライバを読み込みます。|
+| プロパティ名                               | 説明                                                                                                                                                                                                                                                                                                      |
+| :----------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| db.url                                     | DB接続URL                                                                                                                                                                                                                                                                                                 |
+| db.schema                                  | DB接続スキーマ                                                                                                                                                                                                                                                                                            |
+| db.user                                    | DB接続ユーザ                                                                                                                                                                                                                                                                                              |
+| db.password                                | DB接続パスワード                                                                                                                                                                                                                                                                                          |
+| sql.loadPath                               | SQLをロードするパス。初期値は`sql`                                                                                                                                                                                                                                                                        |
+| sql.encoding                               | SQLファイルのエンコーディング。初期値は`UTF-8`                                                                                                                                                                                                                                                            |
+| sql.fileExtension                          | ロードするSQLファイルの拡張子。初期値は`.sql`                                                                                                                                                                                                                                                             |
+| sql.detectChanges                          | SQLファイルの変更検知を行うかどうか。初期値は`true`                                                                                                                                                                                                                                                       |
+| sql.additionalClassPath                    | **REPL**起動時に起動時クラスパス以外でクラスパスに追加する場所。`;`で区切ることで複数指定可。SQLファイルのルート（sqlフォルダの親フォルダ）をクラスパスに追加することで、自動的にSQLファイルがロードされます。合わせて接続するDBのJDBCドライバを含むJarを指定することで動的にJDBCドライバを読み込みます。 |
+| sqlContextFactory.constantClassNames       | SqlContextFactoryに登録する定数クラスを指定。`,`で区切ることで複数指定可。 ex) jp.co.future.uroborosql.context.test.TestConsts                                                                                                                                                                            |
+| sqlContextFactory.enumConstantPackageNames | SqlContextFactoryに登録するEnum定数パッケージ名を指定。`,`で区切ることで複数指定可。ex) jp.co.future.uroborosql.context.test                                                                                                                                                                              |
+
 
 このプロパティファイルを変更することでいろいろなDBに接続することができるようになります。
 

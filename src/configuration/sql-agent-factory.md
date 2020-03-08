@@ -42,7 +42,7 @@ SqlConfig config = UroboroSQL.builder(...)
   ).build();
 ```
 
-## フェッチサイズと検索タイムアウト設定 ( `SqlAgentFactory#setFetchSize` / `SqlAgentFactory#setQueryTimeout`  )
+## フェッチサイズと検索タイムアウト設定 ( `SqlAgentFactory#setFetchSize` /`#setQueryTimeout`  )
 
 `SqlAgent`で検索処理を行う際、データベースから一度に取得する行数（`fetchSize`）や
 検索タイムアウト時間（秒）（`queryTimeout`）の初期値を指定することが出来ます。
@@ -60,7 +60,14 @@ SqlConfig config = UroboroSQL.builder(...)
 ```
 
 ::: warning 補足
-fetchSizeは、[Statement.setFetchSize](https://docs.oracle.com/javase/jp/8/docs/api/java/sql/Statement.html#setFetchSize-int-)に渡される値です。collect/foreachメソッドで返却される結果セットの行数を制限する設定ではありません。
+`fetchSize`は、[Statement.setFetchSize](https://docs.oracle.com/javase/jp/8/docs/api/java/sql/Statement.html#setFetchSize-int-)に渡される値で、パフォーマンスに影響します。  
+JDBCクライアント（uroborosqlを使用しているJavaアプリケーション）ではDBサーバ側で実行されたSELECTの結果セットをfetchサイズで指定された行数ずつ分割して取得します。
+そのため結果行数に対して`fetchSize`が小さいと、JDBCクライアント <-> DBサーバ間の通信回数が増大してパフォーマンスに悪影響を及ぼします。  
+（例：select結果が10,000件、fetchSizeが100の場合、JDBCクライアント⇔DBサーバ間の通信は10,000÷100 = 100回行われる）
+:::
+
+::: danger 注意
+`fetchSize`はcollect/foreachメソッドで返却される結果セットの行数を制限する設定ではありません。
 :::
 
 ## 例外発生時のログ出力を行うかどうかを設定 ( `SqlAgentFactory#setOutputExceptionLog` )
@@ -143,12 +150,12 @@ SQLによる検索で、以下のメソッドを使用して`List<Map<String, Ob
 取得したMapのキー名に対する書式の初期値を指定することが出来ます。
 指定しない場合`CaseFormat.UPPER_SNAKE_CASE`になります。
 
-|対象メソッド|戻り値の型|
-|:---|:---|
-|SqlQuery#collect()|List<Map<String, Object>>|
-|SqlQuery#findFirst()|Optional<Map<String, Object>>|
-|SqlQuery#first()|Map<String, Object>|
-|SqlQuery#stream()|Stream<Map<String, Object>>|
+| 対象メソッド         | 戻り値の型                    |
+| :------------------- | :---------------------------- |
+| SqlQuery#collect()   | List<Map<String, Object>>     |
+| SqlQuery#findFirst() | Optional<Map<String, Object>> |
+| SqlQuery#first()     | Map<String, Object>           |
+| SqlQuery#stream()    | Stream<Map<String, Object>>   |
 
 指定しない場合（初期設定：`CaseFormat.UPPER_SNAKE_CASE`）
 
@@ -203,7 +210,7 @@ SqlConfig config = UroboroSQL.builder(...)
 
 
 
-## SQL実行のリトライ ( `SqlAgentFactory#setSqlRetryCodeList` / `SqlAgentFactory#setDefaultMaxRetryCount` / `SqlAgentFactory#setDefaultSqlRetryWaitTime` )
+## SQL実行のリトライ ( `SqlAgentFactory#setSqlRetryCodeList` /`#setDefaultMaxRetryCount` /`#setDefaultSqlRetryWaitTime` )
 
 SQLを実行した際、タイミングによって発生する例外（テーブルロックエラーなど）の場合はリトライを行い、
 できるだけ正常に処理を終了させたい場合があります。  

@@ -16,7 +16,30 @@ meta:
 <dependency>
   <groupId>jp.co.future</groupId>
   <artifactId>uroborosql</artifactId>
-  <version>0.17.0</version>
+  <version>0.18.0</version>
+</dependency>
+```
+
+また、<Badge text="0.18.0+" vertical="middle" /> より式言語ライブラリの選択が可能になりました。  
+以下の2つのライブラリのうち、どちらかを選択してライブラリ依存関係に追加して下さい。
+
+[OGNL](https://github.com/jkuhnert/ognl)を利用する場合
+
+```xml
+<dependency>
+  <groupId>ognl</groupId>
+  <artifactId>ognl</artifactId>
+  <version>3.1.23</version>
+</dependency>
+```
+
+[Spring Expression Language(SpEL)](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#expressions)を利用する場合
+
+```xml
+<dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-expression</artifactId>
+  <version>5.2.2.RELEASE</version>
 </dependency>
 ```
 
@@ -38,7 +61,17 @@ meta:
 Gradleプロジェクトの場合は、**build.gradle**のdependencies内に以下のライブラリ依存関係を追加してください。
 
 ```groovy
+<<<<<<< HEAD
 compile group: 'jp.co.future', name: 'uroborosql', version: '0.17.0'
+=======
+compile group: 'jp.co.future', name: 'uroborosql', version: '0.18.0'
+
+// 式言語ライブラリとしてOGNLを使用する場合
+compile group: 'ognl', name: 'ognl', version: '3.1.23'
+// 式言語ライブラリとしてSpring Expression Language(SpEL)を使用する場合
+compile group: 'org.springframework', name: 'spring-expression', version: '5.2.3.RELEASE'
+
+>>>>>>> add v0.18.0 feature
 // REPLを使用する場合
 compile group: 'org.jline', name: 'jline', version: '3.11.0'
 compile group: 'org.fusesource.jansi', name: 'jansi', version: '1.18'
@@ -105,12 +138,12 @@ mvn -PrunMain
 
 主要なファイルの説明です
 
-|ファイル|説明|
-|:---|:---|
-|[Main.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/Main.java)|uroborosql-sampleのメインプログラムです。ここから各サンプルコードの呼び出しを行っています。|
-|[SqlFileApiSample.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/SqlFileApiSample.java) / [EntityApiSample.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/EntityApiSample.java)|提供されているAPIの種類毎のサンプルコードです。|
-|[Department.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/entity/Department.java) / [Employee.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/entity/Employee.java) / [DeptEmp.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/entity/DeptEmp.java)|テーブル構造を表すエンティティクラスです。サンプルコードの中で使用します。|
-|[Gender.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/type/Gender.java)|性別を表すEnumクラスです。サンプルコードの中で使用します。|
-|[sqlフォルダ配下のSQL](https://github.com/future-architect/uroborosql-sample/tree/master/src/main/resources/sql)|uroborosqlで実行するSQLファイルです。|
-|[dataフォルダ配下のTSV](https://github.com/future-architect/uroborosql-sample/tree/master/src/main/resources/data)|テーブルデータ作成用のTSVファイルです。Mainクラスの中でテーブルへの一括データ投入を行う際のデータとして利用します。|
-|[logback.xml](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/resources/logback.xml)|ログ出力設定ファイルです。|
+| ファイル                                                                                                                                                                                                                                                                                                                                                                                                                                                             | 説明                                                                                                                |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ |
+| [Main.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/Main.java)                                                                                                                                                                                                                                                                                                                                | uroborosql-sampleのメインプログラムです。ここから各サンプルコードの呼び出しを行っています。                         |
+| [SqlFileApiSample.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/SqlFileApiSample.java) / [EntityApiSample.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/EntityApiSample.java)                                                                                                                                          | 提供されているAPIの種類毎のサンプルコードです。                                                                     |
+| [Department.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/entity/Department.java) / [Employee.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/entity/Employee.java) / [DeptEmp.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/entity/DeptEmp.java) | テーブル構造を表すエンティティクラスです。サンプルコードの中で使用します。                                          |
+| [Gender.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/type/Gender.java)                                                                                                                                                                                                                                                                                                                       | 性別を表すEnumクラスです。サンプルコードの中で使用します。                                                          |
+| [sqlフォルダ配下のSQL](https://github.com/future-architect/uroborosql-sample/tree/master/src/main/resources/sql)                                                                                                                                                                                                                                                                                                                                                     | uroborosqlで実行するSQLファイルです。                                                                               |
+| [dataフォルダ配下のTSV](https://github.com/future-architect/uroborosql-sample/tree/master/src/main/resources/data)                                                                                                                                                                                                                                                                                                                                                   | テーブルデータ作成用のTSVファイルです。Mainクラスの中でテーブルへの一括データ投入を行う際のデータとして利用します。 |
+| [logback.xml](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/resources/logback.xml)                                                                                                                                                                                                                                                                                                                                                      | ログ出力設定ファイルです。                                                                                          |

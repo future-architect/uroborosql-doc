@@ -10,15 +10,15 @@ meta:
 **uroboroSQL**ではローカルトランザクションを提供します。  
 トランザクションを利用することで、エラー発生時でも一部のデータだけ登録を成功させるといった細かな制御ができるようになります。
 
-## トランザクションの開始と終了 ( `SqlAgent#required` / `SqlAgent#requiredNew` / `SqlAgent#notSupported` )
+## トランザクションの開始と終了 ( `SqlAgent#required` /`#requiredNew` /`#notSupported` )
 
 **uroboroSQL**で提供するトランザクションのレベルは以下の3つです
 
-|トランザクションタイプ|トランザクション有り|トランザクションなし|
-|:-------------------|:-----------------|:------------------|
-|required|トランザクション内で処理を実行|新たなトランザクションを開始して処理を実行|
-|requiresNew|既存のトランザクションを停止し、新たなトランザクションを開始して処理を実行。<br>トランザクションが終了すると停止していたトランザクションを再開させる|新たなトランザクションを開始して処理を実行|
-|notSupported|既存のトランザクションを停止し、トランザクション外で処理を実行。<br>処理が終了すると停止していたトランザクションを再開させる|トランザクション外で処理を実行|
+| トランザクションタイプ | トランザクション有り                                                                                                                                 | トランザクションなし                       |
+| :--------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------- |
+| required               | トランザクション内で処理を実行                                                                                                                       | 新たなトランザクションを開始して処理を実行 |
+| requiresNew            | 既存のトランザクションを停止し、新たなトランザクションを開始して処理を実行。<br>トランザクションが終了すると停止していたトランザクションを再開させる | 新たなトランザクションを開始して処理を実行 |
+| notSupported           | 既存のトランザクションを停止し、トランザクション外で処理を実行。<br>処理が終了すると停止していたトランザクションを再開させる                         | トランザクション外で処理を実行             |
 
 `SqlAgent`インタフェースにトランザクションタイプに応じたメソッドが提供されており、そのメソッドを呼び出すことでトランザクションの開始と終了を制御します。
 
@@ -46,7 +46,7 @@ agent.required(() -> {
 [DB更新処理をトランザクション内のみに強制](../configuration/sql-agent-factory.md#db更新処理をトランザクション内のみに強制)を参照してください。
 :::
 
-## コミットとロールバック ( `SqlAgent#commit` / `SqlAgent#setRollbackOnly` )
+## コミットとロールバック ( `SqlAgent#commit` /`#setRollbackOnly` )
 
 トランザクションのlambda式が正常に終了すればトランザクションはコミットされます。  
 トランザクションのlambda式が例外をスローした場合はトランザクションをロールバックします。  
@@ -81,7 +81,7 @@ agent.required(() -> {
 });
 ```
 
-## セーブポイント ( `SqlAgent#setSavepoint` / `SqlAgent#rollback` / `SqlAgent#releaseSavepoint`)
+## セーブポイント ( `SqlAgent#setSavepoint` /`#rollback` /`#releaseSavepoint`)
 
 トランザクション内にセーブポイントを設けることで、トランザクション内の特定の操作のみ取り消すといった細かな制御ができます。
 
@@ -106,6 +106,33 @@ agent.required(() -> {
   assertThat(agent.query("employee/select_employee").collect().size(), 1);
 });
 ```
+
+### セーブポイントスコープ(`SqlAgent#savepointScope`) <Badge text="0.18.0+"/>
+
+`SqlAgent#savepointScope()` を使用して、より確実にsavepointの制御を行うことができます。
+
+```java
+// SqlAgent#savepoint()を使ったsavepointの実装
+agent.required(() -> {
+  // トランザクション開始
+  agent.update("employee/insert_employee")
+    .param("emp_no", 1001)
+    .count();
+
+  // セーブポイントスコープの開始
+  agent.savepointScope(() -> {
+    agent.update("employee/insert_employee")
+      .param("emp_no", 1002)
+      .count();
+
+    assertThat(agent.query("employee/select_employee").collect().size(), 2);
+    // savepointScope内の処理を取り消す場合は例外をスローする
+    throw new UroborosqlRuntimeException();
+  })
+  assertThat(agent.query("employee/select_employee").collect().size(), 1);
+});
+```
+
 
 ::: tip
 PostgreSQLについては、自動的にセーブポイントを利用したトランザクションの部分ロールバックに対応しています。
