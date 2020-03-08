@@ -10,7 +10,7 @@ meta:
 **uroboroSQL**ではローカルトランザクションを提供します。  
 トランザクションを利用することで、エラー発生時でも一部のデータだけ登録を成功させるといった細かな制御ができるようになります。
 
-## トランザクションの開始と終了 ( `SqlAgent#required` / `SqlAgent#requiredNew` / `SqlAgent#notSupported` )
+## トランザクションの開始と終了 ( `SqlAgent#required` /`#requiredNew` /`#notSupported` )
 
 **uroboroSQL**で提供するトランザクションのレベルは以下の3つです
 
@@ -46,7 +46,7 @@ agent.required(() -> {
 [DB更新処理をトランザクション内のみに強制](../configuration/sql-agent-factory.md#db更新処理をトランザクション内のみに強制)を参照してください。
 :::
 
-## コミットとロールバック ( `SqlAgent#commit` / `SqlAgent#setRollbackOnly` )
+## コミットとロールバック ( `SqlAgent#commit` /`#setRollbackOnly` )
 
 トランザクションのlambda式が正常に終了すればトランザクションはコミットされます。  
 トランザクションのlambda式が例外をスローした場合はトランザクションをロールバックします。  
@@ -81,7 +81,7 @@ agent.required(() -> {
 });
 ```
 
-## セーブポイント ( `SqlAgent#setSavepoint` / `SqlAgent#rollback` / `SqlAgent#releaseSavepoint`)
+## セーブポイント ( `SqlAgent#setSavepoint` /`#rollback` /`#releaseSavepoint`)
 
 トランザクション内にセーブポイントを設けることで、トランザクション内の特定の操作のみ取り消すといった細かな制御ができます。
 
@@ -107,7 +107,9 @@ agent.required(() -> {
 });
 ```
 
- <Badge text="0.18.0+" vertical="middle" /> から `SqlAgent#savepointScope()` を使用して、より確実にsavepointの制御を行うことができます。
+### セーブポイントスコープ(`SqlAgent#savepointScope`) <Badge text="0.18.0+"/>
+
+`SqlAgent#savepointScope()` を使用して、より確実にsavepointの制御を行うことができます。
 
 ```java
 // SqlAgent#savepoint()を使ったsavepointの実装

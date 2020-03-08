@@ -72,7 +72,9 @@ Optional<Employee> employee = agent.find(Employee.class, 1);
 エンティティクラスを利用した検索を行うためのオブジェクト（`SqlEntityQuery`)を取得します。  
 `SqlEntityQuery`に対して抽出条件の指定を行い、抽出条件に該当するエンティティを取得します。
 
-#### 抽出条件の指定
+---
+
+### 抽出条件の指定(`SqlEntityQuery#equal` /`#notEqual` /`#greaterThan` /`#lessThan` /`#greaterEqual` /`#lessEqual` /`#in` /`#notIn` /`#like` /`#startsWith` /`#endsWith` /`#contains` /`#notLike` /`#notStartsWith` /`#notEndsWith` /`#notContains` /`#between` /`#isNull` /`#isNotNull` /`#where`)
 
 | 抽出条件指定メソッド記述例                                                  | 生成されるwhere句の条件式                | 補足説明                                                       |
 | :-------------------------------------------------------------------------- | :--------------------------------------- | :------------------------------------------------------------- |
@@ -120,7 +122,7 @@ agent.query(Employee.class).where("first_name =''/*firstName*/", "firstName", "B
 `SqlEntityQuery#param()`には`@Deprecated`が付与されており、将来削除される予定です。
 :::
 
-#### ソート順や取得データの件数、開始位置の指定 <Badge text="0.11.0+"/>
+### ソート順(`SqlEntityQuery#asc` /`#desc`)や取得データの件数(`#limit`)、開始位置(`#offset`)、悲観ロック(`#forUpdate` /`#forUpdateNoWait` /`#forUpdateWait`)の指定 <Badge text="0.11.0+"/>
 
 `SqlEntityQuery`では抽出条件に加えて検索結果のソート順や取得件数の制限、開始位置の指定、明示的なロック指定が行えます。
 
@@ -148,7 +150,7 @@ agent.query(Employee.class).asc("emp_no").offset(3).limit(5).collect();
 agent.query(Employee.class).forUpdate().collect();
 ```
 
-#### オプティマイザーヒントの指定 <Badge text="0.18.0+"/>
+### オプティマイザーヒントの指定(`SqlEntityQuery#hint`) <Badge text="0.18.0+"/>
 
 `SqlEntityQuery#hint()`を使用することで、SQLに対してオプティマイザーヒントを指定することができます。
 
@@ -168,8 +170,7 @@ select /*+ ORDERED */ id, name, age, ... from user where age < 30
 また、指定可能なヒント句は利用するDBに依存します。
 :::
 
-
-#### 検索結果の取得
+### 検索結果の取得(`SqlEntityQury#collect` /`#first` /`#one` /`#select` /`#stream`)
 
 `SqlEntityQuery`から抽出条件に該当するエンティティを取得します。
 
@@ -194,7 +195,7 @@ String employeeName = agent.query(Employee.class)
     .select("employeeName", String.class).findFirst().get();
 ```
 
-#### 集約関数 <Badge text="0.12.0+"/>
+### 集約関数(`SqlEntityQuery#count` /`#sum` /`#sum` /`#min` /`#max` /`#exists` /`#notExists`) <Badge text="0.12.0+"/>
 
 `SqlEntityQuery`ではエンティティを取得する他に結果の集計を行うこともできます。
 
@@ -234,7 +235,7 @@ long count = agent.query(Employee.class).count();
 
 ## エンティティの挿入
 
-### 1件の挿入(`SqlAgent#insert`/`SqlAgent#insertAndReturn`)
+### 1件の挿入(`SqlAgent#insert`/`#insertAndReturn`)
 
 | メソッド名                                                    | 戻り値の型 |
 | :------------------------------------------------------------ | :--------- |
@@ -265,7 +266,7 @@ agent.insert(employee);
 System.out.println(employee.getEmpNo()); // 自動採番された値が出力される
 ```
 
-### 複数件の挿入(`SqlAgent#inserts`/`SqlAgent#insertsAndReturn`) <Badge text="0.10.0+"/>
+### 複数件の挿入(`SqlAgent#inserts` /`#insertsAndReturn`) <Badge text="0.10.0+"/>
 
 | メソッド名                                                                                                                   | 戻り値の型      |
 | :--------------------------------------------------------------------------------------------------------------------------- | :-------------- |
@@ -370,7 +371,7 @@ agent.inserts(employees, (ctx, count, entity) -> count == 10);
 
 ## エンティティの更新
 
-### 1件の更新(`SqlAgent#update`/`SqlAgent#updateAndReturn`)
+### 1件の更新(`SqlAgent#update` /`#updateAndReturn`)
 
 | メソッド名                                                    | 戻り値の型 |
 | :------------------------------------------------------------ | :--------- |
@@ -419,7 +420,7 @@ agent.update(Employee.class)
   .count();
 ```
 
-### 複数件の更新(`SqlAgent#updates`/`SqlAgent#updatesAndReturn`) <Badge text="0.15.0+"/>
+### 複数件の更新(`SqlAgent#updates` /`#updatesAndReturn`) <Badge text="0.15.0+"/>
 
 | メソッド名                                                                              | 戻り値の型      |
 | :-------------------------------------------------------------------------------------- | :-------------- |
@@ -481,7 +482,7 @@ agent.updates(employees, (ctx, count, entity) -> count == 10);
 
 ## エンティティの削除
 
-### 1件の削除(`SqlAgent#delete`)
+### 1件の削除(`SqlAgent#delete` /`#deleteAndReturn`)
 
 | メソッド名                                                    | 戻り値の型 |
 | :------------------------------------------------------------ | :--------- |
@@ -729,7 +730,7 @@ public class Employee {
 }
 ```
 
-### `@Id` / `@GeneratedValue` / `@SequenceGenerator` <Badge text="0.12.0+"/>
+### `@Id` /`@GeneratedValue` /`@SequenceGenerator` <Badge text="0.12.0+"/>
 
 これらのアノテーションが付与されたフィールドは自動採番フィールドになります。  
 `@Id`と`@GeneratedValue`は必ずセットでフィールドに付与する必要があります。  

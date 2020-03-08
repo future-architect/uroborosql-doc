@@ -42,7 +42,7 @@ SqlConfig config = UroboroSQL.builder(...)
   ).build();
 ```
 
-## フェッチサイズと検索タイムアウト設定 ( `SqlAgentFactory#setFetchSize` / `SqlAgentFactory#setQueryTimeout`  )
+## フェッチサイズと検索タイムアウト設定 ( `SqlAgentFactory#setFetchSize` /`#setQueryTimeout`  )
 
 `SqlAgent`で検索処理を行う際、データベースから一度に取得する行数（`fetchSize`）や
 検索タイムアウト時間（秒）（`queryTimeout`）の初期値を指定することが出来ます。
@@ -210,7 +210,7 @@ SqlConfig config = UroboroSQL.builder(...)
 
 
 
-## SQL実行のリトライ ( `SqlAgentFactory#setSqlRetryCodeList` / `SqlAgentFactory#setDefaultMaxRetryCount` / `SqlAgentFactory#setDefaultSqlRetryWaitTime` )
+## SQL実行のリトライ ( `SqlAgentFactory#setSqlRetryCodeList` /`#setDefaultMaxRetryCount` /`#setDefaultSqlRetryWaitTime` )
 
 SQLを実行した際、タイミングによって発生する例外（テーブルロックエラーなど）の場合はリトライを行い、
 できるだけ正常に処理を終了させたい場合があります。  

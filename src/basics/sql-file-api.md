@@ -7,14 +7,14 @@ meta:
 ---
 # SQLファイルインタフェース
 
-## SQLによる検索(`SqlAgent#query`, `SqlAgent#queryWith`)
+## SQLによる検索(`SqlAgent#query` /`#queryWith`)
 
 SQLを検索する方法は2つあります。
 
-|利用メソッド|説明|
-|:---|:----|
-|SqlAgent#query("[SQL名]")|[SQL名](./README.md#sql名)で説明した`SQL名`を指定|
-|SqlAgent#queryWith("[SQL文字列]")|`SQL文字列`を直接指定|
+| 利用メソッド                      | 説明                                              |
+| :-------------------------------- | :------------------------------------------------ |
+| SqlAgent#query("[SQL名]")         | [SQL名](./README.md#sql名)で説明した`SQL名`を指定 |
+| SqlAgent#queryWith("[SQL文字列]") | `SQL文字列`を直接指定                             |
 
 上記２つのメソッドは検索を行うための`SqlQuery`インタフェースのインスタンスを返却します。
 
@@ -50,11 +50,11 @@ and  dept.dept_name  =  /*dept_name*/'sample'
 
 ### リスト取得(`SqlQuery#collect`)
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlQuery#collect()|List<Map<String, Object>>|
-|SqlQuery#collect(CaseFormat)|List<Map<String, Object>>|
-|SqlQuery#collect(Class<T&gt;)|List<Class<T&gt;>|
+| メソッド名                    | 戻り値の型                |
+| :---------------------------- | :------------------------ |
+| SqlQuery#collect()            | List<Map<String, Object>> |
+| SqlQuery#collect(CaseFormat)  | List<Map<String, Object>> |
+| SqlQuery#collect(Class<T&gt;) | List<Class<T&gt;>         |
 
 検索結果をMapやエンティティクラスのListとして取得します。  
 Mapには`キー：カラムラベル名`、`値：カラムの値`の形で1行分のデータが格納されます。  
@@ -129,11 +129,11 @@ try (SqlAgent agent = config.agent()) {
 
 ### 先頭取得（`SqlQuery#first`)
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlQuery#first()|Map<String, Object>|
-|SqlQuery#first(CaseFormat)|Map<String, Object>|
-|SqlQuery#first(Class<T&gt;)|T|
+| メソッド名                  | 戻り値の型          |
+| :-------------------------- | :------------------ |
+| SqlQuery#first()            | Map<String, Object> |
+| SqlQuery#first(CaseFormat)  | Map<String, Object> |
+| SqlQuery#first(Class<T&gt;) | T                   |
 
 検索結果の1件目を取得します。  
 結果を取得できない（検索結果が0件）場合、`jp.co.future.uroborosql.exception.DataNotFoundException`をスローします。
@@ -186,11 +186,11 @@ try (SqlAgent agent = config.agent()) {
 
 ### 先頭取得（`SqlQuery#findFirst`)
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlQuery#findFirst()|Optional<Map<String, Object>>|
-|SqlQuery#findFirst(CaseFormat)|Optional<Map<String, Object>>|
-|SqlQuery#findFirst(Class<T&gt;)|Optional<T&gt;|
+| メソッド名                      | 戻り値の型                    |
+| :------------------------------ | :---------------------------- |
+| SqlQuery#findFirst()            | Optional<Map<String, Object>> |
+| SqlQuery#findFirst(CaseFormat)  | Optional<Map<String, Object>> |
+| SqlQuery#findFirst(Class<T&gt;) | Optional<T&gt;                |
 
 検索結果の1件目をOptionalの形式で取得します。  
 メモリ上には最大1件分のデータしか格納しないため、検索結果が大量になる場合でもメモリ使用量を気にせず呼び出すことができます。
@@ -232,11 +232,11 @@ try (SqlAgent agent = config.agent()) {
 
 ### 先頭１件取得（`SqlQuery#one`)
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlQuery#one()|Map<String, Object>|
-|SqlQuery#one(CaseFormat)|Map<String, Object>|
-|SqlQuery#one(Class<T&gt;)|T|
+| メソッド名                | 戻り値の型          |
+| :------------------------ | :------------------ |
+| SqlQuery#one()            | Map<String, Object> |
+| SqlQuery#one(CaseFormat)  | Map<String, Object> |
+| SqlQuery#one(Class<T&gt;) | T                   |
 
 検索結果の1件目を取得します。[find()](#先頭取得（sqlquery-first)と違い、実行するSQLで複数件の検索結果を返す場合は例外をスローします。  
 結果を取得できない（検索結果が0件）場合、`jp.co.future.uroborosql.exception.DataNotFoundException`をスローします。  
@@ -290,11 +290,11 @@ try (SqlAgent agent = config.agent()) {
 
 ### 先頭１件取得（`SqlQuery#findOne`)
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlQuery#findOne()|Optional<Map<String, Object>>|
-|SqlQuery#findOne(CaseFormat)|Optional<Map<String, Object>>|
-|SqlQuery#findOne(Class<T&gt;)|Optional<T&gt;|
+| メソッド名                    | 戻り値の型                    |
+| :---------------------------- | :---------------------------- |
+| SqlQuery#findOne()            | Optional<Map<String, Object>> |
+| SqlQuery#findOne(CaseFormat)  | Optional<Map<String, Object>> |
+| SqlQuery#findOne(Class<T&gt;) | Optional<T&gt;                |
 
 検索結果の1件目をOptionalの形式で取得します。  
 検索結果が2件以上存在する場合、`jp.co.future.uroborosql.exception.DataNotUniqueException`をスローします。  
@@ -343,12 +343,12 @@ try (SqlAgent agent = config.agent()) {
 
 ### Stream取得(`SqlQuery#stream`)
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlQuery#stream()|Stream<Map<String, Object>>|
-|SqlQuery#stream(CaseFormat)|Stream<Map<String, Object>>|
-|SqlQuery#stream(Class<T&gt;)|Stream<T&gt;|
-|SqlQuery#stream(ResultSetConverter<T&gt;)|Stream<T&gt;|
+| メソッド名                                | 戻り値の型                  |
+| :---------------------------------------- | :-------------------------- |
+| SqlQuery#stream()                         | Stream<Map<String, Object>> |
+| SqlQuery#stream(CaseFormat)               | Stream<Map<String, Object>> |
+| SqlQuery#stream(Class<T&gt;)              | Stream<T&gt;                |
+| SqlQuery#stream(ResultSetConverter<T&gt;) | Stream<T&gt;                |
 
 検索結果を`java.util.stream.Stream`の形式で取得します。  
 Streamによる順次読み込みと終端操作までの遅延処理により、メモリ効率の良い操作が可能になります。
@@ -437,9 +437,9 @@ try (SqlAgent agent = config.agent()) {
 
 ### ResultSet取得(`SqlQuery#resultSet`)
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlQuery#resultSet()|ResulitSet|
+| メソッド名           | 戻り値の型 |
+| :------------------- | :--------- |
+| SqlQuery#resultSet() | ResulitSet |
 
 検索結果を`java.sql.ResultSet`の形式で取得します。
 
@@ -469,14 +469,14 @@ try (SqlAgent agent = config.agent()) {
 }
 ```
 
-## SQLによる更新(`SqlAgent#update`, `SqlAgent#updateWith`)
+## SQLによる更新(`SqlAgent#update` /`#updateWith`)
 
 DB更新処理(登録/変更/削除)やDDLの実行も検索処理と同様`SQL名`を指定する場合と`SQL文字列`を指定する２つのAPIが提供されています。
 
-|利用メソッド|説明|
-|:---|:----|
-|SqlAgent#update("[SQL名]")|[SQL名](./README.md#sql名)で説明した`SQL名`を指定|
-|SqlAgent#updateWith("[SQL文字列]")|`SQL文字列`を直接指定|
+| 利用メソッド                       | 説明                                              |
+| :--------------------------------- | :------------------------------------------------ |
+| SqlAgent#update("[SQL名]")         | [SQL名](./README.md#sql名)で説明した`SQL名`を指定 |
+| SqlAgent#updateWith("[SQL文字列]") | `SQL文字列`を直接指定                             |
 
 上記２つのメソッドは更新を行うための`SqlUpdate`インタフェースのインスタンスを返却します。
 
@@ -513,9 +513,9 @@ into
 
 ### 更新の実行(`SqlUpdate#count`)
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlUpdate#count()|int|
+| メソッド名        | 戻り値の型 |
+| :---------------- | :--------- |
+| SqlUpdate#count() | int        |
 
 更新処理を行い、登録、更新、削除を行った行数を返します。
 
@@ -538,32 +538,32 @@ try (SqlAgent agent = config.agent()) {
 }
 ```
 
-## SQLによるバッチ更新(`SqlBatch#batch`, `SqlBatch#batchWith`)
+## SQLによるバッチ更新(`SqlBatch#batch` /`#batchWith`)
 
 大量のデータを一括で更新する場合、通常の更新ではSQLが都度実行されるため処理速度が遅く問題になる場合があります。  
 こういったケースに対応するため、**uroboroSQL**ではバッチ更新用のAPIを提供しています。
 
 バッチ更新処理も他と同様`SQL名`を指定する場合と`SQL文字列`を直接記述する２つのAPIが提供されています。  
 
-|利用メソッド|説明|
-|:---|:----|
-|SqlAgent#batch("[SQL名]")|[SQL名](./README.md#sql名)で説明した`SQL名`を指定|
-|SqlAgent#batchWith("[SQL文字列]")|`SQL文字列`を直接指定|
+| 利用メソッド                      | 説明                                              |
+| :-------------------------------- | :------------------------------------------------ |
+| SqlAgent#batch("[SQL名]")         | [SQL名](./README.md#sql名)で説明した`SQL名`を指定 |
+| SqlAgent#batchWith("[SQL文字列]") | `SQL文字列`を直接指定                             |
 
 上記２つのメソッドはバッチ更新を行うための`SqlBatch`インタフェースのインスタンスを返却します。
 
 `SqlBatch`インタフェースでは、`SqlFluent`インタフェースによるバインドパラメータの設定とは別に`java.util.stream.Stream`を用いたバッチパラメータの設定を行うAPIが提供されています。
 
-|メソッド|説明|
-|:---|:---|
-|SqlBatch#paramStream(Stream<Map<String, Object>>)|バインドパラメータや置換文字列として使用するキーと値のセットを`java.util.stream.Stream`で設定する。<Badge text="0.5.0+"/>|
-|SqlBatch#paramStream(Stream<E&gt;)|バインドパラメータや置換文字列として使用するエンティティクラスインスタンスを`java.util.stream.Stream`で設定する。<Badge text="0.10.0+"/>|
+| メソッド                                              | 説明                                                                                                                                     |
+| :---------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| SqlBatch#paramStream(Stream\<Map\<String, Object\>\>) | バインドパラメータや置換文字列として使用するキーと値のセットを`java.util.stream.Stream`で設定する。<Badge text="0.5.0+"/>                |
+| SqlBatch#paramStream(Stream\<E\>)                     | バインドパラメータや置換文字列として使用するエンティティクラスインスタンスを`java.util.stream.Stream`で設定する。<Badge text="0.10.0+"/> |
 
 ### バッチ更新の実行(`SqlBatch#count`)
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|SqlBatch#count()|int|
+| メソッド名       | 戻り値の型 |
+| :--------------- | :--------- |
+| SqlBatch#count() | int        |
 
 バッチ更新処理を行い、登録、更新、削除を行った行数を返します。
 
@@ -626,11 +626,11 @@ int updateCount = agent.batch("department/update_department")
 
 `SqlBatch`インタフェースにはバッチSQL実行時の動作を変更するためのAPIが提供されています。
 
-|メソッド|説明|デフォルト値|
-|:---|:---|:----|
-|by(BiPredicate<SqlContext, Map<String, Object>>)|バッチSQLの実行条件を指定します。`BiPredicate`の結果がtrueの場合にバッチSQLを実行します。|1000件毎|
-|batchWhen(BiConsumer<SqlAgent, SqlContext>)|バッチSQLの実行タイミングで行う操作を指定します。|何もしない|
-|errorWhen(TriConsumer<SqlAgent, SqlContext, Exception>)|バッチSQLの実行時に例外が発生した時の動作を指定します。|`UroborosqlRuntimeException`をスローする|
+| メソッド                                                  | 説明                                                                                      | デフォルト値                             |
+| :-------------------------------------------------------- | :---------------------------------------------------------------------------------------- | :--------------------------------------- |
+| by(BiPredicate\<SqlContext, Map\<String, Object\>\>)      | バッチSQLの実行条件を指定します。`BiPredicate`の結果がtrueの場合にバッチSQLを実行します。 | 1000件毎                                 |
+| batchWhen(BiConsumer\<SqlAgent, SqlContext\>)             | バッチSQLの実行タイミングで行う操作を指定します。                                         | 何もしない                               |
+| errorWhen(TriConsumer\<SqlAgent, SqlContext, Exception\>) | バッチSQLの実行時に例外が発生した時の動作を指定します。                                   | `UroborosqlRuntimeException`をスローする |
 
 これらのAPIを利用することでより柔軟なSQL実行が可能になります。
 
@@ -652,33 +652,33 @@ try (SqlAgent agent = config.agent()) {
 }
 ```
 
-## ストアドプロシージャの実行(`SqlAgent#proc`, `SqlAgent#procWith`)
+## ストアドプロシージャの実行(`SqlAgent#proc` /`#procWith`)
 
 **uroboroSQL**では、SQLの検索/更新のほかDBが提供するストアドプロシージャの呼び出し用APIも提供しています。
 
-|利用メソッド|説明|
-|:---|:----|
-|SqlAgent#proc("[SQL名]")|[SQL名](./README.md#sql名)で説明した`SQL名`を指定|
-|SqlAgent#procWith("[SQL文字列]")|`SQL文字列`を直接指定|
+| 利用メソッド                     | 説明                                              |
+| :------------------------------- | :------------------------------------------------ |
+| SqlAgent#proc("[SQL名]")         | [SQL名](./README.md#sql名)で説明した`SQL名`を指定 |
+| SqlAgent#procWith("[SQL文字列]") | `SQL文字列`を直接指定                             |
 
 上記２つのメソッドはストアドプロシージャの呼出を行うための`Procedure`インタフェースのインスタンスを返却します。
 
-### ストアドプロシージャの実行
+### `Procedure`インタフェース
 
-|メソッド名|戻り値の型|
-|:---|:---|
-|Procedure#call()|Map<String, Object>|
+| メソッド名       | 戻り値の型          |
+| :--------------- | :------------------ |
+| Procedure#call() | Map<String, Object> |
 
 `Procedure`インタフェースでは、ストアドプロシージャからの戻り値を取得するためのAPIが提供されています。
 
-|メソッド|説明|
-|:---|:---|
-|ProcedureFluent#outParam(String, int)|ストアドプロシージャからの戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します|
-|ProcedureFluent#outParam(String, SQLType)|ストアドプロシージャからの戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します|
-|ProcedureFluent#inOutParam(String, int)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します|
-|ProcedureFluent#inOutParam(String, SQLType)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します|
-|ProcedureFluent#inOutParamIfAbsent(String, int)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>指定したパラメータ名のパラメータが事前に登録されていない場合に値を追加します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します|
-|ProcedureFluent#inOutParamIfAbsent(String, SQLType)|ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>指定したパラメータ名のパラメータが事前に登録されていない場合に値を追加します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します|
+| メソッド                                            | 説明                                                                                                                                                                                                                                                                                                                                |
+| :-------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ProcedureFluent#outParam(String, int)               | ストアドプロシージャからの戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します                                                                                             |
+| ProcedureFluent#outParam(String, SQLType)           | ストアドプロシージャからの戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します                                                                                         |
+| ProcedureFluent#inOutParam(String, int)             | ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します                                                                                     |
+| ProcedureFluent#inOutParam(String, SQLType)         | ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します                                                                                 |
+| ProcedureFluent#inOutParamIfAbsent(String, int)     | ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>指定したパラメータ名のパラメータが事前に登録されていない場合に値を追加します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をint型で指定します     |
+| ProcedureFluent#inOutParamIfAbsent(String, SQLType) | ストアドプロシージャに渡し、かつ、戻り値として受け取るパラメータを指定します<br>指定したパラメータ名のパラメータが事前に登録されていない場合に値を追加します<br>実行したストアドプロシージャ内で指定したキーに設定された値が、戻り値の`Map<String, Object>`に格納されて取得できます。第2引数で受け取る値の型をSQLType型で指定します |
 
 ```java
 // Procedureインタフェースのインスタンスを取得
