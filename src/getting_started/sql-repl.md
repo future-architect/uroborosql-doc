@@ -80,7 +80,6 @@ uroborosql > update ddl/create_tables
 
 <<<@/src/getting_started/repl/create_tables.sql
 
-
 `ddl/create_tables`が実行され、DBにテーブルが作成されました。
 
 では次に作成されたテーブルの定義情報を確認します。  
@@ -150,9 +149,9 @@ uroborosql > parse department/select_department[Enter]
 
 `parse`コマンドの結果は以下のようになります。
 
-* `SQL` : 解析対象のSQL
-* `BRANCHES` : 条件分岐
-* `BIND_PARAMS` : バインドパラメータ
+- `SQL` : 解析対象のSQL
+- `BRANCHES` : 条件分岐
+- `BIND_PARAMS` : バインドパラメータ
 
 条件分岐では `BEGIN`のスコープ（{}で囲まれた中）に２つのIF分岐が並んでいることがわかります。  
 また、バインドパラメータでは `deptNo`と`deptName`があることがわかります。
@@ -262,7 +261,6 @@ sql.additionalClassPath=${user.home}/.m2/repository/com/h2database/h2/1.4.192/h2
 | sql.additionalClassPath                    | **REPL**起動時に起動時クラスパス以外でクラスパスに追加する場所。`;`で区切ることで複数指定可。SQLファイルのルート（sqlフォルダの親フォルダ）をクラスパスに追加することで、自動的にSQLファイルがロードされます。合わせて接続するDBのJDBCドライバを含むJarを指定することで動的にJDBCドライバを読み込みます。 |
 | sqlContextFactory.constantClassNames       | SqlContextFactoryに登録する定数クラスを指定。`,`で区切ることで複数指定可。 ex) jp.co.future.uroborosql.context.test.TestConsts                                                                                                                                                                            |
 | sqlContextFactory.enumConstantPackageNames | SqlContextFactoryに登録するEnum定数パッケージ名を指定。`,`で区切ることで複数指定可。ex) jp.co.future.uroborosql.context.test                                                                                                                                                                              |
-
 
 このプロパティファイルを変更することでいろいろなDBに接続することができるようになります。
 

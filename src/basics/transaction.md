@@ -133,7 +133,6 @@ agent.required(() -> {
 });
 ```
 
-
 ::: tip
 PostgreSQLについては、自動的にセーブポイントを利用したトランザクションの部分ロールバックに対応しています。
 詳細は、[PostgreSQLのトランザクション内SQLエラー対応](../advanced/README.md#postgresqlのトランザクション内sqlエラー対応)を参照してください。
@@ -161,6 +160,6 @@ try (SqlAgent agent = config.agent()) {
     .count();
 } catch (UroborosqlSQLException ex) {
   // SQLExceptionが発生した際に行う処理を実装
-  throw new Exception("exception occured. ex=" + ex.getCause().getMessage(), ex);
+  throw new Exception("exception occurred. ex=" + ex.getCause().getMessage(), ex);
 }
 ```

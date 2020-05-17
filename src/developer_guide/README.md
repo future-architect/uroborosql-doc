@@ -41,7 +41,7 @@ mvn test jacoco:report
 
 target/site/jacoco フォルダにjacocoカバレッジレポートが出力されます。
 
-開発を行う際は、Jadocコメントが正しく記載されているようにしてください。  
+開発を行う際は、Javadocコメントが正しく記載されているようにしてください。  
 javadocプラグインでjavadocを生成し、エラーが出力されないことを確認してください。
 
 ```sh
@@ -61,7 +61,7 @@ mvn install
 クローンしたフォルダをEclipseの既存Mavenプロジェクトとしてインポートしてください。  
 MavenのinitializeフェーズでEclipseプロジェクトの文字コードをUTF-8にする設定が入っているので、インポートが完了すれば開発が始められる状態になります。
 
-### Intellij
+### IntelliJ
 
 Import Project でクローンしたフォルダを指定してください。  
 Import project from external model でMavenを選択してください。  

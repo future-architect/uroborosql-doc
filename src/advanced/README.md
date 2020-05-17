@@ -55,6 +55,144 @@ SQLファイルのルートフォルダ（初期値：sql)は変更すること�
 `NioSqlManagerImpl`を`SqlManager`として指定した場合、Dialectによるファイルパスの切り替えが出来るようになります。
 詳しくは[DB種類毎のファイルパス切り替え](../configuration/sql-manager.md#db種類毎のファイルパス切り替え)を参照してください。
 
+## 複数DBへの接続 <Badge text="0.19.0+" />
+
+アプリケーションから複数のDBに接続する必要がある場合があります。  
+**uroboroSQL**で複数のDBに接続する際は以下のように`SqlAgent`生成時にDB接続先を指定する必要があります。
+
+### `JdbcConnectionSupplier` を使用して、都度コネクションを生成する
+
+SqlConfig生成時に指定したDB接続を使用する場合はこれまで通り`SqlConfig#agent()`を使用して`SqlAgent`を取得します。
+
+```java
+// JdbcConnectionSupplier を使用したSqlConfigの生成
+SqlConfig config = UroboroSQL.builder("jdbc:h2:mem:mainDB", "sa", "sa").build();
+
+// jdbc:h2:mem:mainDB に接続
+try (SqlAgent agent = config.agent()) {
+  agent.required(() -> {
+    List<Map<String, Object>> products = agent.query("example/select_product").collect();
+    ...
+  });
+}
+```
+
+SqlConfig生成時に指定した接続先とは別のDB接続に接続する場合は`ConnectionContext`インスタンスに新たなDB接続情報を設定し、 `SqlConfig#agent(ConnectionContext)`を使用して`SqlAgent`を取得します。  
+`ConnectionContext`インスタンスの生成には`ConnectionContextBuilder#jdbc`を使用します。
+
+```java
+// JdbcConnectionSupplier を使用したSqlConfigの生成
+SqlConfig config = UroboroSQL.builder("jdbc:h2:mem:mainDB", "sa", "sa").build();
+
+// jdbc:h2:mem:subDB に接続
+try (SqlAgent agent = config.agent(ConnectionContextBuilder.jdbc("jdbc:h2:mem:subDB", "sa", "sa"))) {
+  agent.required(() -> {
+    List<Map<String, Object>> products = agent.query("example/select_product").collect();
+    ...
+  });
+}
+```
+
+ここで指定したDB接続先に対するコネクションは`SqlAgent`がクローズされたタイミング（上記の場合は try-with-resourceの終了時点）で開放されます。
+
+### `DataSourceConnectionSupplier` を使用して、JNDIに登録されているデータソースを指定する
+
+JNDIに以下のような`DataSource`が登録されている場合に
+
+```java
+DataSource mainDataSource = ...
+DataSource subDataSource = ...
+
+Context ic = new InitialContext();
+ic.createSubcontext("java:comp");
+ic.createSubcontext("java:comp/env");
+ic.createSubcontext("java:comp/env/jdbc");
+ic.bind("java:comp/env/jdbc/main_datasource", mainDataSource);
+ic.bind("java:comp/env/jdbc/sub_datasource", subDataSource);
+```
+
+SqlConfig生成時に指定したDB接続を使用する場合はこれまで通り`SqlConfig#agent()`を使用して`SqlAgent`を取得します。
+
+```java
+// DataSourceConnectionSupplier を使用したSqlConfigの生成
+SqlConfig config = UroboroSQL.builder("java:comp/env/jdbc/main_datasource").build();
+
+// java:comp/env/jdbc/main_datasource で指定されるDBに接続
+try (SqlAgent agent = config.agent()) {
+  agent.required(() -> {
+    List<Map<String, Object>> products = agent.query("example/select_product").collect();
+    ...
+  });
+}
+```
+
+SqlConfig生成時に指定した接続先とは別のDB接続に接続する場合は`ConnectionContext`インスタンスに使用する`DataSource`のデータソース名を設定し、 `SqlConfig#agent(ConnectionContext)`を使用して`SqlAgent`を取得します。  
+`ConnectionContext`インスタンスの生成には`ConnectionContextBuilder#dataSource`を使用します。
+
+```java
+// JdbcConnectionSupplier を使用したSqlConfigの生成
+SqlConfig config = UroboroSQL.builder("java:comp/env/jdbc/main_datasource").build();
+
+// java:comp/env/jdbc/sub_datasource で指定されるDBに接続
+try (SqlAgent agent = config.agent(ConnectionContextBuilder.dataSource("java:comp/env/jdbc/sub_datasource"))) {
+  agent.required(() -> {
+    List<Map<String, Object>> products = agent.query("example/select_product").collect();
+    ...
+  });
+}
+```
+
+ここで指定したDB接続先に対するコネクションは`SqlAgent`がクローズされたタイミング（上記の場合は try-with-resourceの終了時点）で`DataSource`に戻されます。
+
+### `ConnectionContextBuilder` を使用した`ConnectionContext`の生成
+
+`ConnectionContextBuilder`には以下のメソッドが提供されています。
+
+|メソッド名|戻り値|
+|:--|:--|
+|jdbc(String url)|JdbcConnectionContext|
+|jdbc(String url, String user, String password)|JdbcConnectionContext|
+|jdbc(String url, String user, String password, String schema)|JdbcConnectionContext|
+|dataSource()|DataSourceConnectionContext|
+|dataSource(String dataSourceName)|DataSourceConnectionContext|
+
+また`ConnectionContext`には以下のメソッドが提供されています。
+
+|型|メソッド名|説明|
+|:--|:--|:--|
+|ConnectionContext|autoCommit()|自動コミット・モードを取得する|
+|ConnectionContext|autoCommit(boolean autoCommit)|自動コミット・モードを設定する|
+|ConnectionContext|readOnly()|読込み専用モードを取得する|
+|ConnectionContext|readOnly(boolean readOnly)|読込み専用モードを設定する|
+|ConnectionContext|transactionIsolation()|トランザクション分離レベルを取得する|
+|ConnectionContext|transactionIsolation(int transactionIsolation)|トランザクション分離レベルを設定する|
+|ConnectionContext|set(String key, Object value)|DB接続時に渡すカスタムプロパティを設定する|
+|JdbcConnectionContext|url()|urlを取得する|
+|JdbcConnectionContext|url(String url)|urlを設定する|
+|JdbcConnectionContext|user()|userを取得する|
+|JdbcConnectionContext|user(String user)|userを設定する|
+|JdbcConnectionContext|password()|passwordを取得する|
+|JdbcConnectionContext|password(String password)|passwordを設定する|
+|JdbcConnectionContext|schema()|schemaを取得する|
+|JdbcConnectionContext|schema(String schema)|schemaを設定する|
+|JdbcConnectionContext|toProperties()|DB接続時に渡すプロパティオブジェクトを取得する|
+|DataSourceConnectionContext|dataSourceName()|データソース名を取得する|
+|DataSourceConnectionContext|dataSourceName(String dataSourceName)|データソース名を設定する|
+
+`ConnectionContext`で提供されるメソッドを利用して、DB接続時の挙動を変更することができます。
+
+```java
+try (SqlAgent agent = config.agent(ConnectionContextBuilder.jdbc("jdbc:h2:mem:subDB", "sa", "sa")
+    .autoCommit(true) // 自動コミット・モードをtrueに指定
+    .set("MODE", "PostgreSQL") // H2DBの PostgreSQL Compatibility Mode に指定
+    )) {
+  agent.required(() -> {
+    ...
+  });
+}
+```
+
+
 ## PostgreSQLのトランザクション内SQLエラー対応
 
 PostgreSQLでは、１つのトランザクション内でSQLエラーが発生した場合、後続するSQL文はすべて無条件でエラーとなります。

@@ -22,10 +22,11 @@ DBに接続するためには`SqlConfig`インタフェースのインスタン�
 SqlConfig config = UroboroSQL.builder("jdbc:h2:mem:uroborosql", "sa", "").build();
 
 // DataSourceを使用したDB接続を行うSqlConfigの生成
-// SqlConfig config = UroboroSQL.builder(datasource).build();
-Context context = new InitialContext();
-DataSource dataSource = context.lookup("java:comp/env/jdbc/datasource");
-SqlConfig config = UroboroSQL.builder(dataSource).build();
+// SqlConfig config = UroboroSQL.builder(datasourceName).build();
+// 以下の様にDataSourceがJNDIでlookupできる場合
+// Context context = new InitialContext();
+// DataSource dataSource = context.lookup("java:comp/env/jdbc/datasource");
+SqlConfig config = UroboroSQL.builder("java:comp/env/jdbc/datasource").build();
 
 ```
 

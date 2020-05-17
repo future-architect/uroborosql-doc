@@ -60,7 +60,7 @@ and  dept.dept_name  =  /*dept_name*/'sample'
 Mapには`キー：カラムラベル名`、`値：カラムの値`の形で1行分のデータが格納されます。  
 
 ::: warning
-`SqlQuery#collect()`では検索結果をすべてメモリ上に格納します。大量データの検索を行う場合は後述の`SqlQuery#strem()`の利用を検討してください。
+`SqlQuery#collect()`では検索結果をすべてメモリ上に格納します。大量データの検索を行う場合は後述の`SqlQuery#stream()`の利用を検討してください。
 :::
 
 引数なし
@@ -439,7 +439,7 @@ try (SqlAgent agent = config.agent()) {
 
 | メソッド名           | 戻り値の型 |
 | :------------------- | :--------- |
-| SqlQuery#resultSet() | ResulitSet |
+| SqlQuery#resultSet() | ResultSet |
 
 検索結果を`java.sql.ResultSet`の形式で取得します。
 
@@ -449,7 +449,6 @@ try (SqlAgent agent = config.agent()) {
 ::: danger 注意
 ResultSetリソースのクローズより先にSqlAgentインスタンスがクローズ、または破棄された場合、ResultSetリソースもクローズされてしまい不正な動作となります。ResultSetリソースとそのResultSetを生成したSqlAgentインスタンスの生存期間を合わせる、もしくはSqlAgentインスタンスの生存期間を長くしてください。
 :::
-
 
 このAPIは他のフレームワークとの連携など、`ResultSet`リソースの取得が必要なケースを想定して提供しています。
 
@@ -646,7 +645,7 @@ try (SqlAgent agent = config.agent()) {
     .by((ctx, row) -> ctx.batchCount() == 10)  // 10件毎にSQL実行
     .batchWhen((agent, ctx) -> agent.commit())  // SQL実行が成功したらコミットする
     .errorWhen((agent, ctx, ex) -> {
-      log.error("error occured. ex:{}", ex.getMessage());
+      log.error("error occurred. ex:{}", ex.getMessage());
     })  // 例外が発生したらログ出力する
     .count();
 }

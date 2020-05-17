@@ -170,7 +170,7 @@ select /*+ ORDERED */ id, name, age, ... from user where age < 30
 また、指定可能なヒント句は利用するDBに依存します。
 :::
 
-### 検索結果の取得(`SqlEntityQury#collect` /`#first` /`#one` /`#select` /`#stream`)
+### 検索結果の取得(`SqlEntityQuery#collect` /`#first` /`#one` /`#select` /`#stream`)
 
 `SqlEntityQuery`から抽出条件に該当するエンティティを取得します。
 
@@ -184,10 +184,10 @@ select /*+ ORDERED */ id, name, age, ... from user where age < 30
 
 ```java
 // List<Employee>で取得
-List<Enployee> employees = agent.query(Employee.class).collect();
+List<Employee> employees = agent.query(Employee.class).collect();
 
 // 検索結果の先頭行を取得
-Optional<Enployee> employee = agent.query(Employee.class).first();
+Optional<Employee> employee = agent.query(Employee.class).first();
 
 // 検索結果（カラム値）の取得
 String employeeName = agent.query(Employee.class)
@@ -289,7 +289,6 @@ System.out.println(employee.getEmpNo()); // 自動採番された値が出力さ
 
 `java.util.stream.Stream`経由で渡される複数のエンティティインスタンスを挿入します。
 
-
 * [@Id](#id-generatedvalue-sequencegenerator)アノテーションの指定があるフィールド
 * 対するカラムが自動採番となっているフィールド
 
@@ -305,7 +304,7 @@ System.out.println(employee.getEmpNo()); // 自動採番された値が出力さ
 2件目以降のエンティティで値を設定していても無視されて自動採番されます。  
 :::
 
-`AndReturn`が付くメソッドでは、挿入したエンティティオブジェクトの`java.util.stream.Stream`を戻り値として取得できるため、 
+`AndReturn`が付くメソッドでは、挿入したエンティティオブジェクトの`java.util.stream.Stream`を戻り値として取得できるため、
 エンティティの挿入に続けて処理を行う場合に便利です。
 
 ::: warning 注意
@@ -388,7 +387,7 @@ agent.inserts(employees, (ctx, count, entity) -> count == 10);
 `@Id`を指定したフィールドに対するカラムや自動採番カラムを更新する場合は、後述する[条件指定による複数件の更新](#条件指定による複数件の更新-sqlagent-update)を使用してください。
 :::
 
-`AndReturn`が付くメソッドでは、更新したエンティティオブジェクトを戻り値として取得できるため、 
+`AndReturn`が付くメソッドでは、更新したエンティティオブジェクトを戻り値として取得できるため、
 エンティティの更新に続けて処理を行う場合に便利です。
 
 ```java
@@ -442,7 +441,7 @@ agent.update(Employee.class)
 レコード更新時、[@Version](#version)アノテーションの指定があるフィールドに対するカラムはカウントアップされます。  
 また、更新された値がエンティティの該当フィールドにも設定されます。
 
-`AndReturn`が付くメソッドでは、更新したエンティティオブジェクトの`java.util.stream.Stream`を戻り値として取得できるため、 
+`AndReturn`が付くメソッドでは、更新したエンティティオブジェクトの`java.util.stream.Stream`を戻り値として取得できるため、
 エンティティの更新に続けて処理を行う場合に便利です。
 
 ::: warning

@@ -166,7 +166,7 @@ emp_name like /*SF.contains(emp_name)*/'' escape '$'
 
 | メソッド名                                           | 戻り値   | 説明                                                                                                                   |
 | :--------------------------------------------------- | :------- | :--------------------------------------------------------------------------------------------------------------------- |
-| SF.isEmpty(String str)                               | booean   | 対象文字列が空文字であること判定する                                                                                   |
+| SF.isEmpty(String str)                               | boolean  | 対象文字列が空文字であること判定する                                                                                   |
 | SF.isNotEmpty(String str)                            | boolean  | 対象文字列が空文字でないことを判定する                                                                                 |
 | SF.isBlank(String str)                               | boolean  | 対象文字列が空文字、もしくは空白であること判定する                                                                     |
 | SF.isNotBlank(String str)                            | boolean  | 対象文字列が空文字、もしくは空白でないこと判定する                                                                     |

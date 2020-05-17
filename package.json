@@ -11,9 +11,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "cross-env": "^5.0.1",
+    "cross-env": "^7.0.2",
     "markdown-it-task-lists": "^2.1.1",
-    "mermaid": "^8.2.0",
+    "mermaid": "^8.5.1",
     "vuepress": "^1.0.3",
     "serialize-javascript": ">=2.1.1",
     "@vuepress/plugin-google-analytics": "^1.0.3"

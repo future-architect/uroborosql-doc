@@ -82,7 +82,7 @@ uroboroSQLを利用するためには、Java8以上の環境が必要です。
 事前準備として、
 
 - Java8 or 11のいずれかのJDKディストリビューション
-  - [AdobtOpenJDK](https://adoptopenjdk.net/index.html)
+  - [AdoptOpenJDK](https://adoptopenjdk.net/index.html)
   - [Amazon Corretto](https://aws.amazon.com/jp/corretto/)
   - [Oracle JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [Apache Maven](https://maven.apache.org/download.cgi) のv3.3.1(Java7対応版)以上のバージョン

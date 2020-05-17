@@ -197,7 +197,11 @@ agent.query("department/select_department").collect();
 ## 複数件挿入時の挿入方法の初期値設定 ( `SqlAgentFactory#setDefaultInsertsType` )
 
 `SqlAgent#inserts()`メソッドで使用する[InsertsType](../basics/entity-api.md#挿入方法（insertstype）の指定)の初期値を設定することが出来ます。
-指定しない場合`InsertsType.BULK`になります。
+指定しない場合`InsertsType.BATCH`になります。
+
+::: warning 変更
+<Badge text="0.19.0+" vertical="middle" /> からInsertsTypeの初期値が `BULK` から `BATCH` に変更になりました。
+:::
 
 ```java
 SqlConfig config = UroboroSQL.builder(...)
@@ -207,8 +211,6 @@ SqlConfig config = UroboroSQL.builder(...)
     .setDefaultInsertsType(InsertsType.BULK)
   ).build();
 ```
-
-
 
 ## SQL実行のリトライ ( `SqlAgentFactory#setSqlRetryCodeList` /`#setDefaultMaxRetryCount` /`#setDefaultSqlRetryWaitTime` )
 
