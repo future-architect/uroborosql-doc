@@ -16,7 +16,7 @@ meta:
 <dependency>
   <groupId>jp.co.future</groupId>
   <artifactId>uroborosql</artifactId>
-  <version>0.18.0</version>
+  <version>0.18.1</version>
 </dependency>
 ```
 
@@ -61,12 +61,12 @@ meta:
 Gradleプロジェクトの場合は、**build.gradle**のdependencies内に以下のライブラリ依存関係を追加してください。
 
 ```groovy
-compile group: 'jp.co.future', name: 'uroborosql', version: '0.18.0'
+compile group: 'jp.co.future', name: 'uroborosql', version: '0.18.1'
 
 // 式言語ライブラリとしてOGNLを使用する場合
 compile group: 'ognl', name: 'ognl', version: '3.1.23'
 // 式言語ライブラリとしてSpring Expression Language(SpEL)を使用する場合
-compile group: 'org.springframework', name: 'spring-expression', version: '5.2.3.RELEASE'
+compile group: 'org.springframework', name: 'spring-expression', version: '5.2.2.RELEASE'
 
 // REPLを使用する場合
 compile group: 'org.jline', name: 'jline', version: '3.11.0'
