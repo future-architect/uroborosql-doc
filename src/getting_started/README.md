@@ -16,7 +16,7 @@ meta:
 <dependency>
   <groupId>jp.co.future</groupId>
   <artifactId>uroborosql</artifactId>
-  <version>0.18.1</version>
+  <version>0.20.2</version>
 </dependency>
 ```
 
@@ -29,7 +29,7 @@ meta:
 <dependency>
   <groupId>ognl</groupId>
   <artifactId>ognl</artifactId>
-  <version>3.1.23</version>
+  <version>3.2.16</version>
 </dependency>
 ```
 
@@ -39,7 +39,7 @@ meta:
 <dependency>
   <groupId>org.springframework</groupId>
   <artifactId>spring-expression</artifactId>
-  <version>5.2.2.RELEASE</version>
+  <version>5.3.1</version>
 </dependency>
 ```
 
@@ -49,7 +49,7 @@ meta:
 <dependency>
   <groupId>org.jline</groupId>
   <artifactId>jline</artifactId>
-  <version>3.11.0</version>
+  <version>3.17.1</version>
 </dependency>
 <dependency>
   <groupId>org.fusesource.jansi</groupId>
@@ -61,15 +61,15 @@ meta:
 Gradleプロジェクトの場合は、**build.gradle**のdependencies内に以下のライブラリ依存関係を追加してください。
 
 ```groovy
-compile group: 'jp.co.future', name: 'uroborosql', version: '0.18.1'
+compile group: 'jp.co.future', name: 'uroborosql', version: '0.20.2'
 
 // 式言語ライブラリとしてOGNLを使用する場合
-compile group: 'ognl', name: 'ognl', version: '3.1.23'
+compile group: 'ognl', name: 'ognl', version: '3.2.16'
 // 式言語ライブラリとしてSpring Expression Language(SpEL)を使用する場合
-compile group: 'org.springframework', name: 'spring-expression', version: '5.2.2.RELEASE'
+compile group: 'org.springframework', name: 'spring-expression', version: '5.3.1'
 
 // REPLを使用する場合
-compile group: 'org.jline', name: 'jline', version: '3.11.0'
+compile group: 'org.jline', name: 'jline', version: '3.17.1'
 compile group: 'org.fusesource.jansi', name: 'jansi', version: '1.18'
 ```
 

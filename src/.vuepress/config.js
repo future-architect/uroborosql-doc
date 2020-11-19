@@ -8,9 +8,8 @@ module.exports = {
   markdown: {
     // 行番号。表示すると狭いので削除したほうがいいならこの記述を削除
     lineNumbers: true,
-    config: md => {
+    extendMarkdown: md => {
       md.use(require('markdown-it-task-lists'))
-      md.use(require('markdown-it-mermaid').default)
     }
   },
   head: [
@@ -20,9 +19,15 @@ module.exports = {
     ['meta', { name: 'og:image', content: 'https://future-architect.github.io/uroborosql-doc/images/logo.png' }]
   ],
   plugins: [
+    'vuepress-plugin-mermaidjs',
+    'fulltext-search'
+  ],
+  plugins: [
     ['@vuepress/google-analytics', {
       ga: 'UA-93486523-1'
-    }]
+    }],
+    'vuepress-plugin-mermaidjs',
+    'fulltext-search'
   ],
   locales: {
     '/': {
