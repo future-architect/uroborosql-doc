@@ -10,4 +10,4 @@ https://future-architect.github.io/uroborosql/
 
 ---
 
- ©2018-2019 Future Corporation. All rights reserved.
+ ©2018-2022 Future Corporation. All rights reserved.

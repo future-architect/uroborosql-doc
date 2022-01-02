@@ -58,9 +58,18 @@ SqlConfig config = UroboroSQL.builder(...)
 
 ### Spring bootでの利用 <Badge text="NioSqlManagerImplのみ" />
 
+#### v0.20.5まで
+
 Spring boot利用時に実行可能jarにSQLファイルをリソースとして含める場合には、NioSqlManagerImplの場合、パスの指定を変更する必要があります。
 
-例えば、`classpath:sql`にSQLファイルを配置している場合は、実行可能jarで起動する際にはアプリケーション設定を利用して`BOOT-INF/classes/sql`のように指定してください。
+例えば、`classpath:sql`にSQLファイルを配置している場合は、実行可能jarで起動する際にはアプリケーション設定を利用して `BOOT-INF/classes/sql` のように指定してください。
+なお、v0.20.5までのバージョンでは、 `BOOT-INF/lib` 配下のjarに含まれるSQLの読み込みができませんので、v0.21.0以降へのバージョンアップを検討してください。
+
+#### v0.21.0以降
+
+v0.20.5までのように、実行可能jarかどうかで設定を変える必要はありません。  
+実行可能jarかどうかに問わず、クラスパス配下のjarのリソースを探索するように変更されているため、
+`BOOT-INF/classes` 、 `BOOT-INF/lib` のどちらに含まれているSQLファイルも読み込みが可能です。
 
 ## DB種類毎のファイルパス切り替え <Badge text="NioSqlManagerImplのみ" />
 

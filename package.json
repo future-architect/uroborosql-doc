@@ -1,6 +1,6 @@
 {
   "name": "uroborosql-doc",
-  "version": "0.20.2",
+  "version": "0.21.0",
   "description": "Documentation for uroborosql",
   "author": "Future Corporation",
   "main": "index.js",
