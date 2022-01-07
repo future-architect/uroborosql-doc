@@ -112,7 +112,7 @@ agent.required(() -> {
 `SqlAgent#savepointScope()` を使用して、より確実にsavepointの制御を行うことができます。
 
 ```java
-// SqlAgent#savepoint()を使ったsavepointの実装
+// SqlAgent#savepointScope()を使ったsavepointの実装
 agent.required(() -> {
   // トランザクション開始
   agent.update("employee/insert_employee")
@@ -138,6 +138,67 @@ agent.required(() -> {
 PostgreSQLについては、自動的にセーブポイントを利用したトランザクションの部分ロールバックに対応しています。
 詳細は、[PostgreSQLのトランザクション内SQLエラー対応](../advanced/README.md#postgresqlのトランザクション内sqlエラー対応)を参照してください。
 :::
+
+## AutoCommitスコープ(`SqlAgent#autoCommitScope`) <Badge text="0.21.1+"/>
+
+トランザクション制御を行うアプリケーションで `uroborosql` を利用する場合、`SqlAgent#required` などを使ったトランザクションスコープによりコミットを制御するため、
+`java.sql.Connection` の自動コミット・モードを `無効(false)` にします。
+
+しかしDBの種類によっては特定のコマンドを発行する際、自動コミット・モードを `有効(true)` にして発行を行う必要があります。
+
+::: tip 自動コミット・モードを有効にする必要のあるコマンド
+例えば postgresqlの `vacuum` コマンドはトランザクション制御下では実行できないため、自動コミット・モードを有効にする必要があります
+:::
+
+ こういったケースを実現する場合、 <Badge text="0.21.0"/> までは以下のような実装が必要でした。
+
+```java
+agent.required(() -> {
+  // トランザクション開始
+  // AutoCommitの開始
+  try {
+    agent.getConnection().setAutoCommit(true);
+  } catch (SQLException ex) {
+    throw new IllegalStateException(ex);
+  }
+
+  agent.update("employee/insert_employee")
+    .param("emp_no", 1001)
+    .count(); // この段階で更新がコミットされる
+
+  // AutoCommitの終了
+  try {
+    agent.getConnection().setAutoCommit(false);
+  } catch (SQLException ex) {
+    throw new IllegalStateException(ex);
+  }
+
+  assertThat(agent.query("employee/select_employee").collect().size(), 1);
+});
+```
+
+上記の実装では、自動コミット・モードの切替えを try-catch で囲む必要があり記述が冗長でした。
+
+ <Badge text="0.21.1+"/> からは SqlAgent#autoCommitScope() を使って自動コミット・モードの切替えができるようになりました。
+
+```java
+// SqlAgent#autoCommitScope()を使った実装
+agent.required(() -> {
+  // トランザクション開始
+  // AutoCommitの開始
+  agent.autoCommitScope(() -> {
+    agent.update("employee/insert_employee")
+      .param("emp_no", 1001)
+      .count(); // この段階で更新がコミットされる
+
+    assertThat(agent.query("employee/select_employee").collect().size(), 1);
+    // 例外をスローしてもコミット済みなので追加したレコードは消えない
+    throw new UroborosqlRuntimeException();
+  });
+  // AutoCommitの終了
+  assertThat(agent.query("employee/select_employee").collect().size(), 1);
+});
+```
 
 ## エラーハンドリング ( `UroborosqlSQLException` )
 
