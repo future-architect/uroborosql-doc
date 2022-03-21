@@ -519,7 +519,7 @@ agent.find(Employee.class, 1).ifPresentOrElse(employee -> {
   employee.setGender(Gender.FEMALE); // MALE("M"), FEMALE("F"), OTHER("O")
 
   // エンティティの挿入
-  agent.insert(new Employee);
+  agent.insert(employee);
 });
 ```
 
