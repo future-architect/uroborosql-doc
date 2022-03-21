@@ -480,6 +480,70 @@ Stream<Employee> employees = agent.query(Employee.class)
 agent.updates(employees, (ctx, count, entity) -> count == 10);
 ```
 
+## エンティティのマージ <Badge text="0.22.0+"/>
+
+### 1件のマージ(`SqlAgent#merge` /`#mergeAndReturn`)
+
+| メソッド名                                      | 戻り値の型 |
+| :---------------------------------------------- | :--------- |
+| &lt;E&gt; SqlAgent#merge(E)                     | int        |
+| &lt;E&gt; SqlAgent#mergeAndReturn(E)            | E          |
+| &lt;E&gt; SqlAgent#mergeWithLocking(E)          | int        |
+| &lt;E&gt; SqlAgent#mergeWithLockingAndReturn(E) | E          |
+
+エンティティクラスのインスタンスを使ってPKによるレコードの検索を行い、レコードがある場合は更新を行います。  
+レコードがない場合、もしくは引数で指定したインスタンスのPKに該当するフィールドに値の指定が無い場合は挿入を行います。  
+（これは通常、`UPSERT` や `MERGE` と呼ばれる動作です）
+
+`AndReturn` が付くメソッドでは、更新、または挿入したエンティティオブジェクトを戻り値として取得できるため、 エンティティの更新や挿入に続けて処理を行う場合に便利です。
+
+`WithLocking` が付くメソッドでは、PKによるレコードの検索時、レコードの悲観ロックも合わせて行います。
+
+::: warning
+接続しているDBが `SELECT FOR UPDATE` もしくは `SELECT FOR UPDATE NOWAIT` をサポートしていない場合、`WithLocking` が付くメソッドを呼び出すと `UroborosqlRuntimeException` がスローされます。
+:::
+
+#### mergeメソッドを使用しない場合
+
+```java
+agent.find(Employee.class, 1).ifPresentOrElse(employee -> {
+  employee.setLastName("Wilson");
+
+  // エンティティの更新
+  agent.update(employee);
+}, () -> {
+  Employee employee = new Employee();
+  employee.setFirstName("Susan");
+  employee.setLastName("Wilson");
+  employee.setBirthDate(LocalDate.of(1969, 2, 10));
+  employee.setGender(Gender.FEMALE); // MALE("M"), FEMALE("F"), OTHER("O")
+
+  // エンティティの挿入
+  agent.insert(new Employee);
+});
+```
+
+#### mergeメソッドを利用する場合（更新）
+
+```java
+Employee employee = ...;  // find or create instance.
+// employee.setId(1); // id(PK) is 1
+employee.setLastName("Wilson");
+agent.merge(employee);
+```
+
+#### mergeメソッドを利用する場合（挿入）
+
+```java
+Employee employee = new Employee();
+employee.setFirstName("Susan");
+employee.setLastName("Wilson");
+employee.setBirthDate(LocalDate.of(1969, 2, 10));
+employee.setGender(Gender.FEMALE); // MALE("M"), FEMALE("F"), OTHER("O")
+agent.merge(employee);
+```
+
+
 ## エンティティの削除
 
 ### 1件の削除(`SqlAgent#delete` /`#deleteAndReturn`)
