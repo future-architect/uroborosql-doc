@@ -74,7 +74,7 @@ Optional<Employee> employee = agent.find(Employee.class, 1);
 
 ---
 
-### 抽出条件の指定(`SqlEntityQuery#equal` /`#notEqual` /`#greaterThan` /`#lessThan` /`#greaterEqual` /`#lessEqual` /`#in` /`#notIn` /`#like` /`#startsWith` /`#endsWith` /`#contains` /`#notLike` /`#notStartsWith` /`#notEndsWith` /`#notContains` /`#between` /`#betweenColumns` /`#isNull` /`#isNotNull` /`#where`)
+### 抽出条件の指定(`SqlEntityQuery#equal` /`#notEqual` /`#greaterThan` /`#lessThan` /`#greaterEqual` /`#lessEqual` /`#in` /`#notIn` /`#like` /`#startsWith` /`#endsWith` /`#contains` /`#notLike` /`#notStartsWith` /`#notEndsWith` /`#notContains` /`#between` /`#notBetween` /`#betweenColumns` /`#notBetweenColumns` /`#isNull` /`#isNotNull` /`#where`)
 
 | 抽出条件指定メソッド記述例                                                  | 生成されるwhere句の条件式                | 補足説明                                                       |
 | :-------------------------------------------------------------------------- | :--------------------------------------- | :------------------------------------------------------------- |
@@ -97,7 +97,9 @@ Optional<Employee> employee = agent.find(Employee.class, 1);
 | notEndsWith("col", "val")                                                   | not like '%val'                          | `val`はエスケープされる                                        |
 | notContains("col", "val")                                                   | not like '%val%'                         | `val`はエスケープされる                                        |
 | between("col", 1, 2)                                                        | col between 1 and 2                      |                                                                |
+| notBetween("col", 1, 2) <Badge text="0.23.0+"/>                             | col not between 1 and 2                  |                                                                |
 | betweenColumns(2, "col1", "col2") <Badge text="0.23.0+"/>                   | 2 between col1 and col2                  |                                                                |
+| notBetweenColumns(2, "col1", "col2") <Badge text="0.23.0+"/>                | 2 not between col1 and col2              |                                                                |
 | isNull("col")                                                               | col is null                              |                                                                |
 | isNotNull("col")                                                            | col is not null                          |                                                                |
 | where("col = 1 or col = 2")                                                 | (col = 1 or col = 2)                     | もし複数回`where()`が呼び出された場合は条件を `AND` で結合する |
