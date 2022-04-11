@@ -74,7 +74,7 @@ Optional<Employee> employee = agent.find(Employee.class, 1);
 
 ---
 
-### 抽出条件の指定(`SqlEntityQuery#equal` /`#notEqual` /`#greaterThan` /`#lessThan` /`#greaterEqual` /`#lessEqual` /`#in` /`#notIn` /`#like` /`#startsWith` /`#endsWith` /`#contains` /`#notLike` /`#notStartsWith` /`#notEndsWith` /`#notContains` /`#between` /`#isNull` /`#isNotNull` /`#where`)
+### 抽出条件の指定(`SqlEntityQuery#equal` /`#notEqual` /`#greaterThan` /`#lessThan` /`#greaterEqual` /`#lessEqual` /`#in` /`#notIn` /`#like` /`#startsWith` /`#endsWith` /`#contains` /`#notLike` /`#notStartsWith` /`#notEndsWith` /`#notContains` /`#between` /`#betweenColumns` /`#isNull` /`#isNotNull` /`#where`)
 
 | 抽出条件指定メソッド記述例                                                  | 生成されるwhere句の条件式                | 補足説明                                                       |
 | :-------------------------------------------------------------------------- | :--------------------------------------- | :------------------------------------------------------------- |
@@ -97,6 +97,7 @@ Optional<Employee> employee = agent.find(Employee.class, 1);
 | notEndsWith("col", "val")                                                   | not like '%val'                          | `val`はエスケープされる                                        |
 | notContains("col", "val")                                                   | not like '%val%'                         | `val`はエスケープされる                                        |
 | between("col", 1, 2)                                                        | col between 1 and 2                      |                                                                |
+| betweenColumns(2, "col1", "col2") <Badge text="0.23.0+"/>                   | 2 between col1 and col2                  |                                                                |
 | isNull("col")                                                               | col is null                              |                                                                |
 | isNotNull("col")                                                            | col is not null                          |                                                                |
 | where("col = 1 or col = 2")                                                 | (col = 1 or col = 2)                     | もし複数回`where()`が呼び出された場合は条件を `AND` で結合する |
@@ -192,7 +193,29 @@ Optional<Enployee> employee = agent.query(Employee.class).first();
 // 検索結果（カラム値）の取得
 String employeeName = agent.query(Employee.class)
     .equal("employeeId", 1)
-    .select("employeeName", String.class).findFirst().get();
+    .select("employeeName", String.class).findFirst().orElseThrow();
+```
+
+### 取得するカラム/除外するカラムの指定(`#includeColumns` / `#excludeColumns`) <Badge text="0.23.0+"/>
+
+[検索結果の取得](#検索結果の取得-sqlentityqury-collect-first-one-select-stream) を呼び出す前に検索結果に含めるカラムを指定することで
+利用しないカラムに対する不要なアクセスを減らすことができます。
+
+| メソッド                       | 説明                                                 |
+| :----------------------------- | :--------------------------------------------------- |
+| includeColumns(String... cols) | 検索結果に含めるカラム名を指定する（複数指定可）     |
+| excludeColumns(String... cols) | 検索結果から除外するカラム名を指定する（複数指定可） |
+
+```java
+// List<Employee>を取得 (取得したEmployeeインスタンスにはemployeeIdのみ設定されている)
+List<Enployee> employees = agent.query(Employee.class)
+                              .includeColumns("employeeId")
+                              .collect();
+
+// List<Employee>を取得 (取得したEmployeeインスタンスにはemployeeName以外が設定されている)
+List<Enployee> employees = agent.query(Employee.class)
+                              .excludeColumns("employeeName")
+                              .collect();
 ```
 
 ### 集約関数(`SqlEntityQuery#count` /`#sum` /`#sum` /`#min` /`#max` /`#exists` /`#notExists`) <Badge text="0.12.0+"/>
