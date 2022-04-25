@@ -120,7 +120,33 @@ agent.query(Employee.class).contains("first_name", "Bob").collect();
 agent.query(Employee.class).where("first_name =''/*firstName*/", "firstName", "Bob").where("last_name = ''/*lastName*/", "lastName", "Smith").collect();
 ```
 
-::: danger 注意
+::: warning 注意
+同じカラムに対して `where` 以外の抽出条件指定メソッドを複数指定した場合、最後に指定した抽出条件が有効になります。
+
+```java
+agent.query(Employee.class)
+    .greaterThan("emp_no", 20)
+    .lessEqual("emp_no", 10)
+    .collect();
+```
+
+上記の場合、 `lessEqual` メソッドの指定が有効になり、以下のSQLが発行されます。  
+（`greaterThan` メソッドの指定は無視されます）
+
+```sql
+select
+  emp_no      as emp_no
+, first_name  as first_name
+, last_name   as last_name
+...
+from employee
+where
+  emp_no <= 10
+```
+
+:::
+
+::: danger 警告
 `SqlEntityQuery`に対して抽出条件を指定する場合`param`メソッドは使用しないでください。
 `SqlEntityQuery#param()`には`@Deprecated`が付与されており、将来削除される予定です。
 :::
