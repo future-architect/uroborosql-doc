@@ -15,6 +15,7 @@ meta:
 
 | バージョン | リリース日 | 概要                                                                                                                                                              |
 | :--------: | :--------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|  v0.23.1   | 2022/05/13 | バグフィックス                                                                                                                                                    |
 |  v0.23.0   | 2022/04/11 | SqlEntityQuery#betweenColumns / SqlEntityQuery#includeColumns / SqlEntityQuery#excludeColumns の追加                                                              |
 |  v0.22.0   | 2022/03/22 | SqlAgent#merge / SqlAgent#mergeAndReturn / SqlAgent#mergeWithLocking SqlAgent#mergeWithLockingAndReturn の追加                                                    |
 |  v0.21.1   | 2022/01/07 | SqlAgent#autoCommitScopeの追加                                                                                                                                    |
