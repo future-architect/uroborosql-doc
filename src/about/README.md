@@ -15,6 +15,7 @@ meta:
 
 | バージョン | リリース日 | 概要                                                                                                                                                              |
 | :--------: | :--------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|  v0.24.0   | 2022/05/22 | DAOインタフェースで挿入を行う際、デフォルト値の指定があるカラムに対するフィールドが `null` の場合、デフォルト値が設定されるように動作を変更                       |
 |  v0.23.1   | 2022/05/13 | バグフィックス                                                                                                                                                    |
 |  v0.23.0   | 2022/04/11 | SqlEntityQuery#betweenColumns / SqlEntityQuery#includeColumns / SqlEntityQuery#excludeColumns の追加                                                              |
 |  v0.22.0   | 2022/03/22 | SqlAgent#merge / SqlAgent#mergeAndReturn / SqlAgent#mergeWithLocking SqlAgent#mergeWithLockingAndReturn の追加                                                    |
