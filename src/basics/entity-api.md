@@ -19,6 +19,7 @@ create table employee (
   , last_name varchar(20) not null
   , birth_date date not null
   , gender char(1) not null
+  , email varchar(100) null
   , lock_version number(10) not null
   , constraint employee_PKC primary key (emp_no)
 )
@@ -30,6 +31,7 @@ create table employee (
   , last_name varchar(20) not null
   , birth_date date not null
   , gender char(1) not null
+  , email varchar(100) null
   , lock_version number(10) not null
   , constraint employee_PKC primary key (emp_no)
 ) ;
@@ -42,6 +44,7 @@ public class Employee {
   private String lastName;
   private LocalDate birthDate;
   private Gender gender;
+  private Optional<String> email = Optional.empty();
   private long lockVersion = 0;
 
   // 中略 getter/setter
@@ -304,6 +307,9 @@ long count = agent.query(Employee.class).count();
 
 デフォルト値の指定があるカラムに対するフィールドが `null` の場合、カラムの値にデフォルト値が設定されます。
 
+NULL可であるカラムに対するフィールドの値が `null` の場合、そのカラムに値は設定されず、結果として `NULL` になるか、またはデフォルト値が設定されます。  
+NULL可であるカラムに対するフィールドの型が `Optional`型の場合、`Optional.empty()` が設定されていればそのカラムには `NULL` が設定されます。`Optional.empty()` 以外の値が設定されていれば、Optionalが内包する値が設定されます。
+
 `AndReturn`が付くメソッドでは、挿入したエンティティオブジェクトを戻り値として取得できるため、
 エンティティの挿入に続けて処理を行う場合に便利です。
 
@@ -312,6 +318,7 @@ Employee employee = new Employee();
 employee.setFirstName("Susan");
 employee.setLastName("Davis");
 employee.setBirthDate(LocalDate.of(1969, 2, 10));
+employee.setEmail(Optional.of("susan.davis@sample.com")); // email カラムには susan.davis@sample.com が設定される
 employee.setGender(Gender.FEMALE); // MALE("M"), FEMALE("F"), OTHER("O")
 
 // 1件の挿入
@@ -436,6 +443,10 @@ agent.inserts(employees, (ctx, count, entity) -> count == 10);
 レコード更新時、[@Version](#version)アノテーションの指定があるフィールドに対するカラムはカウントアップされます。  
 また、更新された値がエンティティの該当フィールドにも設定されます。
 
+NULL可であるカラムに対するフィールドの値が `null` の場合、そのカラムは __更新されません__。  
+NULL可であるカラムに対するフィールドの型が `Optional`型の場合、`Optional.empty()` が設定されていればそのカラムは `NULL` で更新されます。
+`Optional.empty()` 以外の値が設定されていれば、Optionalが内包する値で更新されます。
+
 ::: warning 補足
 エンティティクラスのインスタンスを使った１レコードの更新では、`@Id`を指定したフィールドに対するカラムや自動採番カラムは更新できません。  
 `@Id`を指定したフィールドに対するカラムや自動採番カラムを更新する場合は、後述する[条件指定による複数件の更新](#条件指定による複数件の更新-sqlagent-update)を使用してください。
@@ -447,6 +458,7 @@ agent.inserts(employees, (ctx, count, entity) -> count == 10);
 ```java
 agent.find(Employee.class, 1).ifPresent(employee -> {
   employee.setLastName("Wilson");
+  employee.setEmail(Optional.empty()); // email を null に更新
   System.out.println(employee.getLockVersion()); // 1
 
   // エンティティの更新
