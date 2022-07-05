@@ -13,7 +13,7 @@
   "dependencies": {
     "cross-env": "^7.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "mermaid": "^8.8.3",
+    "mermaid": "^9.0.0",
     "vuepress": "^1.5.4",
     "vuepress-plugin-mermaidjs": "^1.8.0",
     "vuepress-plugin-fulltext-search": "https://github.com/shout-star/vuepress-plugin-fulltext-search.git#v2.1.0-fix",
