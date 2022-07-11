@@ -167,13 +167,13 @@ public enum Gender {
 
 - /\*#[定数パラメータプレフィックス][定数フィールド名大文字]\*/
 - /\*#[定数パラメータプレフィックス][Innerクラス名大文字スネークケース]\_[Innerクラス内定数フィールド名大文字]\*/
-- /\*#[定数パラメータプレフィックス][列挙型名大文字]\_[列挙子名大文字]\*/ 
+- /\*#[定数パラメータプレフィックス][列挙型名大文字]\_[列挙子名大文字]\*/
 
 または
 
 - /\*$[定数パラメータプレフィックス][定数フィールド名大文字]\*/
 - /\*$[定数パラメータプレフィックス][Innerクラス名大文字スネークケース]\_[Innerクラス内定数フィールド名大文字]\*/
-- /\*$[定数パラメータプレフィックス][列挙型名大文字]\_[列挙子名大文字]\*/ 
+- /\*$[定数パラメータプレフィックス][列挙型名大文字]\_[列挙子名大文字]\*/
 
 という風に使用します。  
 
@@ -190,12 +190,11 @@ from account
 where account_typ = /*#CLS_ACCOUNT_TYP_SAVING*/'1' -- 1:普通口座
 ```
 
-
 定数の例
 
 ```sql
 select
-  emp.emp_no    as  emp_no
+   emp.emp_no    as  emp_no
 ,  emp.first_name  as  first_name
 ,  emp.last_name  as  last_name
 ,  emp.birth_date  as  birth_date
@@ -210,7 +209,7 @@ where
 
 ```sql
 select
-  emp.emp_no    as  emp_no
+   emp.emp_no    as  emp_no
 ,  emp.first_name  as  first_name
 ,  emp.last_name  as  last_name
 ,  emp.birth_date  as  birth_date
@@ -219,6 +218,23 @@ from
   employee  emp
 where
   emp.gender    =  /*#CLS_GENDER_FEMALE*/'F'  -- 列挙型定数パラメータの指定
+```
+
+定数パラメータは条件分岐の中で使用することもできます。
+
+```sql
+select
+   emp.emp_no    as  emp_no
+,  emp.first_name  as  first_name
+,  emp.last_name  as  last_name
+,  emp.birth_date  as  birth_date
+,  emp.gender    as  gender
+from
+  employee  emp
+/*IF gender == CLS_GENDER_MALE or gender == CLS_GENDER_FEMALE */
+where
+  emp.gender    =  /*#CLS_GENDER_FEMALE*/'F'  -- 列挙型定数パラメータの指定
+/*END*/
 ```
 
 ## 自動パラメータバインド関数の設定 ( `SqlContextFactory#addQueryAutoParameterBinder` /`#addUpdateAutoParameterBinder` ) <Badge text="0.6.1+" />
