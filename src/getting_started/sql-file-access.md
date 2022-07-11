@@ -74,7 +74,28 @@ agent.update("setup/insert_data").count();
 
 ddl/create_tables.sqlで作成したテーブルの構成は以下になります。
 
-![テーブル構成](./erd.png)
+```mermaid
+erDiagram
+    department ||--o| dept_emp : ""
+    employee ||--o| dept_emp : ""
+    department {
+        number dept_no
+        varchar dept_name
+        number lock_version
+    }
+    dept_emp {
+        number emp_no FK
+        number dept_no FK
+    }
+    employee {
+        number emp_no
+        varchar first_name
+        varchar last_name
+        date birth_date
+        char gender
+        number lock_version
+    }
+```
 
 ## SQLファイルを使用した検索
 
