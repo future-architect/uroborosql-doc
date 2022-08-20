@@ -10,7 +10,7 @@ features:
     details: SQLファイルを修正するたびにコンパイルしてテスト実行するのに時間がかかる・・・。他のORマッパーやSQLフレームワークでイライラしていた経験はありませんか？uroboroSQLではREPLを搭載。SQLを修正してすぐにIDE等のコンソールからコマンドでコンパイルなしで実行、即デバッグができます。
   - title: 区分値サポート
     details: 2Way-SQLのライブラリを使用していると、それぞれのSQLで区分値や定数などをいちいちパラメータに指定するのがわずらわしいと思ったことはありませんか？エンタープライズで使われてOSS化したuroboroSQLでは、SQLファイルの中で定数クラスや列挙体を指定することにより、呼び出し時の実装をシンプルにします。
-footer: MIT Licensed | ©2018-2019 Future Corporation. All rights reserved.
+footer: MIT Licensed | ©2018-2022 Future Corporation. All rights reserved.
 meta:
   - name: og:title
     content: 'uroboroSQL'
