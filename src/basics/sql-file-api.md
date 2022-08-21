@@ -56,19 +56,18 @@ and  dept.dept_name  =  /*dept_name*/'sample'
 | SqlQuery#collect(CaseFormat)  | List<Map<String, Object>> |
 | SqlQuery#collect(Class<T&gt;) | List<Class<T&gt;>         |
 
-検索結果をMapやエンティティクラスのListとして取得します。  
+検索結果をMapや指定したクラスのListとして取得します。  
 Mapには`キー：カラムラベル名`、`値：カラムの値`の形で1行分のデータが格納されます。  
 
 ::: warning
 `SqlQuery#collect()`では検索結果をすべてメモリ上に格納します。大量データの検索を行う場合は後述の`SqlQuery#strem()`の利用を検討してください。
 :::
 
-引数なし
+#### `SqlQuery#collect()` 引数なし
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  List<Map<String, Object>> departments =
-    agent.query("department/select_department").collect();
+  List<Map<String, Object>> departments = agent.query("department/select_department").collect();
 }
 // 結果(departments)
 [
@@ -79,14 +78,15 @@ try (SqlAgent agent = config.agent()) {
 ]
 ```
 
+#### `SqlQuery#collect(CaseFormat)` `CaseFormat`指定
+
 引数に`jp.co.future.uroborosql.utils.CaseFormat`を指定することで、Mapのキー名に対する書式を変更することができます。
 
 `CaseFormat.CAMEL_CASE`指定
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  List<Map<String, Object>> departments =
-    agent.query("department/select_department").collect(CaseFormat.CAMEL_CASE);
+  List<Map<String, Object>> departments = agent.query("department/select_department").collect(CaseFormat.CAMEL_CASE);
 }
 // 結果(departments) のキーが"deptNo", "deptName"となる
 [
@@ -101,9 +101,11 @@ try (SqlAgent agent = config.agent()) {
 デフォルトの`CaseFormat`はSqlConfig生成時に変更することができます。
 デフォルト`CaseFormat`の設定の詳細は [CaseFormatの初期値設定](../configuration/sql-agent-factory.md#caseformatの初期値設定) を参照してください
 
-引数にエンティティクラスを指定すると、検索結果をMapの代わりにエンティティクラスのインスタンスのListで取得することができます。
+#### `SqlQuery#collect(Class<T>)` 型指定
 
-エンティティクラス
+引数にクラスを指定すると、検索結果をMapの代わりに指定したクラスのインスタンスのListで取得することができます。
+
+エンティティクラスを指定した場合
 
 ```java
 /**
@@ -122,8 +124,74 @@ public class Department {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  List<Department> departments =
-    agent.query("department/select_department").collect(Department.class);
+  List<Department> departments = agent.query("department/select_department").collect(Department.class);
+}
+```
+
+引数に以下のクラスを指定すると、検索結果の先頭項目を指定したクラスのインスタンスの形で取得することができます。 <Badge text="0.25.0+"/>
+
+::: details 引数に指定可能な型
+
+- プリミティブ型
+  - boolean
+  - byte
+  - short
+  - int
+  - long
+  - float
+  - double
+- ラッパー型
+  - java.lang.Boolean
+  - java.lang.Byte
+  - java.lang.Short
+  - java.lang.Integer
+  - java.lang.Long
+  - java.lang.Float
+  - java.lang.Double
+- その他の基本型
+  - java.lang.String
+  - java.lang.BigInteger
+  - java.lang.BigDecimal
+  - Enum型
+- 日付型
+  - java.util.Date
+- JDBCの提供する型
+  - java.sql.Date
+  - java.sql.Time
+  - java.sql.Timestamp
+  - java.sql.Array
+  - java.sql.Clob
+  - java.sql.NClob
+  - java.sql.Blob
+  - java.sql.Ref
+  - java.sql.SQLXML
+- java.time API
+  - java.time.LocalDate
+  - java.time.LocalTIme
+  - java.time.OffsetTime
+  - java.time.LocalDateTime
+  - java.time.OffsetDateTime
+  - java.time.ZonedDateTime
+  - java.time.Year
+  - java.time.Month
+  - java.time.YearMonth
+  - java.time.MonthDay
+  - java.time.DayOfWeek
+- Optional型
+  - java.util.Optional
+  - java.util.OptionalInt
+  - java.util.OptionalLong
+  - java.util.OptionalDouble
+- 配列
+  - java.lang.Object[]
+  - byte[]
+- ドメイン型
+  - [Domain](./entity-api.md/#domain) アノテーションを付与した型
+:::
+
+```java
+try (SqlAgent agent = config.agent()) {
+  List<Long> deptNoList = agent.query("department/select_department").collect(Long.class);
 }
 ```
 
@@ -142,12 +210,11 @@ try (SqlAgent agent = config.agent()) {
 メモリ上には最大1件分のデータしか格納しないため、検索結果が大量になる場合でもメモリ使用量を気にせず呼び出すことができます。
 :::
 
-引数なし
+#### `SqlQuery#first()` 引数なし
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Map<String, Object> department =
-    agent.query("department/select_department").first();
+  Map<String, Object> department = agent.query("department/select_department").first();
 } catch (DataNotFoundException ex) {
   ex.printStackTrace();
 }
@@ -156,14 +223,15 @@ try (SqlAgent agent = config.agent()) {
  {"DEPT_NO"=1, "DEPT_NAME"="sales"}
 ```
 
+#### `SqlQuery#first(CaseFormat)` `CaseFormat`指定
+
 引数に`jp.co.future.uroborosql.utils.CaseFormat`を指定することで、Mapのキー名に対する書式を変更することができます。
 
 `CaseFormat.CAMEL_CASE`指定
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Map<String, Object> department =
-    agent.query("department/select_department").first(CaseFormat.CAMEL_CASE);
+  Map<String, Object> department = agent.query("department/select_department").first(CaseFormat.CAMEL_CASE);
 } catch (DataNotFoundException ex) {
   ex.printStackTrace();
 }
@@ -171,14 +239,25 @@ try (SqlAgent agent = config.agent()) {
  {"deptNo"=1, "deptName"="sales"}
 ```
 
-引数にエンティティクラスを指定すると、検索結果をエンティティクラスのインスタンスの形で取得することができます。
+#### `SqlQuery#first(Class<T>)` 型指定
 
-エンティティクラス
+引数にクラスを指定すると、検索結果を指定したクラスのインスタンスの形で取得することができます。
+
+エンティティクラスを指定した場合
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Department department =
-    agent.query("department/select_department").first(Department.class);
+  Department department = agent.query("department/select_department").first(Department.class);
+} catch (DataNotFoundException ex) {
+  ex.printStackTrace();
+}
+```
+
+`SqlQuery#collect(Class<T>)` と同様、検索結果の先頭項目を指定したクラスのインスタンスの形で取得することができます。<Badge text="0.25.0+"/>
+
+```java
+try (SqlAgent agent = config.agent()) {
+  long deptNo = agent.query("department/select_department").first(long.class);
 } catch (DataNotFoundException ex) {
   ex.printStackTrace();
 }
@@ -195,16 +274,17 @@ try (SqlAgent agent = config.agent()) {
 検索結果の1件目をOptionalの形式で取得します。  
 メモリ上には最大1件分のデータしか格納しないため、検索結果が大量になる場合でもメモリ使用量を気にせず呼び出すことができます。
 
-引数なし
+#### `SqlQuery#findFirst()` 引数なし
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Optional<Map<String, Object>> department =
-    agent.query("department/select_department").findFirst();
+  Optional<Map<String, Object>> department = agent.query("department/select_department").findFirst();
 }
 // 結果(department)
  {"DEPT_NO"=1, "DEPT_NAME"="sales"}
 ```
+
+#### `SqlQuery#findFirst(CaseFormat)` `CaseFormat`指定
 
 引数に`jp.co.future.uroborosql.utils.CaseFormat`を指定することで、Mapのキー名に対する書式を変更することができます。
 
@@ -212,21 +292,29 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Optional<Map<String, Object>> department =
-    agent.query("department/select_department").findFirst(CaseFormat.CAMEL_CASE);
+  Optional<Map<String, Object>> departmentOpt = agent.query("department/select_department").findFirst(CaseFormat.CAMEL_CASE);
 }
 // 結果(department)
  {"deptNo"=1, "deptName"="sales"}
 ```
 
-引数にエンティティクラスを指定すると、検索結果をエンティティクラスのインスタンスの形で取得することができます。
+#### `SqlQuery#findFirst(Class<T>)` 型指定
 
-エンティティクラス
+引数にクラスを指定すると、検索結果を指定したクラスのOptional型の形で取得することができます。
+
+エンティティクラスを指定した場合
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Department department =
-    agent.query("department/select_department").findFirst(Department.class).orElse(null);
+  Optional<Department> departmentOpt = agent.query("department/select_department").findFirst(Department.class);
+}
+```
+
+`SqlQuery#collect(Class<T>)` と同様、検索結果の先頭項目を指定したクラスのOptional型の形で取得することができます。<Badge text="0.25.0+"/>
+
+```java
+try (SqlAgent agent = config.agent()) {
+  Optional<Long> deptNoOpt = agent.query("department/select_department").findFirst(Long.class);
 }
 ```
 
@@ -246,12 +334,11 @@ try (SqlAgent agent = config.agent()) {
 メモリ上には最大1件分のデータしか格納しないため、検索結果が大量になる場合でもメモリ使用量を気にせず呼び出すことができます。
 :::
 
-引数なし
+#### `SqlQuery#one()` 引数なし
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Map<String, Object> department =
-    agent.query("department/select_department").one();
+  Map<String, Object> department = agent.query("department/select_department").one();
 } catch (DataNotFoundException | DataNotUniqueException ex) {
   ex.printStackTrace();
 }
@@ -260,14 +347,15 @@ try (SqlAgent agent = config.agent()) {
  {"DEPT_NO"=1, "DEPT_NAME"="sales"}
 ```
 
+#### `SqlQuery#one(CaseFormat)` `CaseFormat`指定
+
 引数に`jp.co.future.uroborosql.utils.CaseFormat`を指定することで、Mapのキー名に対する書式を変更することができます。
 
 `CaseFormat.CAMEL_CASE`指定
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Map<String, Object> department =
-    agent.query("department/select_department").one(CaseFormat.CAMEL_CASE);
+  Map<String, Object> department = agent.query("department/select_department").one(CaseFormat.CAMEL_CASE);
 } catch (DataNotFoundException | DataNotUniqueException ex) {
   ex.printStackTrace();
 }
@@ -275,14 +363,25 @@ try (SqlAgent agent = config.agent()) {
  {"deptNo"=1, "deptName"="sales"}
 ```
 
-引数にエンティティクラスを指定すると、検索結果をエンティティクラスのインスタンスの形で取得することができます。
+#### `SqlQuery#one(Class<T>)` 型指定
 
-エンティティクラス
+引数にクラスを指定すると、検索結果を指定したクラスのインスタンスの形で取得することができます。
+
+エンティティクラスを指定した場合
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Department department =
-    agent.query("department/select_department").one(Department.class);
+  Department department = agent.query("department/select_department").one(Department.class);
+} catch (DataNotFoundException | DataNotUniqueException ex) {
+  ex.printStackTrace();
+}
+```
+
+`SqlQuery#collect(Class<T>)` と同様、検索結果の先頭項目を指定したクラスのインスタンスの形で取得することができます。<Badge text="0.25.0+"/>
+
+```java
+try (SqlAgent agent = config.agent()) {
+  long deptNo = agent.query("department/select_department").one(long.class);
 } catch (DataNotFoundException | DataNotUniqueException ex) {
   ex.printStackTrace();
 }
@@ -300,12 +399,11 @@ try (SqlAgent agent = config.agent()) {
 検索結果が2件以上存在する場合、`jp.co.future.uroborosql.exception.DataNotUniqueException`をスローします。  
 メモリ上には最大1件分のデータしか格納しないため、検索結果が大量になる場合でもメモリ使用量を気にせず呼び出すことができます。
 
-引数なし
+#### `SqlQuery#findOne()` 引数なし
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Optional<Map<String, Object>> department =
-    agent.query("department/select_department").findOne();
+  Optional<Map<String, Object>> departmentOpt = agent.query("department/select_department").findOne();
 } catch (DataNotUniqueException ex) {
   ex.printStackTrace();
 }
@@ -313,14 +411,15 @@ try (SqlAgent agent = config.agent()) {
  {"DEPT_NO"=1, "DEPT_NAME"="sales"}
 ```
 
+#### `SqlQuery#findOne(CaseFormat)` `CaseFormat`指定
+
 引数に`jp.co.future.uroborosql.utils.CaseFormat`を指定することで、Mapのキー名に対する書式を変更することができます。
 
 `CaseFormat.CAMEL_CASE`指定
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Optional<Map<String, Object>> department =
-    agent.query("department/select_department").findOne(CaseFormat.CAMEL_CASE);
+  Optional<Map<String, Object>> departmentOpt = agent.query("department/select_department").findOne(CaseFormat.CAMEL_CASE);
 } catch (DataNotUniqueException ex) {
   ex.printStackTrace();
 }
@@ -328,16 +427,58 @@ try (SqlAgent agent = config.agent()) {
  {"deptNo"=1, "deptName"="sales"}
 ```
 
-引数にエンティティクラスを指定すると、検索結果をエンティティクラスのインスタンスの形で取得することができます。
+#### `SqlQuery#findOne(Class<T>)` 型指定
 
-エンティティクラス
+引数にクラスを指定すると、検索結果を指定したクラスのOptional型の形で取得することができます。
+
+エンティティクラスを指定した場合
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Department department =
-    agent.query("department/select_department").findOne(Department.class).orElse(null);
+  Optional<Department> departmentOpt = agent.query("department/select_department").findOne(Department.class);
 } catch (DataNotUniqueException ex) {
   ex.printStackTrace();
+}
+```
+
+`SqlQuery#collect(Class<T>)` と同様、検索結果の先頭項目を指定したクラスのOptionalの形で取得することができます。<Badge text="0.25.0+"/>
+
+```java
+try (SqlAgent agent = config.agent()) {
+  Optional<Long> deptNoOpt = agent.query("department/select_department").findOne(Long.class);
+} catch (DataNotUniqueException ex) {
+  ex.printStackTrace();
+}
+```
+
+### 指定カラムのStream取得(`SqlQuery#select`) <Badge text="0.25.0+"/>
+
+| メソッド名                           | 戻り値の型   |
+| :----------------------------------- | :----------- |
+| SqlQuery#select(Class<T&gt;)         | Stream<T&gt; |
+| SqlQuery#select(String, Class<T&gt;) | Stream<T&gt; |
+
+検索結果のうち、先頭項目、もしくは指定した項目を`java.util.stream.Stream`の形式で取得します。  
+Streamによる順次読み込みと終端操作までの遅延処理により、メモリ効率の良い操作が可能になります。
+
+#### `SqlQuery#select(Class<T>)` 項目指定なし（先頭項目）
+
+引数にクラスのみを指定すると、検索結果の先頭項目を指定したクラスのインスタンスの形で取得することができます。  
+（引数に指定できる型については `SqlQuery#collect(Class<T>)` を参照）
+
+```java
+try (SqlAgent agent = config.agent()) {
+  Stream<Long> deptNoStream = agent.query("department/select_department").stream(Long.class);
+}
+```
+
+#### `SqlQuery#select(String, Class<T>)` 項目指定あり
+
+引数に取得する項目名を指定すると、その項目を指定したクラスのインスタンスの形で取得することができます。
+
+```java
+try (SqlAgent agent = config.agent()) {
+  Stream<String> deptNameStream = agent.query("department/select_department").stream("dept_name", String.class);
 }
 ```
 
@@ -353,7 +494,7 @@ try (SqlAgent agent = config.agent()) {
 検索結果を`java.util.stream.Stream`の形式で取得します。  
 Streamによる順次読み込みと終端操作までの遅延処理により、メモリ効率の良い操作が可能になります。
 
-引数なし
+#### `SqlQuery#stream()` 引数なし
 
 ```java
 try (SqlAgent agent = config.agent()) {
@@ -367,9 +508,11 @@ try (SqlAgent agent = config.agent()) {
 {"DEPT_NO"=4, "DEPT_NAME"="personnel"}
 ```
 
+#### `SqlQuery#stream(CaseFormat)` `CaseFormat`指定
+
 引数に`jp.co.future.uroborosql.utils.CaseFormat`を指定することで、Mapのキー名に対する書式を変更することができます。
 
-CaseFormat.PASCAL_CASE指定
+`CaseFormat.PASCAL_CASE` 指定
 
 ```java
 try (SqlAgent agent = config.agent()) {
@@ -383,9 +526,11 @@ try (SqlAgent agent = config.agent()) {
 {"DeptNo"=4, "DeptName"="personnel"}
 ```
 
-引数にエンティティクラスを指定すると、検索結果をエンティティクラスのインスタンスの形で取得することができます。
+#### `SqlQuery#stream(Class<T>)` 型指定
 
-エンティティクラス
+引数にクラスを指定すると、検索結果を指定したクラスのインスタンスの形で取得することができます。
+
+エンティティクラスを指定した場合
 
 ```java
 try (SqlAgent agent = config.agent()) {
@@ -394,7 +539,26 @@ try (SqlAgent agent = config.agent()) {
 }
 ```
 
+`SqlQuery#collect(Class<T>)` と同様、検索結果の先頭項目を指定したクラスのインスタンスの形で取得することができます。<Badge text="0.25.0+"/>
+
+```java
+try (SqlAgent agent = config.agent()) {
+  Stream<Long> deptNoStream = agent.query("department/select_department").stream(Long.class);
+}
+```
+
 `jp.co.future.uroborosql.converter.ResultSetConverter`インタフェースを実装したクラスを引数に渡すことで、検索結果により複雑な加工を行うことができます。  
+
+提供されている `ResultSetConverter` は以下になります。
+
+|クラス|説明|
+|:--|:--|
+|MapResultSetConverter|検索結果を項目名と値のMapに変換します。項目名はコンストラクタにCaseFormatを指定することで書式を変更することができます。|
+|EntityResultSetConverter|検索結果をエンティティ型のインスタンスに変換します。エンティティ型はコンストラクタで指定します。|
+|SingleColumnResultSetConverter <Badge text="0.25.0+"/>|検索結果のうち、１項目を指定した型のインスタンスに変換します。対象とする項目と変換する型はコンストラクタで指定します。|
+
+
+
 `ResultSetConverter`は`FunctionInterface`として提供されているので、`lambda式`による記述も可能です。
 
 ResultSetConverter指定(lambda式)

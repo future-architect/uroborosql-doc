@@ -16,7 +16,7 @@ meta:
 <dependency>
   <groupId>jp.co.future</groupId>
   <artifactId>uroborosql</artifactId>
-  <version>0.20.2</version>
+  <version>0.25.0</version>
 </dependency>
 ```
 
@@ -29,7 +29,7 @@ meta:
 <dependency>
   <groupId>ognl</groupId>
   <artifactId>ognl</artifactId>
-  <version>3.2.16</version>
+  <version>3.1.23</version>
 </dependency>
 ```
 
@@ -39,7 +39,7 @@ meta:
 <dependency>
   <groupId>org.springframework</groupId>
   <artifactId>spring-expression</artifactId>
-  <version>5.3.1</version>
+  <version>5.3.20</version>
 </dependency>
 ```
 
@@ -49,7 +49,7 @@ meta:
 <dependency>
   <groupId>org.jline</groupId>
   <artifactId>jline</artifactId>
-  <version>3.17.1</version>
+  <version>3.11.0</version>
 </dependency>
 <dependency>
   <groupId>org.fusesource.jansi</groupId>
@@ -61,15 +61,15 @@ meta:
 Gradleプロジェクトの場合は、**build.gradle**のdependencies内に以下のライブラリ依存関係を追加してください。
 
 ```groovy
-compile group: 'jp.co.future', name: 'uroborosql', version: '0.20.2'
+compile group: 'jp.co.future', name: 'uroborosql', version: '0.25.0'
 
 // 式言語ライブラリとしてOGNLを使用する場合
-compile group: 'ognl', name: 'ognl', version: '3.2.16'
+compile group: 'ognl', name: 'ognl', version: '3.1.23'
 // 式言語ライブラリとしてSpring Expression Language(SpEL)を使用する場合
-compile group: 'org.springframework', name: 'spring-expression', version: '5.3.1'
+compile group: 'org.springframework', name: 'spring-expression', version: '5.3.20'
 
 // REPLを使用する場合
-compile group: 'org.jline', name: 'jline', version: '3.17.1'
+compile group: 'org.jline', name: 'jline', version: '3.11.0'
 compile group: 'org.fusesource.jansi', name: 'jansi', version: '1.18'
 ```
 
@@ -82,6 +82,7 @@ uroboroSQLを利用するためには、Java8以上の環境が必要です。
 事前準備として、
 
 - Java8 or 11のいずれかのJDKディストリビューション
+  - [Eclipse Temurin](https://adoptium.net/temurin/releases/)
   - [AdobtOpenJDK](https://adoptopenjdk.net/index.html)
   - [Amazon Corretto](https://aws.amazon.com/jp/corretto/)
   - [Oracle JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
