@@ -678,6 +678,58 @@ agent.truncate(Employee.class)
      .inserts(employees.stream());
 ```
 
+:::tip DAOインタフェースで生成されるSQL
+DAOインタフェースを使ってテーブルにアクセスする場合、生成されるSQLは以下のようにスキーマ名で修飾したテーブル名が出力されます。
+
+```java
+agent.find(Employee.class, 1);
+```
+
+出力されるSQL
+
+```sql
+SELECT
+  emp_no        AS emp_no
+, first_name    AS first_name
+, last_name     AS last_name
+, birth_date    AS birth_date
+, gender        AS gender
+, email         AS email
+, lock_version  AS lock_version
+FROM PUBLIC.employee  -- 接続しているスキーマが PUBLIC の場合
+WHERE emp_no = /*empNo*/1
+```
+
+postgresqlで複数のスキーマにまたがるテーブル群にアクセスする為に`search_path`オプションでスキーマを複数指定するようなケースでは、修飾されたスキーマ名が期待するスキーマと一致せずテーブルにアクセスできない場合があります。  
+このようなケースでは、システムプロパティ `uroborosql.use.qualified.table.name` を指定することで出力されるSQLからスキーマ名を除くことができます。<Badge text="0.25.1+" vertical="middle" />
+
+```java
+// uroborosql.use.qualified.table.name システムプロパティに false を指定
+System.setProperty("uroborosql.use.qualified.table.name", "false");
+SqlConfig config = UroboroSQL.builder("jdbc:h2:mem:uroborosql", "sa", "").build();
+try (SqlAgent agent = config.agent()) {
+  agent.find(Employee.class, 1);
+}
+```
+
+出力されるSQL
+
+```sql
+SELECT
+  emp_no        AS emp_no
+, first_name    AS first_name
+, last_name     AS last_name
+, birth_date    AS birth_date
+, gender        AS gender
+, email         AS email
+, lock_version  AS lock_version
+FROM employee  -- テーブル名のみの出力となる
+WHERE emp_no = /*empNo*/1
+```
+
+uroborosql で指定できるシステムプロパティについては [システムプロパティ](../advanced/#システムプロパティ) を参照してください
+:::
+
 ## Entityアノテーション
 
 DAOインタフェースで利用するエンティティクラスではテーブルとのマッピングやカラムの属性を指定するためにアノテーションを利用することができます。
