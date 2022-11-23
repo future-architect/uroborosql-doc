@@ -396,8 +396,8 @@ agent.inserts(agent.insertsAndReturn(agent.query(Employee.class).stream())
 
 | InsertsType | 説明                                                                                                                                                                                                                   |
 | :---------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| BULK        | `insert into ... values ( ... ), ( ... )`という風にvaluesに複数行の値を出力し一度に複数レコードを挿入する。<br>DBがこの記法をサポートしている場合に指定可能。DBが未サポートの場合、指定しても`BATCH`として実行される。 |
 | BATCH       | `java.sql.PreparedStatement#executeBatch()`を使用したバッチSQL実行                                                                                                                                                     |
+| BULK        | `insert into ... values ( ... ), ( ... )`という風にvaluesに複数行の値を出力し一度に複数レコードを挿入する。<br>DBがこの記法をサポートしている場合に指定可能。DBが未サポートの場合、指定しても`BATCH`として実行される。 |
 
 ```java
 Stream<Employee> employees = agent.query(Employee.class)
@@ -410,7 +410,27 @@ agent.inserts(employees, InsertsType.BATCH);
 ```
 
 ::: tip
-`InsertsType`は、[初期値設定](../configuration/sql-agent-factory.md#複数件挿入時の挿入方法の初期値設定)が可能です。
+`InsertsType`は、[初期値設定](../configuration/sql-agent-factory.md#複数件挿入時の挿入方法の初期値設定)が可能です。  
+:::
+
+::: warning BATCH と BULK の選択について
+一般的に少ないレコード数を挿入する場合は `BULK` を指定する方が早くなります。（DBの種類やJDBCドライバーの実装、割り当てられたメモリにより差異はあります）  
+これは、 `BULK` の動作が以下のように2段階の動作であるのに対し、
+
+1. SQLをpreparedStatementに変換
+2. SQL発行
+
+ `BATCH` の動作が以下のような動作になっているためです。
+
+1. SQLをpreparedStatementに変換
+2. [挿入条件](#挿入条件-insertscondition-の指定)で指定した条件になるまで蓄積したデータをDBに送信
+3. SQL発行
+4. 挿入するデータが無くなるまで2～3の繰り返し
+
+しかし`BULK` で発行するSQLは挿入する件数に比例して肥大化し、それに伴い 1. の preparedStatement への変換に時間がかかるようになります。  
+それに比べて `BATCH` では挿入する件数が増えても `BULK` に比べて処理時間の増加が緩やかなので、挿入する件数が増えると `BATCH` のほうが高速になります。  
+`BULK` を指定する場合は実際に挿入にかかる時間を計測し、`BATCH` より早いことを確認してください。
+
 :::
 
 ### 挿入条件（InsertsCondition）の指定

@@ -26,7 +26,7 @@ SqlConfig config = UroboroSQL.builder(...)
     // 検索結果を格納するMapのキー変換に使用するCaseFormatの初期値
     .setDefaultMapKeyCaseFormat(CaseFormat.UPPER_SNAKE_CASE)
     // 複数件挿入時の挿入方法の初期値
-    .setDefaultInsertsType(InsertsType.BULK)
+    .setDefaultInsertsType(InsertsType.BATCH)
     // アプリケーション全体のリトライ設定
     // SQLエラーコードが54,30006のいずれか(Oracleのリソース・ビジー)の場合
     .setSqlRetryCodeList(Arrays.asList("54", "30006"))
@@ -197,14 +197,14 @@ agent.query("department/select_department").collect();
 ## 複数件挿入時の挿入方法の初期値設定 ( `SqlAgentFactory#setDefaultInsertsType` )
 
 `SqlAgent#inserts()`メソッドで使用する[InsertsType](../basics/entity-api.md#挿入方法（insertstype）の指定)の初期値を設定することが出来ます。
-指定しない場合`InsertsType.BULK`になります。
+指定しない場合`InsertsType.BATCH`になります。
 
 ```java
 SqlConfig config = UroboroSQL.builder(...)
   // SqlAgentFactoryの設定
   .setSqlAgentFactory(new SqlAgentFactoryImpl()
     // 複数件挿入時の挿入方法の初期値
-    .setDefaultInsertsType(InsertsType.BULK)
+    .setDefaultInsertsType(InsertsType.BATCH)
   ).build();
 ```
 

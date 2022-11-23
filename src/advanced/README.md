@@ -95,6 +95,74 @@ agent.required(() -> { // トランザクション開始
 });
 ```
 
+## 更新処理の委譲（SqlContext#setUpdateDelegate()）
+
+Webアプリケーションを作成する場合、以下のような流れで画面からの登録処理を行うことがあります。
+
+1. データ検証（データの存在有無や重複チェック、データの整合性チェックなど）
+2. 登録、更新処理
+
+その際、より厳密に一度 1. のデータ検証だけを実施し、問題がなければ再度1. と 2. を合わせて処理を行うことがあります。  
+この場合 1. のデータ検証だけを行うモードかどうかをフロントエンドから渡し、それによって 1. と 2. を実行するか分岐することになります。  
+
+- 個別処理での実装イメージ
+
+```java
+if (request.isCheckMode()) {
+  // 1. データ検証（データ検証用のQuery発行）
+  validateData(request);
+} else {
+  // 1. データ検証（データ検証用のQuery発行）
+  validateData(request);
+  // 2. 登録、更新処理
+  createData(request);
+}
+```
+
+このような処理を個別実装で行うと実装漏れが起こりやすく、テストも大変になります。  
+このような場合に更新処理の委譲を利用することで、データ検証を行うモードの場合には更新処理をスキップする、といった動作を一律指定することが出来ます。  
+
+更新処理の委譲を利用する場合、SqlContextに委譲用のFunctionを指定します。
+
+- setUpdateDelegate 実装例
+
+```java
+SqlUpdate update = agent.update("example/update_product")
+  .set("product_name", "new_name")
+  .set("jan_code", "1234567890123")
+  .equal("product_id", 1);
+SqlContext ctx = update.context();
+ctx.setUpdateDelegate(context -> 2); // 更新の委譲処理。登録する Function は 引数として SqlContext を受取り、int（更新件数）を返却する
+update.count(); // SQLは発行されず、代わりに委譲用のFunctionが実行され戻り値 2 が返る
+```
+
+SqlContext#setUpdateDelegate() は通常 [自動パラメータバインド関数の設定](../configuration/sql-context-factory.md#自動パラメータバインド関数の設定-sqlcontextfactory-addqueryautoparameterbinder-addupdateautoparameterbinder) と合わせて利用します。
+
+- SqlContextFactoryの設定例
+
+```java
+SqlConfig config = UroboroSQL
+  .builder(...)
+  // SqlContextFactoryの設定
+  .setSqlContextFactory(new SqlContextFactoryImpl()
+    // update/batch/procedure用自動パラメータバインド関数の登録
+    .addUpdateAutoParameterBinder((ctx) -> {
+      if (チェックモードなら) {
+        ctx.setUpdateDelegate(context -> 1);
+      }
+    })
+  ).build();
+```
+
+- setUpdateDelegateを利用した実装イメージ
+
+```java
+// 1. データ検証（データ検証用のQuery発行）
+validateData(request);
+// 2. 登録、更新処理　（チェックモードの場合はsetUpdateDelegateにより更新SQLの発行が行われない）
+createData(request);
+```
+
 ## SQLカバレッジ ( `uroborosql.sql.coverage` )
 
 これまでアプリケーション上の条件分岐はカバレッジツールを利用して網羅率を確認することができました。  
