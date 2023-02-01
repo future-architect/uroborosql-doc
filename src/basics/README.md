@@ -112,9 +112,38 @@ Map<String, Object> department = agent.query("department/select_department")
 |主なメソッド|説明|
 |:---|:---|
 |<V&gt; SqlFluent#param(String key, V value)|バインドパラメータや置換文字列として使用するキーと値のセットを設定する|
+|<V&gt; SqlFluent#param(String key, V value, SQLType sqlType)|SQLTypeを指定して値を設定する|
+|<V&gt; SqlFluent#param(String key, V value, int sqlType)|SQLTypeを表すint型を指定して値を設定する|
 |<V&gt; SqlFluent#param(String key, Supplier<V&gt; supplier)|supplierの評価結果をキーの値としてパラメータに設定する <Badge text="0.10.1+"/>|
+|<V&gt; SqlFluent#paramIfAbsent(String key, V value)|指定したキーがまだ登録されていない場合に値を設定する|
+|<V&gt; SqlFluent#paramIfAbsent(String key, V value, SQLType sqlType)|指定したキーがまだ登録されていない場合にSQLTypeを指定して値を設定する|
+|<V&gt; SqlFluent#paramIfAbsent(String key, V value, int sqlType)|指定したキーがまだ登録されていない場合にSQLTypeを表すint型を指定して値を設定する|
 |~~<V&gt; SqlFluent#paramList(String key, V... value)~~|IN句のバインドパラメータに使用するキーと値のセットを設定する。<br><Badge text="0.14.0+" /> から非推奨。かわりに`param()`に`Arrays.asList()`もしくは`List.of()`を使って`List型`に詰めて設定してください|
 |SqlFluent#paramMap(Map<String, ?&gt; paramMap)|引数のMapのKey/Valueのセットをパラメータに設定する|
 |<V&gt; SqlFluent#paramBean(V bean)|引数として渡されたbeanのフィールド名と値のセットをパラメータに設定する|
 
 他にもパラメータの型に応じたパラメータ設定メソッドが提供されています。
+
+::: tip 配列型の指定
+DBの種類によっては配列型をサポートしています。（postgresqlなど）  
+バインドパラメータで配列型を利用する場合、以下のようにJavaの配列を値としてparamメソッドに渡してください
+
+- Java実装例
+
+```java
+agent.query("select_with_array")
+  .param("array_values", new String[] {"1", "2"})
+  .first();
+```
+
+- SQL例
+
+```sql
+select
+  st.val
+from sample_table st
+where 1 = 1
+and st.val = ANY(/*array_values*/)
+```
+
+:::
