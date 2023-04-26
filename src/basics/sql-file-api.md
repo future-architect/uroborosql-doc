@@ -716,7 +716,7 @@ try (SqlAgent agent = config.agent()) {
 
 上記２つのメソッドはバッチ更新を行うための`SqlBatch`インタフェースのインスタンスを返却します。
 
-::: warning batch/batchWith に指定するSQLの注意点
+::: danger batch/batchWith に指定するSQLの注意点
 batch/batchWithの内部では `PreparedStatement` を作成し、渡されたパラメータをバインドしながら `PreparedStatement#executeBatch()` メソッドを呼び出すことでバッチ処理を行っています。  
 その際 `PreparedStatement` は、引数で渡されたSQLを**1件目のデータ**で評価したSQLを元に生成し、この `PreparedStatement` をバッチ処理が終了するまで利用します。  
 そのため、SQLの中に 条件分岐（`/*IF*/` など）や埋め込み文字（`/*# */` など）を記載していると、1件目のデータで条件分岐や埋め込みをしたSQLを元に `PreparedStatement` が生成されて2件目以降のデータでも利用されることになり、意図しない結果になります。  
