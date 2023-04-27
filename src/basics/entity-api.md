@@ -933,18 +933,19 @@ public class Employee {
 
 これらのアノテーションが付与されたフィールドは自動採番フィールドになります。  
 `@Id`と`@GeneratedValue`は必ずセットでフィールドに付与する必要があります。  
-`@GeneratedValue`のstrategy属性が`GenerationType.SEQUENCE`の場合に`@SequenceGenerator`を付与してシーケンスの生成方法を指定する必要があります。
+`@GeneratedValue`のstrategy属性が`GenerationType.SEQUENCE`の場合に`@SequenceGenerator`を付与してシーケンスの生成方法を指定する必要があります。  
+１つのエンティティに属する複数のフィールドを自動採番フィールドとして指定することも可能です。
 
 | アノテーション     | 説明                                         |
 | :----------------- | :------------------------------------------- |
-| @Id                | エンティティの主キーを識別するアノテーション |
-| @GeneratedValue    | 主キーの値の生成戦略を指定するアノテーション |
-| @SequenceGenerator | SEQUENCEによるID生成を設定するアノテーション |
+| @Id                | エンティティの自動採番フィールドを識別するアノテーション |
+| @GeneratedValue    | 自動採番フィールドの値の生成戦略を指定するアノテーション |
+| @SequenceGenerator | ID生成に使用するSEQUENCEの情報を設定するアノテーション |
 
 | アノテーション     | 属性名   | 型             | 必須  | 説明                                                                                     | 初期値                  |
 | :----------------- | :------- | :------------- | :---: | :--------------------------------------------------------------------------------------- | :---------------------- |
 | @Id                | なし     | -              |   -   | -                                                                                        | -                       |
-| @GeneratedValue    | strategy | GenerationType |   -   | 主キー生成戦略の型。`GenerationType.IDENTITY`, `GenerationType.SEQUENCE`のいずれかを指定 | GenerationType.IDENTITY |
+| @GeneratedValue    | strategy | GenerationType |   -   | ID生成戦略の型。`GenerationType.IDENTITY`, `GenerationType.SEQUENCE`のいずれかを指定 | GenerationType.IDENTITY |
 | @SequenceGenerator | sequence | String         |  〇   | シーケンス名                                                                             | なし                    |
 | @SequenceGenerator | catalog  | String         |   -   | シーケンスが所属するカタログ名                                                           | ""                      |
 | @SequenceGenerator | schema   | String         |   -   | シーケンスが所属するスキーマ名                                                           | ""                      |
@@ -958,9 +959,13 @@ import jp.co.future.uroborosql.mapping.annotations.SequenceGenerator;
 @Table
 public class Employee {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long empId;
+
+  @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  @SequenceGenerator(sequence = 'employee_emp_id_seq')
-  private long empNo;
+  @SequenceGenerator(sequence = 'employee_emp_detail_id_seq')
+  private long empDetailId;
 
   private String firstName;
 
