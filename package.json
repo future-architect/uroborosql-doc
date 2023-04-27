@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "cross-env DEBUG=true vuepress dev src --debug",
-    "build": "vuepress build src --dest docs",
+    "build": "cross-env NODE_OPTIONS='--openssl-legacy-provider' vuepress build src --dest docs",
     "update:auto": "node ./scripts/update.js"
   },
   "license": "MIT",
@@ -14,6 +14,7 @@
     "cross-env": "^7.0.0",
     "markdown-it-task-lists": "^2.1.1",
     "mermaid": "^9.1.3",
+    "node": "^19.8.1",
     "vuepress": "^1.5.4",
     "vuepress-plugin-mermaidjs": "^1.9.1",
     "vuepress-plugin-fulltext-search": "https://github.com/shout-star/vuepress-plugin-fulltext-search.git#v2.1.0-fix",
