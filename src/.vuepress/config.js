@@ -19,10 +19,6 @@ module.exports = {
     ['meta', { name: 'og:image', content: 'https://future-architect.github.io/uroborosql-doc/images/logo.png' }]
   ],
   plugins: [
-    'vuepress-plugin-mermaidjs',
-    'fulltext-search'
-  ],
-  plugins: [
     ['@vuepress/google-analytics', {
       ga: 'UA-93486523-1'
     }],
