@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "cross-env DEBUG=true NODE_OPTIONS='--openssl-legacy-provider' vuepress dev src --debug",
-    "build": "cross-env DEBUG=true NODE_OPTIONS='--openssl-legacy-provider' vuepress build src --dest docs",
+    "build": "cross-env NODE_OPTIONS='--openssl-legacy-provider' vuepress build src --dest docs",
     "update:auto": "node ./scripts/update.js"
   },
   "license": "MIT",
