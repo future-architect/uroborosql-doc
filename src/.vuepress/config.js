@@ -23,7 +23,8 @@ module.exports = {
       ga: 'UA-93486523-1'
     }],
     'vuepress-plugin-mermaidjs',
-    'fulltext-search'
+    'fulltext-search',
+    'mermaidjs'
   ],
   locales: {
     '/': {
