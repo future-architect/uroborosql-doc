@@ -468,7 +468,7 @@ Streamによる順次読み込みと終端操作までの遅延処理により�
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Stream<Long> deptNoStream = agent.query("department/select_department").stream(Long.class);
+  Stream<Long> deptNoStream = agent.query("department/select_department").select(Long.class);
 }
 ```
 
@@ -478,7 +478,7 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Stream<String> deptNameStream = agent.query("department/select_department").stream("dept_name", String.class);
+  Stream<String> deptNameStream = agent.query("department/select_department").select("dept_name", String.class);
 }
 ```
 
@@ -551,11 +551,11 @@ try (SqlAgent agent = config.agent()) {
 
 提供されている `ResultSetConverter` は以下になります。
 
-|クラス|説明|
-|:--|:--|
-|MapResultSetConverter|検索結果を項目名と値のMapに変換します。項目名はコンストラクタにCaseFormatを指定することで書式を変更することができます。|
-|EntityResultSetConverter|検索結果をエンティティ型のインスタンスに変換します。エンティティ型はコンストラクタで指定します。|
-|SingleColumnResultSetConverter <Badge text="0.25.0+"/>|検索結果のうち、１項目を指定した型のインスタンスに変換します。対象とする項目と変換する型はコンストラクタで指定します。|
+| クラス                                                 | 説明                                                                                                                    |
+| :----------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
+| MapResultSetConverter                                  | 検索結果を項目名と値のMapに変換します。項目名はコンストラクタにCaseFormatを指定することで書式を変更することができます。 |
+| EntityResultSetConverter                               | 検索結果をエンティティ型のインスタンスに変換します。エンティティ型はコンストラクタで指定します。                        |
+| SingleColumnResultSetConverter <Badge text="0.25.0+"/> | 検索結果のうち、１項目を指定した型のインスタンスに変換します。対象とする項目と変換する型はコンストラクタで指定します。  |
 
 
 
@@ -725,11 +725,11 @@ batch/batchWithの内部では `PreparedStatement` を作成し、渡された�
 例）  
 下記のようなデータを
 
-|id|name|age|
-|:--|:--|:--|
-|null|taro|13|
-|2|hanako|15|
-|3|jiro|10|
+| id   | name   | age  |
+| :--- | :----- | :--- |
+| null | taro   | 13   |
+| 2    | hanako | 15   |
+| 3    | jiro   | 10   |
 
 以下のSQLでバッチインサートすると
 
