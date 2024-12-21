@@ -6,18 +6,42 @@
   --uroborosql-yellow: #c0ff16;
 
   --vp-home-hero-name-color: var(--uroborosql-blue);
-  /*--vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(
-    120deg,
-    var(--uroborosql-blue) 30%,
-    var(--uroborosql-red)
-  ); */
-  --vp-home-hero-image-background-image: linear-gradient(
-    -45deg,
-    var(--uroborosql-yellow) 50%,
-    var(--uroborosql-blue) 50%
-  );
-  --vp-home-hero-image-filter: blur(120px);
+  --vp-home-hero-image-filter: blur(80px);
+}
+
+.image-bg {
+  animation: 30s linear infinite rotation;
+}
+.image-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 5%;
+  height: 100%;
+  width: 90%;
+  border-radius: 50%;
+  box-shadow:
+    30px 0 var(--uroborosql-blue),
+    -30px 0 var(--uroborosql-red);
+}
+.image-bg::after {
+  content: "";
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  height: 50%;
+  width: 50%;
+  border-radius: 50%;
+  background-color: var(--uroborosql-yellow);
+}
+
+@keyframes rotation {
+  0% {
+    transform: translate(-50%, -50%) rotate(-30deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(-390deg);
+  }
 }
 
 /* コンテンツの画像を横並びに戻します */
