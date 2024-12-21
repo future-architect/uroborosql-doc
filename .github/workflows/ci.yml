@@ -17,9 +17,7 @@ jobs:
           npm i -f
       - name: Lint
         run: |
-          # フォーマットをチェックします。
-          # 失敗した場合は、npm run formatを実行するかしてください。
-          # ローカル環境の構築が難しい場合は、GitHub Actions から Format ワークフローを起動すると解決するかもしれません。
+          # フォーマットをチェックします。失敗した場合は、npm run formatを実行するかしてください。ローカル環境の構築が難しい場合は、GitHub Actions から Format ワークフローを起動すると解決するかもしれません。
           npm run lint
       - name: Build
         run: |
