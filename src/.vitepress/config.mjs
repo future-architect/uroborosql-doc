@@ -103,7 +103,7 @@ export default defineConfig({
     },
   },
   head: [
-    ["link", { rel: "icon", href: "/uroborosql-doc/favicon.ico" }],
+    ["link", { rel: "icon", href: "/uroborosql-doc/icon.png" }],
     ["meta", { name: "og:type", content: "website" }],
     [
       "meta",
