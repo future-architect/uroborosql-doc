@@ -221,7 +221,7 @@ SQLカバレッジを有効にするとアプリケーションが実行して�
 
 ![HTML Coverage Report](./html_coverage_report.png)
 
-<a :href="withBase('/sample/testReport/')" target="_blank" style="font-size:20px;"><i class="fa fa-external-link" aria-hidden="true"></i>出力サンプル</a>
+<a :href="withBase('/sample/testReport/index.html')" target="_blank" style="font-size:20px;"><i class="fa fa-external-link" aria-hidden="true"></i>出力サンプル</a>
 
 ## ログ出力
 
