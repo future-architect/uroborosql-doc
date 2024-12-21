@@ -1,32 +1,35 @@
 ---
-meta:
-  - name: og:title
-    content: 'SqlManager'
-  - name: og:url
-    content: '/uroborosql-doc/configuration/sql-manager.html'
+head:
+  - - meta
+    - name: og:title
+      content: "SqlManager"
+  - - meta
+    - name: og:url
+      content: "/uroborosql-doc/configuration/sql-manager.html"
 ---
+
 # SqlManager
 
 `SqlManager`はSQLファイルを管理するクラスです。２つのクラスが提供されています。
 
-|クラス|説明|
-|:---|:---|
-|SqlManagerImpl|`java.io`を利用したファイルアクセスを行う`SqlManager`クラス。|
-|NioSqlManagerImpl|`java.nio`を利用したファイルアクセスを行う`SqlManager`クラス|
+| クラス            | 説明                                                          |
+| :---------------- | :------------------------------------------------------------ |
+| SqlManagerImpl    | `java.io`を利用したファイルアクセスを行う`SqlManager`クラス。 |
+| NioSqlManagerImpl | `java.nio`を利用したファイルアクセスを行う`SqlManager`クラス  |
 
 クラスの特徴比較
 
-|特徴|SqlManagerImpl|NioSqlManagerImpl|補足|
-|:--|:--:|:--:|:--|
-|SQLファイルルートフォルダ設定|〇|〇||
-|SQLファイルエンコーディング設定|〇|〇||
-|起動時のファイルキャッシュ|〇|△|NioSqlManagerImplはファイルパスのみキャッシュ|
-|遅延ファイルキャッシュ|×|〇||
-|jarファイル中のSQL参照|〇|〇||
-|zipファイル中のSQL参照|×|〇||
-|カスタムファイルアクセス対応|×|〇|`java.nio.file`パッケージを使用|
-|ファイル変更検知|×|〇|
-|DB種類毎のファイルパス切り替え|×|〇|
+| 特徴                            | SqlManagerImpl | NioSqlManagerImpl | 補足                                          |
+| :------------------------------ | :------------: | :---------------: | :-------------------------------------------- |
+| SQLファイルルートフォルダ設定   |       〇       |        〇         |                                               |
+| SQLファイルエンコーディング設定 |       〇       |        〇         |                                               |
+| 起動時のファイルキャッシュ      |       〇       |         △         | NioSqlManagerImplはファイルパスのみキャッシュ |
+| 遅延ファイルキャッシュ          |       ×        |        〇         |                                               |
+| jarファイル中のSQL参照          |       〇       |        〇         |                                               |
+| zipファイル中のSQL参照          |       ×        |        〇         |                                               |
+| カスタムファイルアクセス対応    |       ×        |        〇         | `java.nio.file`パッケージを使用               |
+| ファイル変更検知                |       ×        |        〇         |
+| DB種類毎のファイルパス切り替え  |       ×        |        〇         |
 
 利用用途に応じて`SqlManager`を選択してください。  
 SqlManagerクラスの切り替えはビルダーAPIで行うことが出来ます。指定しない場合の初期値は`SqlManagerImpl`になります。
@@ -77,7 +80,7 @@ v0.20.5までのように、実行可能jarかどうかで設定を変える必�
 
 以下のようなファイル構成を例として説明します。
 
-```md
+```txt
 sql
   ├─employee
   │    └─select_employee.sql  -- Oracle, postgresql以外のDB用SQL
@@ -96,14 +99,14 @@ DBに対するDialect用のフォルダがない場合は通常通り`sql/employ
 
 DB毎のフォルダ名
 
-|DB名|フォルダ名|
-|:---|:---|
-|H2 DB|h2|
-|Microsoft SQL Server|mssql|
-|MySQL|mysql|
-|Oracle|oracle|
-|Postgresql|postgresql|
-|その他|default|
+| DB名                 | フォルダ名 |
+| :------------------- | :--------- |
+| H2 DB                | h2         |
+| Microsoft SQL Server | mssql      |
+| MySQL                | mysql      |
+| Oracle               | oracle     |
+| Postgresql           | postgresql |
+| その他               | default    |
 
 ## SQLファイルの更新監視 <Badge text="NioSqlManagerImplのみ" />
 

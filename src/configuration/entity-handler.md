@@ -1,10 +1,13 @@
 ---
-meta:
-  - name: og:title
-    content: 'EntityHandler'
-  - name: og:url
-    content: '/uroborosql-doc/configuration/entity-handler.html'
+head:
+  - - meta
+    - name: og:title
+      content: "EntityHandler"
+  - - meta
+    - name: og:url
+      content: "/uroborosql-doc/configuration/entity-handler.html"
 ---
+
 # EntityHandler
 
 `EntityHandler`はDAOインタフェースを利用したDB操作を行う際に実行するSQLの生成を制御するためのクラスです。  

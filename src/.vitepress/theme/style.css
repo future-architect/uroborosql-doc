@@ -1,0 +1,68 @@
+:root {
+  --uroborosql-text-color: #031634;
+  --uroborosql-text-outline-color: #d2e9ff;
+  --uroborosql-red: #e00213;
+  --uroborosql-blue: #2c79e0;
+  --uroborosql-yellow: #c0ff16;
+
+  --vp-home-hero-name-color: var(--uroborosql-blue);
+  /*--vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(
+    120deg,
+    var(--uroborosql-blue) 30%,
+    var(--uroborosql-red)
+  ); */
+  --vp-home-hero-image-background-image: linear-gradient(
+    -45deg,
+    var(--uroborosql-yellow) 50%,
+    var(--uroborosql-blue) 50%
+  );
+  --vp-home-hero-image-filter: blur(120px);
+}
+
+/* コンテンツの画像を横並びに戻します */
+.vp-doc img {
+  display: inline-block;
+}
+
+/* メインコンテンツの幅を広げます。最大1920pxまでを許可します。 */
+#app .VPDoc.has-aside .content-container {
+  max-width: 1280px;
+}
+
+@media (min-width: 1440px) and (max-width: 1920px) {
+  /* 左上タイトル領域 */
+  #app .VPNavBar.has-sidebar .container > .title {
+    padding-left: 32px;
+    width: var(--vp-sidebar-width);
+  }
+
+  /* 左メニュー領域 */
+  #app .VPSidebar {
+    padding-left: 32px;
+    width: var(--vp-sidebar-width);
+  }
+
+  /* コンテンツ領域 */
+  #app .VPContent.has-sidebar {
+    padding-right: 0;
+    padding-left: var(--vp-sidebar-width);
+  }
+
+  /* ヘッダー領域 */
+  #app .VPNavBar.has-sidebar .content {
+    padding-right: 32px;
+    padding-left: var(--vp-sidebar-width);
+  }
+
+  /* ヘッダーの下線 */
+  #app .VPNavBar.has-sidebar .divider {
+    padding-left: var(--vp-sidebar-width);
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --vp-layout-max-width: 1920px;
+  }
+}
