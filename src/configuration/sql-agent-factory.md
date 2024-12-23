@@ -1,10 +1,13 @@
 ---
-meta:
-  - name: og:title
-    content: 'SqlAgentFactory'
-  - name: og:url
-    content: '/uroborosql-doc/configuration/sql-agent-factory.html'
+head:
+  - - meta
+    - name: og:title
+      content: "SqlAgentFactory"
+  - - meta
+    - name: og:url
+      content: "/uroborosql-doc/configuration/sql-agent-factory.html"
 ---
+
 # SqlAgentFactory
 
 SQL実行を行うクラスである`SqlAgent`を生成するファクトリクラスです。SQL実行時の挙動を変更するための初期値の設定が行えます。
@@ -42,7 +45,7 @@ SqlConfig config = UroboroSQL.builder(...)
   ).build();
 ```
 
-## フェッチサイズと検索タイムアウト設定 ( `SqlAgentFactory#setFetchSize` /`#setQueryTimeout`  )
+## フェッチサイズと検索タイムアウト設定 ( `SqlAgentFactory#setFetchSize` /`#setQueryTimeout` )
 
 `SqlAgent`で検索処理を行う際、データベースから一度に取得する行数（`fetchSize`）や
 検索タイムアウト時間（秒）（`queryTimeout`）の初期値を指定することが出来ます。
@@ -87,7 +90,7 @@ SqlConfig config = UroboroSQL.builder(...)
 ## SQL_IDの置換文字列設定 ( `SqlAgentFactory#setSqlIdKeyName` )
 
 SQL文に特定の置換文字列をSQLコメントとして記述することで、SQL実行時に実行したSQLの元となるSQLファイルを特定するための
-情報（SQL_ID）を埋め込むことが出来ます。SQL_IDを埋め込むことでSQLログやDBのSQL履歴で実行されたSQLの元となるファイルを
+情報（`SQL_ID`）を埋め込むことが出来ます。`SQL_ID`を埋め込むことでSQLログやDBのSQL履歴で実行されたSQLの元となるファイルを
 特定しやすくなります。  
 必要に応じてこの置換文字列は変更することが出来ます。
 指定しない場合`_SQL_ID_`になります。
@@ -208,8 +211,6 @@ SqlConfig config = UroboroSQL.builder(...)
   ).build();
 ```
 
-
-
 ## SQL実行のリトライ ( `SqlAgentFactory#setSqlRetryCodeList` /`#setDefaultMaxRetryCount` /`#setDefaultSqlRetryWaitTime` )
 
 SQLを実行した際、タイミングによって発生する例外（テーブルロックエラーなど）の場合はリトライを行い、
@@ -298,7 +299,7 @@ try (SqlAgent agent = config.agent()) {
 
 ## DB更新処理をトランザクション内のみに強制 ( `SqlAgentFactory#setForceUpdateWithinTransaction` ) <Badge text="0.14.0+" />
 
-複数のDB更新処理をまとめて行う際、途中で例外が発生するとDBデータが不整合な状態になる場合があります。このようなデータ不整合を防ぐためには[トランザクション](../transaction.md#トランザクション)を利用します。  
+複数のDB更新処理をまとめて行う際、途中で例外が発生するとDBデータが不整合な状態になる場合があります。このようなデータ不整合を防ぐためには[トランザクション](../basics/transaction.md#トランザクション)を利用します。  
 しかし、通常の設定ではトランザクションを開始しない状態でもDB更新処理を行うことが可能になっているため不具合に気付きにくいという問題があります。  
 **uroboroSQL**ではトランザクションを開始していない状態でDB更新処理が行なわれた場合に例外をスローするオプションを提供しています。このオプションを使用することでDBデータの整合性を維持しやすくなります。
 

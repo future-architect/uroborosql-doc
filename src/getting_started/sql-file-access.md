@@ -1,10 +1,13 @@
 ---
-meta:
-  - name: og:title
-    content: 'SQLファイルを使用したDBアクセス'
-  - name: og:url
-    content: '/uroborosql-doc/getting_started/sql-file-access.html'
+head:
+  - - meta
+    - name: og:title
+      content: "SQLファイルを使用したDBアクセス"
+  - - meta
+    - name: og:url
+      content: "/uroborosql-doc/getting_started/sql-file-access.html"
 ---
+
 # SQLファイルを使用したDBアクセス
 
 ## SqlConfigの生成
@@ -39,7 +42,7 @@ SqlConfig config = UroboroSQL
     .build();
 ```
 
-`SqlConfig`生成時のカスタマイズの詳細については [設定](../configuration)を参照してください。
+`SqlConfig`生成時のカスタマイズの詳細については [設定](../configuration/index.md)を参照してください。
 
 ## テーブルの作成と初期データの登録
 
@@ -60,7 +63,7 @@ try (SqlAgent agent = config.agent()) {
 以降の説明では`SqlAgent`に対する処理はtry-with-resources文の中で行っているものとします。
 :::
 
-**uroboroSQL**では実行するSQLをファイルパスに似た表現（以降 *SQL名* と呼ぶ）で指定します。
+**uroboroSQL**では実行するSQLをファイルパスに似た表現（以降 _SQL名_ と呼ぶ）で指定します。
 下の例ではクラスパス上にあるsqlフォルダ配下のddl/create_tables.sqlを指定してSQL更新処理を実行します。
 
 更新処理を行う場合、`SqlAgent#update("[SQL名]")`メソッドを使用して**SqlUpdate**を取得しUpdateの実行を行います。
@@ -103,15 +106,15 @@ erDiagram
 
 **SqlQuery**では検索結果をいくつかの形式で取得することができます。
 
-|メソッド|説明|
-|:---|:---|
-|SqlQuery#collect()|検索結果を`List<Map>`の形式で取得する|
-|SqlQuery#stream()|検索結果を`java.util.Stream`の形式で取得する|
-|SqlQuery#resultSet()|検索結果の`ResultSet`を取得する|
-|SqlQuery#first()|検索結果の１件目を取得する。取得できない場合は`RuntimeException`がスローされる|
-|SqlQuery#findFirst()|検索結果の１件目を取得する。戻り値は`Optional`|
-|SqlQuery#one()|検索結果の１件目を取得する。取得できない場合、もしくは２件以上取得出来た場合は`RuntimeException`がスローされる|
-|SqlQuery#findOne()|検索結果の１件目を取得する。戻り値は`Optional`。２件以上取得出来た場合は`RuntimeException`がスローされる|
+| メソッド             | 説明                                                                                                           |
+| :------------------- | :------------------------------------------------------------------------------------------------------------- |
+| SqlQuery#collect()   | 検索結果を`List<Map>`の形式で取得する                                                                          |
+| SqlQuery#stream()    | 検索結果を`java.util.Stream`の形式で取得する                                                                   |
+| SqlQuery#resultSet() | 検索結果の`ResultSet`を取得する                                                                                |
+| SqlQuery#first()     | 検索結果の１件目を取得する。取得できない場合は`RuntimeException`がスローされる                                 |
+| SqlQuery#findFirst() | 検索結果の１件目を取得する。戻り値は`Optional`                                                                 |
+| SqlQuery#one()       | 検索結果の１件目を取得する。取得できない場合、もしくは２件以上取得出来た場合は`RuntimeException`がスローされる |
+| SqlQuery#findOne()   | 検索結果の１件目を取得する。戻り値は`Optional`。２件以上取得出来た場合は`RuntimeException`がスローされる       |
 
 以下のように呼び出します。
 
@@ -152,7 +155,7 @@ and dept.dept_name  = /*deptName*/'sample'
 - `/*IF*/ ... /*END*/`は条件分岐で、IFの後ろの評価式が`True`となる場合に`/*IF*/`と`/*END*/`で囲まれた部分が出力されます。
 - `/*deptNo*/`はバインドパラメータで、実行時に`?`に変換され、SqlQueryに設定したパラメータがSQLへバインドされます。
 - `/*deptNo*/`の後ろの`1`はテスト用データです。このようにテスト用データをSQL文に記述しておくことで、このSQLを
-SQLクライアントツールで実行する際にエラーにならずに文法の確認を行うことができます。
+  SQLクライアントツールで実行する際にエラーにならずに文法の確認を行うことができます。
 
 SQLで使用できる構文については[2WaySQL](../background/#_2waysql)を参照してください。  
 また、検索のより詳しい説明は[SQLによる検索](../basics/sql-file-api.md#sqlによる検索-sqlagent-query-sqlagent-querywith)を参照してください。

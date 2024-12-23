@@ -1,10 +1,13 @@
 ---
-meta:
-  - name: og:title
-    content: 'トランザクション'
-  - name: og:url
-    content: '/uroborosql-doc/basics/transaction.html'
+head:
+  - - meta
+    - name: og:title
+      content: "トランザクション"
+  - - meta
+    - name: og:url
+      content: "/uroborosql-doc/basics/transaction.html"
 ---
+
 # トランザクション
 
 **uroboroSQL**ではローカルトランザクションを提供します。  
@@ -133,10 +136,9 @@ agent.required(() -> {
 });
 ```
 
-
 ::: tip
 PostgreSQLについては、自動的にセーブポイントを利用したトランザクションの部分ロールバックに対応しています。
-詳細は、[PostgreSQLのトランザクション内SQLエラー対応](../advanced/README.md#postgresqlのトランザクション内sqlエラー対応)を参照してください。
+詳細は、[PostgreSQLのトランザクション内SQLエラー対応](../advanced/index.md#postgresqlのトランザクション内sqlエラー対応)を参照してください。
 :::
 
 ## AutoCommitスコープ(`SqlAgent#autoCommitScope`) <Badge text="0.21.1+"/>
@@ -150,7 +152,7 @@ PostgreSQLについては、自動的にセーブポイントを利用したト�
 例えば postgresqlの `vacuum` コマンドはトランザクション制御下では実行できないため、自動コミット・モードを有効にする必要があります
 :::
 
- こういったケースを実現する場合、 <Badge text="0.21.0"/> までは以下のような実装が必要でした。
+こういったケースを実現する場合、 <Badge text="0.21.0"/> までは以下のような実装が必要でした。
 
 ```java
 agent.required(() -> {
@@ -179,7 +181,7 @@ agent.required(() -> {
 
 上記の実装では、自動コミット・モードの切替えを try-catch で囲む必要があり記述が冗長でした。
 
- <Badge text="0.21.1+"/> からは SqlAgent#autoCommitScope() を使って自動コミット・モードの切替えができるようになりました。
+<Badge text="0.21.1+"/> からは SqlAgent#autoCommitScope() を使って自動コミット・モードの切替えができるようになりました。
 
 ```java
 // SqlAgent#autoCommitScope()を使った実装

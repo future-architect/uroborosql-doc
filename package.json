@@ -5,18 +5,17 @@
   "author": "Future Corporation",
   "main": "index.js",
   "scripts": {
-    "watch": "cross-env DEBUG=true NODE_OPTIONS='--openssl-legacy-provider' vuepress dev src --debug",
-    "build": "cross-env NODE_OPTIONS='--openssl-legacy-provider' vuepress build src --dest docs",
-    "update:auto": "node ./scripts/update.js"
+    "watch": "vitepress dev src --open",
+    "build": "vitepress build src",
+    "lint": "npm run lint:format",
+    "lint:format": "prettier src --list-different",
+    "format": "prettier src --write"
   },
   "license": "MIT",
   "dependencies": {
-    "cross-env": "^7.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "vuepress": "^1.5.4",
-    "vuepress-plugin-mermaidjs": "^1.9.1",
-    "vuepress-plugin-fulltext-search": "https://github.com/shout-star/vuepress-plugin-fulltext-search.git#v2.1.0-fix",
-    "serialize-javascript": ">=3.1.0",
-    "@vuepress/plugin-google-analytics": "^1.9.9"
+    "prettier": "^3.4.2",
+    "vitepress": "^1.5.0",
+    "vitepress-plugin-mermaid": "^2.0.17"
   }
 }

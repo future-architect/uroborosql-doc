@@ -1,10 +1,13 @@
 ---
-meta:
-  - name: og:title
-    content: 'SQL-REPL'
-  - name: og:url
-    content: '/uroborosql-doc/getting_started/sql-repl.html'
+head:
+  - - meta
+    - name: og:title
+      content: "SQL-REPL"
+  - - meta
+    - name: og:url
+      content: "/uroborosql-doc/getting_started/sql-repl.html"
 ---
+
 # SQL-REPL
 
 ここまではJavaアプリケーションから**uroboroSQL**を利用する場合の説明でした。
@@ -23,7 +26,7 @@ mvn -PREPL
 
 実行すると以下のようにタイトル表示とコマンド説明、設定値の情報が表示され、そのあとコマンド入力状態になります。
 
-<<<@/src/getting_started/repl/prompt.sh
+<<< ./repl/prompt.sh
 
 **REPL**を立ち上げた状態では接続したDB（H2DB メモリDB）には何もない状態なので、まずはテーブルを作成します。
 サンプルアプリケーションで利用できるSQLファイルを確認しましょう。
@@ -34,7 +37,7 @@ uroborosql > list[Enter]
 
 と入力してください。
 
-<<<@/src/getting_started/repl/list.sh
+<<< ./repl/list.sh
 
 ロード済みのSQLファイルの`SQL名`がわかります。
 テーブルを作成するために`ddl/create_tables`を実行します。
@@ -44,7 +47,7 @@ uroborosql > list[Enter]
 uroborosql > u[Tab]
 ```
 
-と入力してください。  
+と入力してください。
 
 ```sh
 uroborosql > update
@@ -78,8 +81,7 @@ uroborosql > update ddl/create_tables
 
 もう一度`[Enter]`を入力するとSQLが実行されます。
 
-<<<@/src/getting_started/repl/create_tables.sql
-
+<<< ./repl/create_tables.sql
 
 `ddl/create_tables`が実行され、DBにテーブルが作成されました。
 
@@ -91,7 +93,7 @@ uroborosql > update ddl/create_tables
 uroborosql > desc EMPLOYEE[Enter]
 ```
 
-<<<@/src/getting_started/repl/desc.sql
+<<< ./repl/desc.sql
 
 EMPLOYEEテーブルの定義情報が表形式で表示されました。
 
@@ -103,7 +105,7 @@ EMPLOYEEテーブルの定義情報が表形式で表示されました。
 uroborosql > update setup/insert_data[Enter]
 ```
 
-<<<@/src/getting_started/repl/insert_data.sql
+<<< ./repl/insert_data.sql
 
 これでテーブルに初期データが挿入されました。
 では、挿入したデータを検索してみましょう。
@@ -115,7 +117,7 @@ SQLの内容を確認するには`view`コマンドを使用します。
 uroborosql > view department/select_department[Enter]
 ```
 
-<<<@/src/getting_started/repl/view.sql
+<<< ./repl/view.sql
 
 検索を行う場合は`query`コマンドを使用します。
 `query`の後に実行する`SQL名`を指定します。
@@ -124,7 +126,7 @@ uroborosql > view department/select_department[Enter]
 uroborosql > query department/select_department[Enter]
 ```
 
-<<<@/src/getting_started/repl/select_department_1.sql
+<<< ./repl/select_department_1.sql
 
 ここではバインドパラメータを指定しなかったため、絞込み条件のないSQLが実行され検索結果として4件のデータが取得できました。
 
@@ -146,13 +148,13 @@ uroborosql > query department/select_department[Enter]
 uroborosql > parse department/select_department[Enter]
 ```
 
-<<<@/src/getting_started/repl/parse.sql
+<<< ./repl/parse.sql
 
 `parse`コマンドの結果は以下のようになります。
 
-* `SQL` : 解析対象のSQL
-* `BRANCHES` : 条件分岐
-* `BIND_PARAMS` : バインドパラメータ
+- `SQL` : 解析対象のSQL
+- `BRANCHES` : 条件分岐
+- `BIND_PARAMS` : バインドパラメータ
 
 条件分岐では `BEGIN`のスコープ（{}で囲まれた中）に２つのIF分岐が並んでいることがわかります。  
 また、バインドパラメータでは `deptNo`と`deptName`があることがわかります。
@@ -163,7 +165,7 @@ uroborosql > parse department/select_department[Enter]
 uroborosql > query department/select_department deptNo=1[Enter]
 ```
 
-<<<@/src/getting_started/repl/select_department_2.sql
+<<< ./repl/select_department_2.sql
 
 `deptNo`に`1`を指定して検索しています。
 この時、SQL文の評価式である/\*IF SF.isNotEmpty(deptNo)\*/が`true`となりSQLのwhere句に`dept_no`の条件が追加されバインドパラメータがバインドされます。  
@@ -179,7 +181,7 @@ uroborosql > query department/select_department deptNo=1[Enter]
 uroborosql > query department/select_department deptNo=1 deptName=sales[Enter]
 ```
 
-<<<@/src/getting_started/repl/select_department_3.sql
+<<< ./repl/select_department_3.sql
 
 **REPL**を終了する場合はコマンド`quit`,もしくは`exit`を入力してください。
 
@@ -263,12 +265,11 @@ sql.additionalClassPath=${user.home}/.m2/repository/com/h2database/h2/1.4.192/h2
 | sqlContextFactory.constantClassNames       | SqlContextFactoryに登録する定数クラスを指定。`,`で区切ることで複数指定可。 ex) jp.co.future.uroborosql.context.test.TestConsts                                                                                                                                                                            |
 | sqlContextFactory.enumConstantPackageNames | SqlContextFactoryに登録するEnum定数パッケージ名を指定。`,`で区切ることで複数指定可。ex) jp.co.future.uroborosql.context.test                                                                                                                                                                              |
 
-
 このプロパティファイルを変更することでいろいろなDBに接続することができるようになります。
 
 これまで見てきたように**REPL**を利用することで簡単にSQL実行や動作確認ができるので、SQL開発には欠かせないツールになります。
 色々なSQLを記述して**REPL**で試してみてください。
 
-これで *Getting Started* は終了です。
+これで _Getting Started_ は終了です。
 
-**uroboroSQL**で使用するSQLの文法や基本的な操作については[基本操作](../basics)を参照してください。
+**uroboroSQL**で使用するSQLの文法や基本的な操作については[基本操作](../basics/index.md)を参照してください。

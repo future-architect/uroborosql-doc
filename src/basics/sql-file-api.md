@@ -1,20 +1,23 @@
 ---
-meta:
-  - name: og:title
-    content: 'SQLファイルインタフェース'
-  - name: og:url
-    content: '/uroborosql-doc/basics/sql-file-api.html'
+head:
+  - - meta
+    - name: og:title
+      content: "SQLファイルインタフェース"
+  - - meta
+    - name: og:url
+      content: "/uroborosql-doc/basics/sql-file-api.html"
 ---
+
 # SQLファイルインタフェース
 
 ## SQLによる検索(`SqlAgent#query` /`#queryWith`)
 
 SQLを検索する方法は2つあります。
 
-| 利用メソッド                      | 説明                                              |
-| :-------------------------------- | :------------------------------------------------ |
-| SqlAgent#query("[SQL名]")         | [SQL名](./README.md#sql名)で説明した`SQL名`を指定 |
-| SqlAgent#queryWith("[SQL文字列]") | `SQL文字列`を直接指定                             |
+| 利用メソッド                      | 説明                                             |
+| :-------------------------------- | :----------------------------------------------- |
+| SqlAgent#query("[SQL名]")         | [SQL名](./index.md#sql名)で説明した`SQL名`を指定 |
+| SqlAgent#queryWith("[SQL文字列]") | `SQL文字列`を直接指定                            |
 
 上記２つのメソッドは検索を行うための`SqlQuery`インタフェースのインスタンスを返却します。
 
@@ -57,7 +60,7 @@ and  dept.dept_name  =  /*dept_name*/'sample'
 | SqlQuery#collect(Class<T&gt;) | List<Class<T&gt;>         |
 
 検索結果をMapや指定したクラスのListとして取得します。  
-Mapには`キー：カラムラベル名`、`値：カラムの値`の形で1行分のデータが格納されます。  
+Mapには`キー：カラムラベル名`、`値：カラムの値`の形で1行分のデータが格納されます。
 
 ::: warning
 `SqlQuery#collect()`では検索結果をすべてメモリ上に格納します。大量データの検索を行う場合は後述の`SqlQuery#strem()`の利用を検討してください。
@@ -186,7 +189,8 @@ try (SqlAgent agent = config.agent()) {
   - java.lang.Object[]
   - byte[]
 - ドメイン型
-  - [Domain](./entity-api.md/#domain) アノテーションを付与した型
+  - [Domain](./entity-api.md#domain) アノテーションを付与した型
+
 :::
 
 ```java
@@ -328,7 +332,7 @@ try (SqlAgent agent = config.agent()) {
 
 検索結果の1件目を取得します。[find()](#先頭取得（sqlquery-first)と違い、実行するSQLで複数件の検索結果を返す場合は例外をスローします。  
 結果を取得できない（検索結果が0件）場合、`jp.co.future.uroborosql.exception.DataNotFoundException`をスローします。  
-検索結果が2件以上存在する場合、`jp.co.future.uroborosql.exception.DataNotUniqueException`をスローします。  
+検索結果が2件以上存在する場合、`jp.co.future.uroborosql.exception.DataNotUniqueException`をスローします。
 
 ::: tip
 メモリ上には最大1件分のデータしか格納しないため、検索結果が大量になる場合でもメモリ使用量を気にせず呼び出すことができます。
@@ -547,7 +551,7 @@ try (SqlAgent agent = config.agent()) {
 }
 ```
 
-`jp.co.future.uroborosql.converter.ResultSetConverter`インタフェースを実装したクラスを引数に渡すことで、検索結果により複雑な加工を行うことができます。  
+`jp.co.future.uroborosql.converter.ResultSetConverter`インタフェースを実装したクラスを引数に渡すことで、検索結果により複雑な加工を行うことができます。
 
 提供されている `ResultSetConverter` は以下になります。
 
@@ -556,8 +560,6 @@ try (SqlAgent agent = config.agent()) {
 | MapResultSetConverter                                  | 検索結果を項目名と値のMapに変換します。項目名はコンストラクタにCaseFormatを指定することで書式を変更することができます。 |
 | EntityResultSetConverter                               | 検索結果をエンティティ型のインスタンスに変換します。エンティティ型はコンストラクタで指定します。                        |
 | SingleColumnResultSetConverter <Badge text="0.25.0+"/> | 検索結果のうち、１項目を指定した型のインスタンスに変換します。対象とする項目と変換する型はコンストラクタで指定します。  |
-
-
 
 `ResultSetConverter`は`FunctionInterface`として提供されているので、`lambda式`による記述も可能です。
 
@@ -608,12 +610,11 @@ try (SqlAgent agent = config.agent()) {
 検索結果を`java.sql.ResultSet`の形式で取得します。
 
 ::: danger 注意
- ResultSetリソースのクローズは各自で行う必要があります。
+ResultSetリソースのクローズは各自で行う必要があります。
 :::
 ::: danger 注意
 ResultSetリソースのクローズより先にSqlAgentインスタンスがクローズ、または破棄された場合、ResultSetリソースもクローズされてしまい不正な動作となります。ResultSetリソースとそのResultSetを生成したSqlAgentインスタンスの生存期間を合わせる、もしくはSqlAgentインスタンスの生存期間を長くしてください。
 :::
-
 
 このAPIは他のフレームワークとの連携など、`ResultSet`リソースの取得が必要なケースを想定して提供しています。
 
@@ -637,10 +638,10 @@ try (SqlAgent agent = config.agent()) {
 
 DB更新処理(登録/変更/削除)やDDLの実行も検索処理と同様`SQL名`を指定する場合と`SQL文字列`を指定する２つのAPIが提供されています。
 
-| 利用メソッド                       | 説明                                              |
-| :--------------------------------- | :------------------------------------------------ |
-| SqlAgent#update("[SQL名]")         | [SQL名](./README.md#sql名)で説明した`SQL名`を指定 |
-| SqlAgent#updateWith("[SQL文字列]") | `SQL文字列`を直接指定                             |
+| 利用メソッド                       | 説明                                             |
+| :--------------------------------- | :----------------------------------------------- |
+| SqlAgent#update("[SQL名]")         | [SQL名](./index.md#sql名)で説明した`SQL名`を指定 |
+| SqlAgent#updateWith("[SQL文字列]") | `SQL文字列`を直接指定                            |
 
 上記２つのメソッドは更新を行うための`SqlUpdate`インタフェースのインスタンスを返却します。
 
@@ -707,12 +708,12 @@ try (SqlAgent agent = config.agent()) {
 大量のデータを一括で更新する場合、通常の更新ではSQLが都度実行されるため処理速度が遅く問題になる場合があります。  
 こういったケースに対応するため、**uroboroSQL**ではバッチ更新用のAPIを提供しています。
 
-バッチ更新処理も他と同様`SQL名`を指定する場合と`SQL文字列`を直接記述する２つのAPIが提供されています。  
+バッチ更新処理も他と同様`SQL名`を指定する場合と`SQL文字列`を直接記述する２つのAPIが提供されています。
 
-| 利用メソッド                      | 説明                                              |
-| :-------------------------------- | :------------------------------------------------ |
-| SqlAgent#batch("[SQL名]")         | [SQL名](./README.md#sql名)で説明した`SQL名`を指定 |
-| SqlAgent#batchWith("[SQL文字列]") | `SQL文字列`を直接指定                             |
+| 利用メソッド                      | 説明                                             |
+| :-------------------------------- | :----------------------------------------------- |
+| SqlAgent#batch("[SQL名]")         | [SQL名](./index.md#sql名)で説明した`SQL名`を指定 |
+| SqlAgent#batchWith("[SQL文字列]") | `SQL文字列`を直接指定                            |
 
 上記２つのメソッドはバッチ更新を行うための`SqlBatch`インタフェースのインスタンスを返却します。
 
@@ -720,16 +721,16 @@ try (SqlAgent agent = config.agent()) {
 batch/batchWithの内部では `PreparedStatement` を作成し、渡されたパラメータをバインドしながら `PreparedStatement#executeBatch()` メソッドを呼び出すことでバッチ処理を行っています。  
 その際 `PreparedStatement` は、引数で渡されたSQLを**定数パラメータとエスケープキャラクタ置換文字**で評価したSQLを元に生成し、この `PreparedStatement` をバッチ処理が終了するまで利用します。  
 そのため、SQLの中に 条件分岐（`/*IF*/` など）や埋め込み文字（`/*# */` など）を記載していると、条件分岐や埋め込み文字をnullで判定したSQLを元に `PreparedStatement` が生成されることになり、意図しない結果になります。  
-このことから、バッチ処理で使用するSQLには条件分岐や埋め込み文字を **使用しないようにする必要があります**。  
+このことから、バッチ処理で使用するSQLには条件分岐や埋め込み文字を **使用しないようにする必要があります**。
 
 例）  
 下記のようなデータを
 
-| id   | name   | age  |
-| :--- | :----- | :--- |
-| null | taro   | 13   |
-| 2    | hanako | 15   |
-| 3    | jiro   | 10   |
+| id   | name   | age |
+| :--- | :----- | :-- |
+| null | taro   | 13  |
+| 2    | hanako | 15  |
+| 3    | jiro   | 10  |
 
 以下のSQLでバッチインサートすると
 
@@ -869,10 +870,10 @@ try (SqlAgent agent = config.agent()) {
 
 **uroboroSQL**では、SQLの検索/更新のほかDBが提供するストアドプロシージャの呼び出し用APIも提供しています。
 
-| 利用メソッド                     | 説明                                              |
-| :------------------------------- | :------------------------------------------------ |
-| SqlAgent#proc("[SQL名]")         | [SQL名](./README.md#sql名)で説明した`SQL名`を指定 |
-| SqlAgent#procWith("[SQL文字列]") | `SQL文字列`を直接指定                             |
+| 利用メソッド                     | 説明                                             |
+| :------------------------------- | :----------------------------------------------- |
+| SqlAgent#proc("[SQL名]")         | [SQL名](./index.md#sql名)で説明した`SQL名`を指定 |
+| SqlAgent#procWith("[SQL文字列]") | `SQL文字列`を直接指定                            |
 
 上記２つのメソッドはストアドプロシージャの呼出を行うための`Procedure`インタフェースのインスタンスを返却します。
 

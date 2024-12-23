@@ -1,10 +1,13 @@
 ---
-meta:
-  - name: og:title
-    content: 'エンティティクラスを使用したDBアクセス'
-  - name: og:url
-    content: '/uroborosql-doc/getting_started/entity-access.html'
+head:
+  - - meta
+    - name: og:title
+      content: "エンティティクラスを使用したDBアクセス"
+  - - meta
+    - name: og:url
+      content: "/uroborosql-doc/getting_started/entity-access.html"
 ---
+
 # エンティティクラスを使用したDBアクセス
 
 **uroboroSQL**ではSQLファイルを使用したDBアクセスの他にエンティティクラスを使用したDBアクセスも提供しています。（[EntityApiSample.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/EntityApiSample.java)を参照）
@@ -15,12 +18,12 @@ meta:
 
 **SqlEntityQuery**では検索結果をいくつかの形式で取得することができます。
 
-|メソッド|説明|
-|:---|:---|
-|SqlEntityQuery#collect()|検索結果を`List<エンティティクラス>`の形式で取得する|
-|SqlEntityQuery#stream()|検索結果を`java.util.Stream`の形式で取得する|
-|SqlEntityQuery#first()|検索結果の１件目を取得する。戻り値は`Optional`|
-|SqlEntityQuery#one()|検索結果の１件目を取得する。検索結果が複数件になる場合は`DataNonUniqueException`をスローする。戻り値は`Optional`|
+| メソッド                 | 説明                                                                                                             |
+| :----------------------- | :--------------------------------------------------------------------------------------------------------------- |
+| SqlEntityQuery#collect() | 検索結果を`List<エンティティクラス>`の形式で取得する                                                             |
+| SqlEntityQuery#stream()  | 検索結果を`java.util.Stream`の形式で取得する                                                                     |
+| SqlEntityQuery#first()   | 検索結果の１件目を取得する。戻り値は`Optional`                                                                   |
+| SqlEntityQuery#one()     | 検索結果の１件目を取得する。検索結果が複数件になる場合は`DataNonUniqueException`をスローする。戻り値は`Optional` |
 
 まずはテーブルに紐づくエンティティクラスを作成します。
 
