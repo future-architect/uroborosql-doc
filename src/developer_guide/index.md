@@ -5,7 +5,7 @@ head:
       content: "開発者ガイド"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc_v0.x/developer_guide/"
+      content: "/uroborosql-doc/developer_guide/"
 ---
 
 # 開発者ガイド

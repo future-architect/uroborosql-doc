@@ -5,7 +5,7 @@ head:
       content: "ConnectionSupplier"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc_v0.x/configuration/connection-supplier.html"
+      content: "/uroborosql-doc/configuration/connection-supplier.html"
 ---
 
 # ConnectionSupplier

@@ -5,7 +5,7 @@ head:
       content: "エンティティクラスを使用したDBアクセス"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc_v0.x/getting_started/entity-access.html"
+      content: "/uroborosql-doc/getting_started/entity-access.html"
 ---
 
 # エンティティクラスを使用したDBアクセス

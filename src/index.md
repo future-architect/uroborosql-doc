@@ -24,7 +24,7 @@ head:
       content: "uroboroSQL"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc_v0.x/"
+      content: "/uroborosql-doc/"
 ---
 
 ![GitHub stars](https://img.shields.io/github/stars/future-architect/uroborosql.svg?style=social&label=Stars)

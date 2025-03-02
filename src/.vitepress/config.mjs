@@ -103,7 +103,7 @@ export default defineConfig({
     },
   },
   head: [
-    ["link", { rel: "icon", href: "/uroborosql-doc_v0.x/icon.png" }],
+    ["link", { rel: "icon", href: "/uroborosql-doc/icon.png" }],
     ["meta", { name: "og:type", content: "website" }],
     [
       "meta",
@@ -118,12 +118,12 @@ export default defineConfig({
       {
         name: "og:image",
         content:
-          "https://future-architect.github.io/uroborosql-doc_v0.x/images/logo.png",
+          "https://future-architect.github.io/uroborosql-doc/images/logo.png",
       },
     ],
   ],
   srcExclude: ["./README.md"],
-  base: "/uroborosql-doc_v0.x/",
+  base: "/uroborosql-doc/",
   themeConfig: {
     siteTitle: "", // ロゴがタイトルなのでテキストのタイトルは必要ありません。
     logo: "images/logo.png",
@@ -138,7 +138,7 @@ export default defineConfig({
     },
     editLink: {
       pattern:
-        "https://github.com/future-architect/uroborosql-doc_v0.x/edit/main/src/:path",
+        "https://github.com/future-architect/uroborosql-doc/edit/main/src/:path",
     },
     outline: {
       level: "deep",

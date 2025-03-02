@@ -5,7 +5,7 @@ head:
       content: "SqlContextFactory"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc_v0.x/configuration/sql-context-factory.html"
+      content: "/uroborosql-doc/configuration/sql-context-factory.html"
 ---
 
 # SqlContextFactory

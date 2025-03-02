@@ -5,7 +5,7 @@ head:
       content: "uroboroSQLとは"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc_v0.x/why_uroborosql/"
+      content: "/uroborosql-doc/why_uroborosql/"
 ---
 
 # uroboroSQLとは

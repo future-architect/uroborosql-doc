@@ -5,7 +5,7 @@ head:
       content: "SqlAgentFactory"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc_v0.x/configuration/sql-agent-factory.html"
+      content: "/uroborosql-doc/configuration/sql-agent-factory.html"
 ---
 
 # SqlAgentFactory
