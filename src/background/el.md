@@ -5,7 +5,7 @@ head:
       content: "式言語"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/background/el.html"
+      content: "/uroborosql-doc_v0.x/background/el.html"
 ---
 
 # 式言語

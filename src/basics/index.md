@@ -5,7 +5,7 @@ head:
       content: "事前準備"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/basics/"
+      content: "/uroborosql-doc_v0.x/basics/"
 ---
 
 # 事前準備
