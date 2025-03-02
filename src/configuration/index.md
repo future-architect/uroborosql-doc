@@ -5,7 +5,7 @@ head:
       content: "SqlConfigの生成"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/configuration/"
+      content: "/uroborosql-doc_v0.x/configuration/"
 ---
 
 # SqlConfigの生成

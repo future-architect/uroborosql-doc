@@ -5,7 +5,7 @@ head:
       content: "SqlManager"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/configuration/sql-manager.html"
+      content: "/uroborosql-doc_v0.x/configuration/sql-manager.html"
 ---
 
 # SqlManager
