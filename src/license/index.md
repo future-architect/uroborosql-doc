@@ -5,7 +5,7 @@ head:
       content: "License"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc_v0.x/license/"
+      content: "/uroborosql-doc/license/"
 ---
 
 # License

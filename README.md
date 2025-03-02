@@ -2,11 +2,11 @@
 
 ## uroboroSQL Documentation site
 
-https://future-architect.github.io/uroborosql-doc_v0.x/
+https://future-architect.github.io/uroborosql-doc/
 
 ## uroboroSQL repository
 
-[https://future-architect.github.io/uroborosql (v0.x)](https://future-architect.github.io/uroborosql/tree/uroborosql-0.26.8)
+https://future-architect.github.io/uroborosql/
 
 ---
 

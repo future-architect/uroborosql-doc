@@ -5,7 +5,7 @@ head:
       content: "SqlFilterManager"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc_v0.x/configuration/sql-filter-manager.html"
+      content: "/uroborosql-doc/configuration/sql-filter-manager.html"
 ---
 
 # SqlFilterManager

@@ -5,7 +5,7 @@ head:
       content: "2WaySQL"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc_v0.x/background/"
+      content: "/uroborosql-doc/background/"
 ---
 
 # 2WaySQL

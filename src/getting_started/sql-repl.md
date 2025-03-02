@@ -5,7 +5,7 @@ head:
       content: "SQL-REPL"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc_v0.x/getting_started/sql-repl.html"
+      content: "/uroborosql-doc/getting_started/sql-repl.html"
 ---
 
 # SQL-REPL
