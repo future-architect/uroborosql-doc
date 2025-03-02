@@ -138,7 +138,7 @@ export default defineConfig({
     },
     editLink: {
       pattern:
-        "https://github.com/future-architect/uroborosql-doc/edit/master/src/:path",
+        "https://github.com/future-architect/uroborosql-doc/edit/main/src/:path",
     },
     outline: {
       level: "deep",

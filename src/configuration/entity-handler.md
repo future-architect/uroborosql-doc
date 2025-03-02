@@ -11,7 +11,7 @@ head:
 # EntityHandler
 
 `EntityHandler`はDAOインタフェースを利用したDB操作を行う際に実行するSQLの生成を制御するためのクラスです。  
-アプリケーションの要件によって[EntityHandler](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/mapping/EntityHandler.java)インタフェースや[DefaultEntityHandler](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/mapping/DefaultEntityHandler.java)クラスを継承した独自のEntityHandlerを指定することが出来ます。
+アプリケーションの要件によって[EntityHandler](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/mapping/EntityHandler.java)インタフェースや[DefaultEntityHandler](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/mapping/DefaultEntityHandler.java)クラスを継承した独自のEntityHandlerを指定することが出来ます。
 
 ::: tip
 EntityHandlerはDAOインタフェース利用時のみに有効な手段ですが、SQLファイルインタフェースにおいても自動でバインドする場合は、[自動パラメータバインド関数の設定](./sql-context-factory.md#自動パラメータバインド関数の設定)を参照してください。

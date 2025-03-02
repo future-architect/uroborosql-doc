@@ -19,7 +19,7 @@ DB接続を行う際のコネクションを提供するクラスです。
 | JdbcConnectionSupplierImpl       | JDBCドライバーマネージャを使用したコネクション提供クラス                 |
 | DataSourceConnectionSupplierImpl | データソースを使用したコネクション提供クラス                             |
 
-また、[ConnectionSupplier](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/connection/ConnectionSupplier.java)インタフェースを実装した独自のJDBCコネクション提供クラスを利用することもできます。
+また、[ConnectionSupplier](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/connection/ConnectionSupplier.java)インタフェースを実装した独自のJDBCコネクション提供クラスを利用することもできます。
 
 ## ConnectionContext <Badge text="0.19.0+"/>
 

@@ -19,14 +19,14 @@ head:
 
 | DB名                 | Dialect                                                                                                                                              |
 | :------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| H2 DB                | [H2Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/H2Dialect.java)                 |
-| Microsoft SQL Server | [MsSqlDialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/MsSqlDialect.java)           |
-| MySQL                | [MySqlDialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/MySqlDialect.java)           |
-| Oracle10g以下        | [Oracle10Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/Oracle10Dialect.java)     |
-| Oracle11g            | [Oracle11Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/Oracle11Dialect.java)     |
-| Oracle12c以上        | [Oracle12Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/Oracle12Dialect.java)     |
-| Postgresql           | [PostgresqlDialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/PostgresqlDialect.java) |
-| その他               | [DefaultDialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/DefaultDialect.java)       |
+| H2 DB                | [H2Dialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/H2Dialect.java)                 |
+| Microsoft SQL Server | [MsSqlDialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/MsSqlDialect.java)           |
+| MySQL                | [MySqlDialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/MySqlDialect.java)           |
+| Oracle10g以下        | [Oracle10Dialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/Oracle10Dialect.java)     |
+| Oracle11g            | [Oracle11Dialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/Oracle11Dialect.java)     |
+| Oracle12c以上        | [Oracle12Dialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/Oracle12Dialect.java)     |
+| Postgresql           | [PostgresqlDialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/PostgresqlDialect.java) |
+| その他               | [DefaultDialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/DefaultDialect.java)       |
 
 ::: warning
 該当するDBが見つからない場合は`DefaultDialect`が適用されます
