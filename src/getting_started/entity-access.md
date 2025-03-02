@@ -10,7 +10,7 @@ head:
 
 # エンティティクラスを使用したDBアクセス
 
-**uroboroSQL**ではSQLファイルを使用したDBアクセスの他にエンティティクラスを使用したDBアクセスも提供しています。（[EntityApiSample.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/EntityApiSample.java)を参照）
+**uroboroSQL**ではSQLファイルを使用したDBアクセスの他にエンティティクラスを使用したDBアクセスも提供しています。（[EntityApiSample.java](https://github.com/future-architect/uroborosql-sample/blob/main/src/main/java/jp/co/future/uroborosql/sample/EntityApiSample.java)を参照）
 
 ## エンティティクラスを使用した検索
 

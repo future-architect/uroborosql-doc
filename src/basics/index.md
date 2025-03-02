@@ -98,7 +98,7 @@ SQLファイルの配置は設定によりカスタマイズが可能です。SQ
 
 ### 共通API
 
-検索([SqlQuery](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/SqlQuery.java))、更新([SqlUpdate](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/SqlUpdate.java))、バッチ更新([SqlBatch](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/SqlBatch.java))、ストアドプロシージャ実行([Procedure](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/Procedure.java))を行うクラスは、バインドパラメータや置換文字列の設定を行うためのAPI([SqlFluent](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/fluent/SqlFluent.java))を実装しています。
+検索([SqlQuery](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/fluent/SqlQuery.java))、更新([SqlUpdate](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/fluent/SqlUpdate.java))、バッチ更新([SqlBatch](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/fluent/SqlBatch.java))、ストアドプロシージャ実行([Procedure](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/fluent/Procedure.java))を行うクラスは、バインドパラメータや置換文字列の設定を行うためのAPI([SqlFluent](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/fluent/SqlFluent.java))を実装しています。
 
 バインドパラメータや置換文字列の設定はこのAPIを利用して設定を行ってください。  
 流れるAPI(Fluent API)を採用しているため、値の設定は連続して行うことができるようになっています。

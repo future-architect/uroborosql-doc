@@ -12,7 +12,7 @@ head:
 
 ## SqlConfigの生成
 
-SQLファイルを使用したサンプルコード [SqlFileApiSample.java](https://github.com/future-architect/uroborosql-sample/blob/master/src/main/java/jp/co/future/uroborosql/sample/SqlFileApiSample.java) を例として説明します。
+SQLファイルを使用したサンプルコード [SqlFileApiSample.java](https://github.com/future-architect/uroborosql-sample/blob/main/src/main/java/jp/co/future/uroborosql/sample/SqlFileApiSample.java) を例として説明します。
 
 まず初めにコンストラクタの中で最初に`SqlConfig`クラスを作成しています。
 `SqlConfig`は**uroboroSQL**に対する各種の設定を保持するクラスで、`SqlConfig`の設定を変更することで**uroboroSQL**の動作を変更することが出来ます。  
