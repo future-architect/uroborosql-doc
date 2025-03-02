@@ -17,8 +17,8 @@ head:
 
 現在、標準で以下のDBに対するDialectが提供されています。
 
-| DB名                 | Dialect                                                                                                                                              |
-| :------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DB名                 | Dialect                                                                                                                                            |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
 | H2 DB                | [H2Dialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/H2Dialect.java)                 |
 | Microsoft SQL Server | [MsSqlDialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/MsSqlDialect.java)           |
 | MySQL                | [MySqlDialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/MySqlDialect.java)           |
