@@ -1,10 +1,13 @@
 ---
-meta:
-  - name: og:title
-    content: 'SqlContextFactory'
-  - name: og:url
-    content: '/uroborosql-doc/configuration/sql-context-factory.html'
+head:
+  - - meta
+    - name: og:title
+      content: "SqlContextFactory"
+  - - meta
+    - name: og:url
+      content: "/uroborosql-doc/configuration/sql-context-factory.html"
 ---
+
 # SqlContextFactory
 
 SQL構造を表現するクラスである`SqlContext`を生成するファクトリクラスです。生成されるSQLの挙動を変更するための設定が行えます。
@@ -152,11 +155,11 @@ public enum Gender {
 
 定数パラメータを利用する場合、以下の命名ルールに従ってパラメータを指定します。
 
-|パターン|書式|
-|:---|:---|
-|定数|[定数パラメータプレフィックス][定数フィールド名大文字]|
-|定数(Innerクラスがある場合)|[定数パラメータプレフィックス][Innerクラス名大文字スネークケース]_[Innerクラス内定数フィールド名大文字]|
-|列挙型|[定数パラメータプレフィックス][列挙型名大文字]_[列挙子名大文字]|
+| パターン                    | 書式                                                                                                     |
+| :-------------------------- | :------------------------------------------------------------------------------------------------------- |
+| 定数                        | [定数パラメータプレフィックス][定数フィールド名大文字]                                                   |
+| 定数(Innerクラスがある場合) | [定数パラメータプレフィックス][Innerクラス名大文字スネークケース]\_[Innerクラス内定数フィールド名大文字] |
+| 列挙型                      | [定数パラメータプレフィックス][列挙型名大文字]\_[列挙子名大文字]                                         |
 
 ::: tip
 ※定数パラメータプレフィックスの初期値は `CLS_`となっています。  
@@ -175,7 +178,7 @@ public enum Gender {
 - /\*$[定数パラメータプレフィックス][Innerクラス名大文字スネークケース]\_[Innerクラス内定数フィールド名大文字]\*/
 - /\*$[定数パラメータプレフィックス][列挙型名大文字]\_[列挙子名大文字]\*/
 
-という風に使用します。  
+という風に使用します。
 
 ::: tip
 定数や列挙型の値は固定値なので生成されるSQLは毎回同じ値になり、SQL文解析処理によるCPU負荷を考慮する必要はありません。
@@ -263,7 +266,7 @@ SqlConfig config = UroboroSQL
   ).build();
 ```
 
-自動パラメータバインド関数は`SqlContext`を引数に受け取るので、関数内でパラメータの設定を行ってください。  
+自動パラメータバインド関数は`SqlContext`を引数に受け取るので、関数内でパラメータの設定を行ってください。
 
 ::: tip
 関数の評価は、SQL生成処理（SQL文内の`/*IF*/`や`/*BEGIN*/`、`/*parameter_name*/`の評価）の直前に行われます。
@@ -306,15 +309,15 @@ public class Name {
 
 `SqlContextFactory`の設定
 
-  ```java
+```java
 // create SqlConfig
 SqlConfig config = UroboroSQL
-  .builder(...)
-  // SqlContextFactoryの設定
-  .setSqlContextFactory(new SqlContextFactoryImpl()
-    // パラメータ変換クラスの登録
-    .addBindParamMapper(new CustomBindParamMapper())
-  ).build();
+.builder(...)
+// SqlContextFactoryの設定
+.setSqlContextFactory(new SqlContextFactoryImpl()
+  // パラメータ変換クラスの登録
+  .addBindParamMapper(new CustomBindParamMapper())
+).build();
 ```
 
 バインドパラメータ設定例
@@ -346,16 +349,16 @@ SqlConfig config = UroboroSQL
 ### カーソル型の初期値（`DefaultResultSetType`）
 
 `java.sql.ResultSet`のカーソルの型を指定します。
-|型|説明|初期値|
-|:--|:--|:--:|
-|java.sql.ResultSet#TYPE_FORWARD_ONLY|カーソルは最初から最後まで順方向にしか移動できません。|◯|
-|java.sql.ResultSet#TYPE_SCROLL_INSENSITIVE|カーソルは順方向・逆方向いずれにも移動可能です。ただし他による変更を反映しません。||
-|java.sql.ResultSet#TYPE_SCROLL_SENSITIVE|カーソルは順方向・逆方向いずれにも移動可能です。また他による変更も反映します。||
+| 型 | 説明 | 初期値 |
+| :----------------------------------------- | :--------------------------------------------------------------------------------- | :----: |
+| java.sql.ResultSet#TYPE_FORWARD_ONLY | カーソルは最初から最後まで順方向にしか移動できません。 | ◯ |
+| java.sql.ResultSet#TYPE_SCROLL_INSENSITIVE | カーソルは順方向・逆方向いずれにも移動可能です。ただし他による変更を反映しません。 | |
+| java.sql.ResultSet#TYPE_SCROLL_SENSITIVE | カーソルは順方向・逆方向いずれにも移動可能です。また他による変更も反映します。 | |
 
 ### 変更可能性の初期値（`DefaultResultSetConcurrency`）
 
 `java.sql.ResultSet`の変更可能性を指定します。
-|型|説明|初期値|
-|:--|:--|:--:|
-|java.sql.ResultSet.CONCUR_READ_ONLY|カーソルはデータの読み出ししかサポートしません。|◯|
-|java.sql.ResultSet.CONCUR_UPDATABLE|カーソルは変更可能です。カーソルを用いたデータの挿入・変更・削除がサポートされます。||
+| 型 | 説明 | 初期値 |
+| :---------------------------------- | :----------------------------------------------------------------------------------- | :----: |
+| java.sql.ResultSet.CONCUR_READ_ONLY | カーソルはデータの読み出ししかサポートしません。 | ◯ |
+| java.sql.ResultSet.CONCUR_UPDATABLE | カーソルは変更可能です。カーソルを用いたデータの挿入・変更・削除がサポートされます。 | |

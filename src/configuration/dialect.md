@@ -1,10 +1,13 @@
 ---
-meta:
-  - name: og:title
-    content: 'Dialect'
-  - name: og:url
-    content: '/uroborosql-doc/configuration/dialect.html'
+head:
+  - - meta
+    - name: og:title
+      content: "Dialect"
+  - - meta
+    - name: og:url
+      content: "/uroborosql-doc/configuration/dialect.html"
 ---
+
 # Dialect
 
 複数のDBを対象とするアプリケーションを作成する場合、DB毎のSQL文法の差異を吸収するため
@@ -12,7 +15,7 @@ meta:
 **uroboroSQL**では、こういったDB毎のSQL文法の差異に対応するため、`Dialect`という仕組みを提供しています。  
 `Dialect`は接続したDBから取得できる情報を元に自動で判別される為、通常は変更する必要はありません。
 
-現在、標準で以下のDBに対するDialectが提供されています。  
+現在、標準で以下のDBに対するDialectが提供されています。
 
 | DB名                 | Dialect                                                                                                                                              |
 | :------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -33,7 +36,7 @@ meta:
 
 標準でサポートしている上記のDB以外に接続し、`DefaultDialect`と違う動作をさせたい場合は、対象のDBに対する`Dialect`クラスを作成して**uroboroSQL**に登録する必要があります。
 
-`Dialect`の登録には、Javaの [java.util.ServiceLoader](https://docs.oracle.com/javase/jp/8/docs/api/java/util/ServiceLoader.html)を利用します。  
+`Dialect`の登録には、Javaの [java.util.ServiceLoader](https://docs.oracle.com/javase/jp/8/docs/api/java/util/ServiceLoader.html)を利用します。
 
 最初に対象のDB（ここではSQLiteとする）に対する`Dialect`クラスを作成します。
 
@@ -89,7 +92,7 @@ public class SqliteDialect extends AbstractDialect {
 
 次に**uroboroSQL**を利用するアプリケーションのクラスパス上に以下のファイル名のファイルを作成します。
 
-```md
+```txt
 META-INF
   └─services
       └─jp.co.future.uroborosql.dialect.Dialect

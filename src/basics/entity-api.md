@@ -1,10 +1,13 @@
 ---
-meta:
-  - name: og:title
-    content: 'DAOインタフェース'
-  - name: og:url
-    content: '/uroborosql-doc/basics/entity-api.html'
+head:
+  - - meta
+    - name: og:title
+      content: "DAOインタフェース"
+  - - meta
+    - name: og:url
+      content: "/uroborosql-doc/basics/entity-api.html"
 ---
+
 # DAOインタフェース
 
 **uroboroSQL**はDAO(Data Access Object)を用いた単一テーブルへのCRUDに対応しています。
@@ -296,14 +299,14 @@ long count = agent.query(Employee.class).count();
 | &lt;E&gt; SqlAgent#insert(E)                                  | int        |
 | &lt;E&gt; SqlAgent#insertAndReturn(E) <Badge text="0.15.0+"/> | E          |
 
-エンティティクラスのインスタンスを使って１レコードの挿入を行います。  
+エンティティクラスのインスタンスを使って１レコードの挿入を行います。
 
-* [@Id](#id-generatedvalue-sequencegenerator)アノテーションの指定があるフィールド
-* 対するカラムが自動採番となっているフィールド
+- [@Id](#id-generatedvalue-sequencegenerator)アノテーションの指定があるフィールド
+- 対するカラムが自動採番となっているフィールド
 
 上記の型がprimitive型の場合、もしくはフィールドの値が`null`の場合、カラムの値は挿入時に自動採番されます。  
 また、挿入により採番された値がエンティティの該当フィールドにも設定されます。  
-フィールドに値を指定した場合は自動採番カラムであっても指定した値が挿入されます。  
+フィールドに値を指定した場合は自動採番カラムであっても指定した値が挿入されます。
 
 デフォルト値の指定があるカラムに対するフィールドが `null` の場合、カラムの値にデフォルト値が設定されます。
 
@@ -349,12 +352,12 @@ System.out.println(employee.getEmpNo()); // 自動採番された値が出力さ
 
 `java.util.stream.Stream`経由で渡される複数のエンティティインスタンスを挿入します。
 
-* [@Id](#id-generatedvalue-sequencegenerator)アノテーションの指定があるフィールド
-* 対するカラムが自動採番となっているフィールド
+- [@Id](#id-generatedvalue-sequencegenerator)アノテーションの指定があるフィールド
+- 対するカラムが自動採番となっているフィールド
 
 の型がprimitive型の場合、もしくはフィールドの値が`null`の場合、カラムの値は挿入時に自動採番されます。  
 また、挿入により採番された値がエンティティの該当フィールドにも設定されます。  
-フィールドに値を指定した場合は自動採番カラムであっても指定した値が挿入されます。  
+フィールドに値を指定した場合は自動採番カラムであっても指定した値が挿入されます。
 
 ::: warning 注意
 複数件の挿入で生成されるSQLでは、行毎のフィールドの値の有無を変更することができません。  
@@ -403,7 +406,7 @@ agent.inserts(agent.insertsAndReturn(agent.query(Employee.class).stream())
 Stream<Employee> employees = agent.query(Employee.class)
   .stream()
   .map(e -> e.setEmpNo(e.getEmpNo() + 1000));
-  
+
 // 複数件の挿入(バッチ実行)
 agent.inserts(employees, InsertsType.BATCH);
 }
@@ -420,7 +423,7 @@ agent.inserts(employees, InsertsType.BATCH);
 1. SQLをpreparedStatementに変換
 2. SQL発行
 
- `BATCH` の動作が以下のような動作になっているためです。
+`BATCH` の動作が以下のような動作になっているためです。
 
 1. SQLをpreparedStatementに変換
 2. [挿入条件](#挿入条件-insertscondition-の指定)で指定した条件になるまで蓄積したデータをDBに送信
@@ -443,7 +446,7 @@ agent.inserts(employees, InsertsType.BATCH);
 Stream<Employee> employees = agent.query(Employee.class)
   .stream()
   .map(e -> e.setEmpNo(e.getEmpNo() + 1000));
-  
+
 // 複数件の挿入（10件毎に挿入）
 agent.inserts(employees, (ctx, count, entity) -> count == 10);
 ```
@@ -559,7 +562,7 @@ Stream<Employee> employees = agent.query(Employee.class)
     e.setFirstName(e.getFirstName() + "_new");
     return e;
   });
-  
+
 // 複数件の更新（10件毎に挿入）
 agent.updates(employees, (ctx, count, entity) -> count == 10);
 ```
@@ -759,10 +762,10 @@ DAOインタフェースで利用するエンティティクラスではテー�
 エンティティクラスに紐づけるテーブル名を指定します。  
 テーブル名と名前が一致しないエンティティクラスにマッピングしたい場合に利用します。
 
-| 属性名 | 型     | 必須  | 説明                                                                                             | 初期値 |
-| :----- | :----- | :---: | :----------------------------------------------------------------------------------------------- | :----- |
-| name   | String |   -   | マッピングするテーブル名。指定しない場合はクラス名をスネークケースにしたテーブルとマッピングする | なし   |
-| schema | String |   -   | マッピングするテーブルの所属するスキーマ名                                                       | なし   |
+| 属性名 | 型     | 必須 | 説明                                                                                             | 初期値 |
+| :----- | :----- | :--: | :----------------------------------------------------------------------------------------------- | :----- |
+| name   | String |  -   | マッピングするテーブル名。指定しない場合はクラス名をスネークケースにしたテーブルとマッピングする | なし   |
+| schema | String |  -   | マッピングするテーブルの所属するスキーマ名                                                       | なし   |
 
 ```java
 import jp.co.future.uroborosql.mapping.annotations.Table;
@@ -785,9 +788,9 @@ public class CustomEmployee {
 フィールドに紐づけるカラム名を指定します。  
 カラム名と名前が一致しないフィールドにマッピングしたい場合に利用します。
 
-| 属性名 | 型     | 必須  | 説明                   | 初期値 |
-| :----- | :----- | :---: | :--------------------- | :----- |
-| name   | String |  〇   | マッピングするカラム名 | なし   |
+| 属性名 | 型     | 必須 | 説明                   | 初期値 |
+| :----- | :----- | :--: | :--------------------- | :----- |
+| name   | String |  〇  | マッピングするカラム名 | なし   |
 
 ```java
 import jp.co.future.uroborosql.mapping.annotations.Table;
@@ -808,12 +811,12 @@ public class Employee {
 
 独自に作成した型(ドメインクラス)やEnumのフィールドにカラムをマッピングする場合に指定します。
 
-| 属性名        | 型       | 必須  | 説明                                                                                     | 初期値     |
-| :------------ | :------- | :---: | :--------------------------------------------------------------------------------------- | :--------- |
-| valueType     | Class<?> |  〇   | ドメインクラスを生成するのに必要な値の型                                                 | なし       |
-| factoryMethod | String   |   -   | ドメインクラスを生成・取得するメソッド名。指定しない場合はコンストラクタが呼び出される。 | ""         |
-| toJdbcMethod  | String   |   -   | JDBCが受け付けられる値に変換するメソッド名                                               | "getValue" |
-| nullable      | boolean  |   -   | null可かどうかの指定                                                                     | false      |
+| 属性名        | 型       | 必須 | 説明                                                                                     | 初期値     |
+| :------------ | :------- | :--: | :--------------------------------------------------------------------------------------- | :--------- |
+| valueType     | Class<?> |  〇  | ドメインクラスを生成するのに必要な値の型                                                 | なし       |
+| factoryMethod | String   |  -   | ドメインクラスを生成・取得するメソッド名。指定しない場合はコンストラクタが呼び出される。 | ""         |
+| toJdbcMethod  | String   |  -   | JDBCが受け付けられる値に変換するメソッド名                                               | "getValue" |
+| nullable      | boolean  |  -   | null可かどうかの指定                                                                     | false      |
 
 例
 
@@ -856,10 +859,10 @@ public class Employee {
 INSERT/UPDATEの対象から除外したいケースで利用します。
 :::
 
-| 属性名 | 型      | 必須  | 説明                                                                           | 初期値 |
-| :----- | :------ | :---: | :----------------------------------------------------------------------------- | :----- |
-| insert | boolean |   -   | `agent#insert()`実行時にフィールドを無視するかどうか。`true`の場合は無視する。 | true   |
-| update | boolean |   -   | `agent#update()`実行時にフィールドを無視するかどうか。`true`の場合は無視する。 | true   |
+| 属性名 | 型      | 必須 | 説明                                                                           | 初期値 |
+| :----- | :------ | :--: | :----------------------------------------------------------------------------- | :----- |
+| insert | boolean |  -   | `agent#insert()`実行時にフィールドを無視するかどうか。`true`の場合は無視する。 | true   |
+| update | boolean |  -   | `agent#update()`実行時にフィールドを無視するかどうか。`true`の場合は無視する。 | true   |
 
 例
 
@@ -894,9 +897,9 @@ public class Employee {
 `@Version`を付与するフィールドにマッピングされるDBカラムの型は数値型でなければなりません。
 :::
 
-| 属性名                          | 型                     | 必須  | 説明                 | 初期値                            |
-| :------------------------------ | :--------------------- | :---: | :------------------- | :-------------------------------- |
-| supplier<Badge text="0.17.0+"/> | OptimisticLockSupplier |   -   | バージョン情報カラム | LockVersionOptimisticLockSupplier |
+| 属性名                          | 型                     | 必須 | 説明                 | 初期値                            |
+| :------------------------------ | :--------------------- | :--: | :------------------- | :-------------------------------- |
+| supplier<Badge text="0.17.0+"/> | OptimisticLockSupplier |  -   | バージョン情報カラム | LockVersionOptimisticLockSupplier |
 
 #### サプライヤの種類
 
@@ -936,19 +939,19 @@ public class Employee {
 `@GeneratedValue`のstrategy属性が`GenerationType.SEQUENCE`の場合に`@SequenceGenerator`を付与してシーケンスの生成方法を指定する必要があります。  
 １つのエンティティに属する複数のフィールドを自動採番フィールドとして指定することも可能です。
 
-| アノテーション     | 説明                                         |
-| :----------------- | :------------------------------------------- |
+| アノテーション     | 説明                                                     |
+| :----------------- | :------------------------------------------------------- |
 | @Id                | エンティティの自動採番フィールドを識別するアノテーション |
 | @GeneratedValue    | 自動採番フィールドの値の生成戦略を指定するアノテーション |
-| @SequenceGenerator | ID生成に使用するSEQUENCEの情報を設定するアノテーション |
+| @SequenceGenerator | ID生成に使用するSEQUENCEの情報を設定するアノテーション   |
 
-| アノテーション     | 属性名   | 型             | 必須  | 説明                                                                                     | 初期値                  |
-| :----------------- | :------- | :------------- | :---: | :--------------------------------------------------------------------------------------- | :---------------------- |
-| @Id                | なし     | -              |   -   | -                                                                                        | -                       |
-| @GeneratedValue    | strategy | GenerationType |   -   | ID生成戦略の型。`GenerationType.IDENTITY`, `GenerationType.SEQUENCE`のいずれかを指定 | GenerationType.IDENTITY |
-| @SequenceGenerator | sequence | String         |  〇   | シーケンス名                                                                             | なし                    |
-| @SequenceGenerator | catalog  | String         |   -   | シーケンスが所属するカタログ名                                                           | ""                      |
-| @SequenceGenerator | schema   | String         |   -   | シーケンスが所属するスキーマ名                                                           | ""                      |
+| アノテーション     | 属性名   | 型             | 必須 | 説明                                                                                 | 初期値                  |
+| :----------------- | :------- | :------------- | :--: | :----------------------------------------------------------------------------------- | :---------------------- |
+| @Id                | なし     | -              |  -   | -                                                                                    | -                       |
+| @GeneratedValue    | strategy | GenerationType |  -   | ID生成戦略の型。`GenerationType.IDENTITY`, `GenerationType.SEQUENCE`のいずれかを指定 | GenerationType.IDENTITY |
+| @SequenceGenerator | sequence | String         |  〇  | シーケンス名                                                                         | なし                    |
+| @SequenceGenerator | catalog  | String         |  -   | シーケンスが所属するカタログ名                                                       | ""                      |
+| @SequenceGenerator | schema   | String         |  -   | シーケンスが所属するスキーマ名                                                       | ""                      |
 
 ```java
 import jp.co.future.uroborosql.mapping.annotations.Table;
