@@ -5,7 +5,7 @@ head:
       content: "DAOインタフェース"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/basics/entity-api.html"
+      content: "/uroborosql-doc_v0.x/basics/entity-api.html"
 ---
 
 # DAOインタフェース

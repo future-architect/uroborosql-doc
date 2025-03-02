@@ -5,7 +5,7 @@ head:
       content: "SQLファイルインタフェース"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/basics/sql-file-api.html"
+      content: "/uroborosql-doc_v0.x/basics/sql-file-api.html"
 ---
 
 # SQLファイルインタフェース

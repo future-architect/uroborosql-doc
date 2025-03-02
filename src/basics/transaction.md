@@ -5,7 +5,7 @@ head:
       content: "トランザクション"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/basics/transaction.html"
+      content: "/uroborosql-doc_v0.x/basics/transaction.html"
 ---
 
 # トランザクション

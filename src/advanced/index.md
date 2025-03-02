@@ -5,7 +5,7 @@ head:
       content: "高度な操作"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/advanced/"
+      content: "/uroborosql-doc_v0.x/advanced/"
 ---
 
 # 高度な操作

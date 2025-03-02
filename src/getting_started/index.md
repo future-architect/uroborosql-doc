@@ -5,7 +5,7 @@ head:
       content: "環境設定"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/getting_started/"
+      content: "/uroborosql-doc_v0.x/getting_started/"
 ---
 
 # 環境設定

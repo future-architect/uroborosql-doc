@@ -5,7 +5,7 @@ head:
       content: "Developer Tools"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/developer_tools/"
+      content: "/uroborosql-doc_v0.x/developer_tools/"
 ---
 
 # Developer Tools

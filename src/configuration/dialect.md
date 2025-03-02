@@ -5,7 +5,7 @@ head:
       content: "Dialect"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/configuration/dialect.html"
+      content: "/uroborosql-doc_v0.x/configuration/dialect.html"
 ---
 
 # Dialect

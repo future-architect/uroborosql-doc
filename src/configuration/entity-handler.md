@@ -5,7 +5,7 @@ head:
       content: "EntityHandler"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/configuration/entity-handler.html"
+      content: "/uroborosql-doc_v0.x/configuration/entity-handler.html"
 ---
 
 # EntityHandler
