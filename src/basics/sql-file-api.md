@@ -727,8 +727,8 @@ try (SqlAgent agent = config.agent()) {
 JDBCでは 1つのPreparedStatementで複数のSQLを実行した結果について明確に規定していません。そのため利用するDBによって結果が変わります。  
 updateChainedを利用する場合はDB毎にどういう結果が返却されるかを理解したうえでご利用ください。
 
-- H2 / Postgresql / MySQL : `最初のSQL` で録、更新、削除を行った行数
-- SQLServer : `最後のSQL` で録、更新、削除を行った行数
+- H2 / Postgresql / MySQL : `最初のSQL` で登録、更新、削除を行った行数
+- SQLServer : `最後のSQL` で登録、更新、削除を行った行数
 - Oracle : 1つのPreparedStatementで複数のSQLを発行すると例外が発生
 
 :::
