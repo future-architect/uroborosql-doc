@@ -634,16 +634,18 @@ try (SqlAgent agent = config.agent()) {
 }
 ```
 
-## SQLによる更新(`SqlAgent#update` /`#updateWith`)
+## SQLによる更新(`SqlAgent#update` /`#updateWith` /`#updateChained`)
 
-DB更新処理(登録/変更/削除)やDDLの実行も検索処理と同様`SQL名`を指定する場合と`SQL文字列`を指定する２つのAPIが提供されています。
+DB更新処理(登録/変更/削除)やDDLの実行も検索処理と同様`SQL名`を指定する場合と`SQL文字列`を指定するAPIが提供されています。  
+また、引数で指定された複数のSQLを単一の通信でまとめてデータベースに発行する `updateChained` APIが提供されています。これにより、ネットワークの往復によるオーバーヘッドを最小限に抑えることが可能です。
 
-| 利用メソッド                       | 説明                                             |
-| :--------------------------------- | :----------------------------------------------- |
-| SqlAgent#update("[SQL名]")         | [SQL名](./index.md#sql名)で説明した`SQL名`を指定 |
-| SqlAgent#updateWith("[SQL文字列]") | `SQL文字列`を直接指定                            |
+| 利用メソッド                                        | 説明                                               |
+| :-------------------------------------------------- | :------------------------------------------------- |
+| SqlAgent#update("[SQL名]")                          | [SQL名](./index.md#sql名)で説明した`SQL名`を指定   |
+| SqlAgent#updateWith("[SQL文字列]")                  | `SQL文字列`を直接指定                              |
+| SqlAgent#updateChained("[SQL名1]", "[SQL名2]", ...) | 指定した複数のSQL名に対するSQLをまとめて発行する。 |
 
-上記２つのメソッドは更新を行うための`SqlUpdate`インタフェースのインスタンスを返却します。
+上記メソッドは更新を行うための`SqlUpdate`インタフェースのインスタンスを返却します。
 
 ```java
 // １件挿入(SQL名指定)
@@ -657,6 +659,14 @@ int count = agent.updateWith("update employee set first_name = /*first_name*/ wh
   .param("emp_no", 1)
   .param("first_name", "Bob")
   .count();
+
+// 複数SQL名指定
+int count = agent.updateChained("department/insert_department", "department/update_department")
+  .param("dept_no", 1)
+  .param("dept_name", "Sales")
+  .param("upd_dept_name", "HR")
+  .count();
+
 ```
 
 department/insert_department.sql
@@ -672,6 +682,15 @@ into
   /*dept_name*/'sample'
 ,  0
 )
+```
+
+department/update_department.sql
+
+```sql
+update /* _SQL_ID_ */ department
+set dept_name =  /*upd_dept_name*/'sample'
+where
+dept_name = /*dept_name*/
 ```
 
 `SqlUpdate`インタフェースの主なAPIは以下になります。
@@ -702,6 +721,17 @@ try (SqlAgent agent = config.agent()) {
     .count();
 }
 ```
+
+::: warning updateChained で返却されるcount() の値
+
+JDBCでは 1つのPreparedStatementで複数のSQLを実行した結果について明確に規定していません。そのため利用するDBによって結果が変わります。  
+updateChainedを利用する場合はDB毎にどういう結果が返却されるかを理解したうえでご利用ください。
+
+- H2 / Postgresql / MySQL : `最初のSQL` で録、更新、削除を行った行数
+- SQLServer : `最後のSQL` で録、更新、削除を行った行数
+- Oracle : 1つのPreparedStatementで複数のSQLを発行すると例外が発生
+
+:::
 
 ## SQLによるバッチ更新(`SqlBatch#batch` /`#batchWith`)
 
