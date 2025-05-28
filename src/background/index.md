@@ -76,7 +76,7 @@ and  emp.gender  in  (?, ?)/*gender_list*/
 
 ### LIKE句の利用方法
 
-LIKE句に対してバインドパラメータを使用する場合は、以下のように[StringFunction](./el.md#stringfunction-sf)を使って記述してください。
+LIKE句に対してバインドパラメータを使用する場合は、以下のように[SqlFunction](./el.md#SqlFunction-sf)を使って記述してください。
 
 ```sql
 select
@@ -119,7 +119,7 @@ and emp.last_name  like 'D$_%' escape '$'  -- _がエスケープされる
 ```
 
 ::: tip
-ワイルドカード（`%`や`_`）を含む文字列がバインドパラメータに指定された場合でも、[StringFunction](./el.md#stringfunction-sf)を利用することで文字列のエスケープ処理が適切に行われます。
+ワイルドカード（`%`や`_`）を含む文字列がバインドパラメータに指定された場合でも、[SqlFunction](./el.md#SqlFunction-sf)を利用することで文字列のエスケープ処理が適切に行われます。
 :::
 
 ::: warning
