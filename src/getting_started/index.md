@@ -12,29 +12,19 @@ head:
 
 ## ビルドツールの設定
 
-**uroboroSQL**をMavenプロジェクトに組み込むには、**pom.xml**に以下のライブラリ依存関係を追加して下さい。
-**uroboroSQL**は[Maven Central Repository](https://search.maven.org/#search%7Cga%7C1%7Curoborosql)で公開されています。
+**uroboroSQL**をMavenプロジェクトに組み込むには、**pom.xml**に以下のライブラリ依存関係を追加してください。
+**uroboroSQL**は[Maven Central Repository](https://central.sonatype.com/artifact/jp.co.future/uroborosql)で公開されています。
 
 ```xml
 <dependency>
   <groupId>jp.co.future</groupId>
   <artifactId>uroborosql</artifactId>
-  <version>0.25.0</version>
+  <version>1.0.9</version>
 </dependency>
 ```
 
 また、<Badge text="0.18.0+" vertical="middle" /> より式言語ライブラリの選択が可能になりました。  
 以下の2つのライブラリのうち、どちらかを選択してライブラリ依存関係に追加して下さい。
-
-[OGNL](https://github.com/jkuhnert/ognl)を利用する場合
-
-```xml
-<dependency>
-  <groupId>ognl</groupId>
-  <artifactId>ognl</artifactId>
-  <version>3.1.23</version>
-</dependency>
-```
 
 [Spring Expression Language(SpEL)](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#expressions)を利用する場合
 
@@ -42,7 +32,17 @@ head:
 <dependency>
   <groupId>org.springframework</groupId>
   <artifactId>spring-expression</artifactId>
-  <version>5.3.20</version>
+  <version>5.3.24</version>
+</dependency>
+```
+
+[OGNL](https://github.com/jkuhnert/ognl)を利用する場合
+
+```xml
+<dependency>
+  <groupId>ognl</groupId>
+  <artifactId>ognl</artifactId>
+  <version>3.3.4</version>
 </dependency>
 ```
 
@@ -52,44 +52,44 @@ head:
 <dependency>
   <groupId>org.jline</groupId>
   <artifactId>jline</artifactId>
-  <version>3.11.0</version>
+  <version>3.21.0</version>
 </dependency>
 <dependency>
   <groupId>org.fusesource.jansi</groupId>
   <artifactId>jansi</artifactId>
-  <version>1.18</version>
+  <version>2.4.0</version>
 </dependency>
 ```
 
 Gradleプロジェクトの場合は、**build.gradle**のdependencies内に以下のライブラリ依存関係を追加してください。
 
 ```groovy
-compile group: 'jp.co.future', name: 'uroborosql', version: '0.25.0'
+compile group: 'jp.co.future', name: 'uroborosql', version: '1.0.9'
 
-// 式言語ライブラリとしてOGNLを使用する場合
-compile group: 'ognl', name: 'ognl', version: '3.1.23'
 // 式言語ライブラリとしてSpring Expression Language(SpEL)を使用する場合
-compile group: 'org.springframework', name: 'spring-expression', version: '5.3.20'
+compile group: 'org.springframework', name: 'spring-expression', version: '5.3.24'
+// 式言語ライブラリとしてOGNLを使用する場合
+compile group: 'ognl', name: 'ognl', version: '3.3.4'
 
 // REPLを使用する場合
-compile group: 'org.jline', name: 'jline', version: '3.11.0'
-compile group: 'org.fusesource.jansi', name: 'jansi', version: '1.18'
+compile group: 'org.jline', name: 'jline', version: '3.21.0'
+compile group: 'org.fusesource.jansi', name: 'jansi', version: '2.4.0'
 ```
 
 ::: tip
-uroboroSQLを利用するためには、Java8以上の環境が必要です。
+uroboroSQLを利用するためには、Java11以上の環境が必要です。
 :::
 
 ## 事前準備
 
 事前準備として、
 
-- Java8 or 11のいずれかのJDKディストリビューション
+- Java11以上のJDKディストリビューション
   - [Eclipse Temurin](https://adoptium.net/temurin/releases/)
-  - [AdobtOpenJDK](https://adoptopenjdk.net/index.html)
+  - [AdoptOpenJDK](https://adoptopenjdk.net/index.html)
   - [Amazon Corretto](https://aws.amazon.com/jp/corretto/)
-  - [Oracle JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-- [Apache Maven](https://maven.apache.org/download.cgi) のv3.3.1(Java7対応版)以上のバージョン
+  - [Oracle JDK](https://www.oracle.com/java/technologies/downloads/)
+- [Apache Maven](https://maven.apache.org/download.cgi) のv3.3.1以上のバージョン
 
 をインストールしてください。
 
