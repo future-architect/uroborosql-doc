@@ -376,6 +376,10 @@ System.out.println(employee.getEmpNo()); // 自動採番された値が出力さ
 データの件数に気をつけてください。件数が多い場合は一度`inserts`で挿入した後に、再度検索するといった方法を検討してください。
 :::
 
+::: danger 制限事項 <Badge text="1.0.9+"/>
+2025/11 現在、SQLServerのJDBCドライバーではバッチインサート時の自動生成列（IDENTITY列）の結果取得に対応していない（[issue](https://github.com/microsoft/mssql-jdbc/issues/245)）ため、SQLServerに対して `insertsAndReturn` を行った場合、戻り値のStreamに含まれるエンティティには自動採番列（IDENTITY列）の値が設定されません。
+:::
+
 ```java
 // 1件の挿入
 Department dept = new Department();

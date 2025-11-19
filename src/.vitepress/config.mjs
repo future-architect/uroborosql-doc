@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 
 function getLinkItem(link) {
   let filePath = path.join(__dirname, "..", link).replace(/\.html$/, ".md");
-  if (filePath.endsWith("/")) {
+  if (filePath.endsWith("/") || filePath.endsWith("\\")) {
     filePath = path.join(filePath, "index.md");
   }
   const text = parseMarkdown(filePath).title;
