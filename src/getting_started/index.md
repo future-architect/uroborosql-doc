@@ -19,7 +19,7 @@ head:
 <dependency>
   <groupId>jp.co.future</groupId>
   <artifactId>uroborosql</artifactId>
-  <version>1.0.9</version>
+  <version>1.0.10</version>
 </dependency>
 ```
 
@@ -64,7 +64,7 @@ head:
 Gradleプロジェクトの場合は、**build.gradle**のdependencies内に以下のライブラリ依存関係を追加してください。
 
 ```groovy
-compile group: 'jp.co.future', name: 'uroborosql', version: '1.0.9'
+compile group: 'jp.co.future', name: 'uroborosql', version: '1.0.10'
 
 // 式言語ライブラリとしてSpring Expression Language(SpEL)を使用する場合
 compile group: 'org.springframework', name: 'spring-expression', version: '5.3.24'
