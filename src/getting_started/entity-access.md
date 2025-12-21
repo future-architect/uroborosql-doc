@@ -21,7 +21,7 @@ head:
 | メソッド                 | 説明                                                                                                             |
 | :----------------------- | :--------------------------------------------------------------------------------------------------------------- |
 | SqlEntityQuery#collect() | 検索結果を`List<エンティティクラス>`の形式で取得する                                                             |
-| SqlEntityQuery#stream()  | 検索結果を`java.util.Stream`の形式で取得する                                                                     |
+| SqlEntityQuery#stream()  | 検索結果を`java.util.Stream<エンティティクラス>`の形式で取得する                                                 |
 | SqlEntityQuery#first()   | 検索結果の１件目を取得する。戻り値は`Optional`                                                                   |
 | SqlEntityQuery#one()     | 検索結果の１件目を取得する。検索結果が複数件になる場合は`DataNonUniqueException`をスローする。戻り値は`Optional` |
 
@@ -114,7 +114,9 @@ int count = agent.insert(dept);
 
 ## エンティティクラスを使用した行更新
 
-エンティティクラスを使用してテーブルの行更新を行うことが出来ます。行更新を行う場合は`SqlAgent#update(エンティティクラスインスタンス)`メソッドを使用します。
+エンティティクラスを使用してテーブルの行更新を行うことが出来ます。行更新を行う場合は`SqlAgent#update(エンティティクラスインスタンス)`メソッド、または`SqlAgent#update(エンティティクラス)` を使用します。
+
+`SqlAgent#update(エンティティクラスインスタンス)` を使用する場合（検索結果を更新する場合に便利）
 
 ```java
 Department dept = agent.query(Department.class)
@@ -123,6 +125,16 @@ dept.setDeptName("R&D");
 // update entity : 行更新
 int count = agent.update(dept);
 ```
+
+`SqlAgent#update(エンティティクラス)` を使用する場合（特定の項目のみを更新する場合に便利）
+
+```java
+agent.update(Department.class)
+    .set("deptName", "R&D")
+    .equal("deptNo", 1);
+```
+
+どちらのメソッドを利用した場合でも、`@Version` アノテーションが付与されている `lockVersion` フィールドがマッピングされる `lock_version` カラムはカウントアップされます。
 
 ## エンティティクラスを使用した行削除
 

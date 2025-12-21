@@ -2,22 +2,26 @@
 head:
   - - meta
     - name: og:title
-      content: "SqlAgentFactory"
+      content: "SqlAgentProvider"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/configuration/sql-agent-factory.html"
+      content: "/uroborosql-doc/configuration/sql-agent-provider.html"
 ---
 
-# SqlAgentFactory
+# SqlAgentProvider
 
-SQL実行を行うクラスである`SqlAgent`を生成するファクトリクラスです。SQL実行時の挙動を変更するための初期値の設定が行えます。
+SQL実行を行うクラスである`SqlAgent`を生成するプロバイダークラスです。SQL実行時の挙動を変更するための初期値の設定が行えます。
+
+::: tip クラス名の変更
+uroborosql v1.x で SqlAgentFactory から SqlAgentProviderにクラス名が変更されました。
+:::
 
 設定例
 
 ```java
 SqlConfig config = UroboroSQL.builder(...)
-  // SqlAgentFactoryの設定
-  .setSqlAgentFactory(new SqlAgentFactoryImpl()
+    // SqlAgentProviderの設定
+    .setSqlAgentProvider(new SqlAgentProviderImpl()
     // JDBCフェッチサイズ
     .setFetchSize(1000)
     // Statementオブジェクトの検索タイムアウト時間(s)
@@ -41,11 +45,13 @@ SqlConfig config = UroboroSQL.builder(...)
     .setForceUpdateWithinTransaction(true)
     // 明示的な行ロック時の待機時間(s)デフォルト値
     .setDefaultForUpdateWaitSeconds(10)
+    // データベースがサポートする ForUpdateの種類の指定を厳格に扱うかどうか
+    .setStrictForUpdateType(false)
     )
   ).build();
 ```
 
-## フェッチサイズと検索タイムアウト設定 ( `SqlAgentFactory#setFetchSize` /`#setQueryTimeout` )
+## フェッチサイズと検索タイムアウト設定 ( `SqlAgentProvider#setFetchSize` /`#setQueryTimeout` )
 
 `SqlAgent`で検索処理を行う際、データベースから一度に取得する行数（`fetchSize`）や
 検索タイムアウト時間（秒）（`queryTimeout`）の初期値を指定することが出来ます。
@@ -53,8 +59,8 @@ SqlConfig config = UroboroSQL.builder(...)
 
 ```java
 SqlConfig config = UroboroSQL.builder(...)
-  // SqlAgentFactoryの設定
-  .setSqlAgentFactory(new SqlAgentFactoryImpl()
+  // SqlAgentProviderの設定
+  .setSqlAgentProvider(new SqlAgentProviderImpl()
     // JDBCフェッチサイズ
     .setFetchSize(1000)
     // Statementオブジェクトの検索タイムアウト時間(s)
@@ -73,21 +79,21 @@ JDBCクライアント（uroborosqlを使用しているJavaアプリケーシ�
 `fetchSize`はcollect/foreachメソッドで返却される結果セットの行数を制限する設定ではありません。
 :::
 
-## 例外発生時のログ出力を行うかどうかを設定 ( `SqlAgentFactory#setOutputExceptionLog` )
+## 例外発生時のログ出力を行うかどうかを設定 ( `SqlAgentProvider#setOutputExceptionLog` )
 
 SQL実行時にSQL例外が発生した場合に、発生した例外と実行したSQLの詳細情報を出力するかどうかを指定できます。
 指定しない場合`false`になります。
 
 ```java
 SqlConfig config = UroboroSQL.builder(...)
-  // SqlAgentFactoryの設定
-  .setSqlAgentFactory(new SqlAgentFactoryImpl()
+  // SqlAgentProviderの設定
+  .setSqlAgentProvider(new SqlAgentProviderImpl()
     // 例外発生時のログ出力を行うかどうか
     .setOutputExceptionLog(true)
   ).build();
 ```
 
-## SQL_IDの置換文字列設定 ( `SqlAgentFactory#setSqlIdKeyName` )
+## SQL_IDの置換文字列設定 ( `SqlAgentProvider#setSqlIdKeyName` )
 
 SQL文に特定の置換文字列をSQLコメントとして記述することで、SQL実行時に実行したSQLの元となるSQLファイルを特定するための
 情報（`SQL_ID`）を埋め込むことが出来ます。`SQL_ID`を埋め込むことでSQLログやDBのSQL履歴で実行されたSQLの元となるファイルを
@@ -99,8 +105,8 @@ SQL文に特定の置換文字列をSQLコメントとして記述すること�
 
 ```java
 SqlConfig config = UroboroSQL.builder(...)
-  // SqlAgentFactoryの設定
-  .setSqlAgentFactory(new SqlAgentFactoryImpl()
+  // SqlAgentProviderの設定
+  .setSqlAgentProvider(new SqlAgentProviderImpl()
     // SQL_IDの置換文字列
     .setSqlIdKeyName("_SQL_ID_")
   ).build();
@@ -147,7 +153,7 @@ where
   dept.dept_no  = 1/*deptNo*/
 ```
 
-## CaseFormatの初期値設定 ( `SqlAgentFactory#setDefaultMapKeyCaseFormat` )
+## CaseFormatの初期値設定 ( `SqlAgentProvider#setDefaultMapKeyCaseFormat` )
 
 SQLによる検索で、以下のメソッドを使用して`List<Map<String, Object>>`や`Map<String, Object>`を取得する際、
 取得したMapのキー名に対する書式の初期値を指定することが出来ます。
@@ -163,7 +169,8 @@ SQLによる検索で、以下のメソッドを使用して`List<Map<String, Ob
 指定しない場合（初期設定：`CaseFormat.UPPER_SNAKE_CASE`）
 
 ```java
-agent.query("department/select_department").collect();
+agent.query("department/select_department")
+  .collect();
 
 // 結果(departments) キーがUPPER_SNAKE_CASEとなっている
 [
@@ -178,15 +185,16 @@ agent.query("department/select_department").collect();
 
 ```java
 SqlConfig config = UroboroSQL.builder(...)
-  // SqlAgentFactoryの設定
-  .setSqlAgentFactory(new SqlAgentFactoryImpl()
+  // SqlAgentProviderの設定
+  .setSqlAgentProvider(new SqlAgentProviderImpl()
     // 検索結果を格納するMapのキー変換に使用するCaseFormatの初期値
     .setDefaultMapKeyCaseFormat(CaseFormat.CAMEL_CASE)
   ).build();
 ```
 
 ```java
-agent.query("department/select_department").collect();
+agent.query("department/select_department")
+  .collect();
 
 // 結果(departments) キーがCAMEL_CASEとなっている
 [
@@ -197,21 +205,21 @@ agent.query("department/select_department").collect();
 ]
 ```
 
-## 複数件挿入時の挿入方法の初期値設定 ( `SqlAgentFactory#setDefaultInsertsType` )
+## 複数件挿入時の挿入方法の初期値設定 ( `SqlAgentProvider#setDefaultInsertsType` )
 
 `SqlAgent#inserts()`メソッドで使用する[InsertsType](../basics/entity-api.md#挿入方法（insertstype）の指定)の初期値を設定することが出来ます。
 指定しない場合`InsertsType.BATCH`になります。
 
 ```java
 SqlConfig config = UroboroSQL.builder(...)
-  // SqlAgentFactoryの設定
-  .setSqlAgentFactory(new SqlAgentFactoryImpl()
+  // SqlAgentProviderの設定
+  .setSqlAgentProvider(new SqlAgentProviderImpl()
     // 複数件挿入時の挿入方法の初期値
     .setDefaultInsertsType(InsertsType.BATCH)
   ).build();
 ```
 
-## SQL実行のリトライ ( `SqlAgentFactory#setSqlRetryCodeList` /`#setDefaultMaxRetryCount` /`#setDefaultSqlRetryWaitTime` )
+## SQL実行のリトライ ( `SqlAgentProvider#setSqlRetryCodeList` /`#setDefaultMaxRetryCount` /`#setDefaultSqlRetryWaitTime` )
 
 SQLを実行した際、タイミングによって発生する例外（テーブルロックエラーなど）の場合はリトライを行い、
 できるだけ正常に処理を終了させたい場合があります。  
@@ -225,8 +233,10 @@ int retryCount = 0;
 for(;;) {
   try (SqlAgent agent = config.agent()) {
     // INSERT文の実行
-    // insert into product (product_id) values (/*product_id*/0);
-    agent.update("example/insert_product").param("product_id", 1).count();
+    // insert into product (product_id) values (/*productId*/0);
+    agent.update("example/insert_product")
+      .param("productId", 1)
+      .count();
     break;
   } catch (UroborosqlSQLException ex) {
     // SQLExceptionが発生した際に行う処理を実装
@@ -257,12 +267,12 @@ for(;;) {
 実装漏れや実装ミス、実装方法の差異（for()の代わりにwhile()を使用するなど）により不具合が発生しやすくなります。  
 **uroboroSQL**では、アプリケーション全体のリトライ設定と、全体設定より優先される個別処理でのリトライ用APIの
 2種類のAPIを提供することで、より簡潔で確実なリトライ処理が行えるよう工夫されています。  
-アプリケーション全体のリトライ設定は`SqlAgentFactory`生成時に行います。
+アプリケーション全体のリトライ設定は`SqlAgentProvider`生成時に行います。
 
 ```java
 SqlConfig config = UroboroSQL.builder(...)
-  // SqlAgentFactoryの設定
-  .setSqlAgentFactory(new SqlAgentFactoryImpl()
+  // SqlAgentProviderの設定
+  .setSqlAgentProvider(new SqlAgentProviderImpl()
     // アプリケーション全体のリトライ設定
     // SQLエラーコードが54,30006のいずれか(Oracleのリソース・ビジー)の場合
     .setSqlRetryCodeList(Arrays.asList("54", "30006"))
@@ -279,25 +289,25 @@ SqlConfig config = UroboroSQL.builder(...)
 // アプリケーション全体のリトライ設定に従ってリトライを行う。（個別のリトライ指定なし）
 try (SqlAgent agent = config.agent()) {
   // INSERT文の実行
-  // insert into product (product_id) values (/*product_id*/0);
+  // insert into product (product_id) values (/*productId*/0);
   agent.update("example/insert_product")
-    .param("product_id", 1)
+    .param("productId", 1)
     .count();
 }
 
 // 個別にリトライ設定を上書きする（retry()を利用）
 try (SqlAgent agent = config.agent()) {
   // INSERT文の実行
-  // insert into product (product_id) values (/*product_id*/0);
+  // insert into product (product_id) values (/*productId*/0);
   // リトライ対象エラーコードの場合、5回のリトライを20ms間隔で行う
   agent.update("example/insert_product")
-    .param("product_id", 1)
+    .param("productId", 1)
     .retry(5, 20)
     .count();
 }
 ```
 
-## DB更新処理をトランザクション内のみに強制 ( `SqlAgentFactory#setForceUpdateWithinTransaction` ) <Badge text="0.14.0+" />
+## DB更新処理をトランザクション内のみに強制 ( `SqlAgentProvider#setForceUpdateWithinTransaction` ) <Badge text="0.14.0+" />
 
 複数のDB更新処理をまとめて行う際、途中で例外が発生するとDBデータが不整合な状態になる場合があります。このようなデータ不整合を防ぐためには[トランザクション](../basics/transaction.md#トランザクション)を利用します。  
 しかし、通常の設定ではトランザクションを開始しない状態でもDB更新処理を行うことが可能になっているため不具合に気付きにくいという問題があります。  
@@ -305,40 +315,40 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 SqlConfig config = UroboroSQL.builder(...)
-  // SqlAgentFactoryの設定
-  .setSqlAgentFactory(new SqlAgentFactoryImpl()
+  // SqlAgentProviderの設定
+  .setSqlAgentProvider(new SqlAgentProviderImpl()
     // トランザクション内での更新を強制するかどうか
     .setForceUpdateWithinTransaction(true)
     )
   ).build();
 ```
 
-`SqlAgentFactory#setForceUpdateWithinTransaction()`に`true`を指定することでトランザクションを開始していない状態でDB更新処理が行なわれた場合に`UroborosqlTransactionException`がスローされます。
+`SqlAgentProvider#setForceUpdateWithinTransaction()`に`true`を指定することでトランザクションを開始していない状態でDB更新処理が行なわれた場合に`UroborosqlTransactionException`がスローされます。
 
 ```java
 agent.required(() -> { // トランザクション開始
   // トランザクション内でのDB更新なのでOK
-  agent.updateWith("insert into employee (emp_no) values (/*emp_no*/1001)")
-    .param("emp_no", 1)
+  agent.updateWith("insert into employee (emp_no) values (/*empNo*/1001)")
+    .param("empNo", 1)
     .count();
   });
 });　// トランザクション終了
 
 // トランザクション外でのDB更新なので UroborosqlTransactionException がスローされる
-agent.updateWith("insert into department (dept_no, dept_name) values (/*dept_no*/1111, /*dept_name*/'Sales')")
-  .param("dept_no", 2)
-  .param("dept_name", "export")
+agent.updateWith("insert into department (dept_no, dept_name) values (/*deptNo*/1111, /*deptName*/'Sales')")
+  .param("deptNo", 2)
+  .param("deptName", "export")
   .count();
 ```
 
-## 明示的な行ロック時の待機時間(s)のデフォルト値設定 ( `SqlAgentFactory#setDefaultForUpdateWaitSeconds` ) <Badge text="0.14.0+" />
+## 明示的な行ロック時の待機時間(s)のデフォルト値設定 ( `SqlAgentProvider#setDefaultForUpdateWaitSeconds` ) <Badge text="0.14.0+" />
 
 `SqlEntityQuery#forUpdateWait()`による明示的な行ロックをおこなう際の待機時間を指定することができます。
 
 ```java
 SqlConfig config = UroboroSQL.builder(...)
-  // SqlAgentFactoryの設定
-  .setSqlAgentFactory(new SqlAgentFactoryImpl()
+  // SqlAgentProviderの設定
+  .setSqlAgentProvider(new SqlAgentProviderImpl()
     // 明示的な行ロック時の待機時間(s)デフォルト値
     .setDefaultForUpdateWaitSeconds(10)
     )
@@ -348,3 +358,11 @@ SqlConfig config = UroboroSQL.builder(...)
 待機時間の初期値を設定することで`SqlEntityQuery#forUpdateWait()`を発行する際に適用され、
 待機時間を都度指定する必要がなくなります。  
 `SqlEntityQuery#forUpdateWait(int)`を使って個別に待機時間を指定した場合は個別設定が優先されます。
+
+## データベースがサポートする ForUpdateの種類の指定を厳格に扱うかどうか ( `SqlAgentProvider#setStrictForUpdateType` )
+
+データベースによっては forUpdateNoWait をサポートしないものがあります。  
+そのような場合に SqlQuery#forUpdateNoWait の呼び出しを許可するかどうかを指定します。
+
+- 厳格な判定を行う（true）： forUpdateNoWaitをサポートしないデータベースで SqlQuery#forUpdateNoWait が呼び出された場合は `UroborosqlRuntimeException` がスローされます。
+- 厳格な判定を行わない（false）：forUpdateNoWaitをサポートしないデータベースで SqlQuery#forUpdateNoWait が呼び出された場合は SqlQuery#forUpdate と同じ動作になります。（デフォルト）

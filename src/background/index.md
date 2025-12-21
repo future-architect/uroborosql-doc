@@ -19,7 +19,8 @@ head:
 
 ## バインドパラメータ (`/* */`)
 
-SQLにバインドするパラメータを `/*parameter name*/`の形式で指定することができます。
+SQLにバインドするパラメータを `/*parameterName*/`の形式で指定することができます。  
+`parameterName` はBeanのフィールドとの親和性を考慮し、キャメルケースで記述することが慣例となっています。
 
 ```sql
 select
@@ -27,11 +28,11 @@ select
 from
   department
 where
-  dept_no    =  /*dept_no*/10
-AND  dept_name  =  /*dept_name*/'Sales'
+  dept_no    =  /*deptNo*/10
+AND  dept_name  =  /*deptName*/'Sales'
 ```
 
-上の例では、`/*dept_no*/`, `/*dept_name*/` がバインドパラメータで、**uroboroSQL**から実行される際はこの部分が`?`に置き換わり、後ろの`10`や`'Sales'`が削除されます。
+上の例では、`/*deptNo*/`, `/*deptName*/` がバインドパラメータで、**uroboroSQL**から実行される際はこの部分が`?`に置き換わり、後ろの`10`や`'Sales'`が削除されます。
 
 ```sql
 select
@@ -39,8 +40,8 @@ select
 from
   department
 where
-  dept_no    =  ?/*dept_no*/
-and  dept_name  =  ?/*dept_name*/
+  dept_no    =  ?/*deptNo*/
+and  dept_name  =  ?/*deptName*/
 ```
 
 ### IN句の利用方法
@@ -56,12 +57,12 @@ select
 from
   employee  emp
 where
-/*IF gender_list != null*/
-and  emp.gender  in  /*gender_list*/('M')
+/*IF genderList != null*/
+and  emp.gender  in  /*genderList*/('M')
 /*END*/
 ```
 
-上の例に`gender_list`として{"M", "F"}を指定すると以下のように変換されます。
+上の例に`genderList`として{"M", "F"}を指定すると以下のように変換されます。
 
 ```sql
 select
@@ -69,8 +70,8 @@ select
 from
   employee  emp
 where
-/*IF gender_list != null*/
-and  emp.gender  in  (?, ?)/*gender_list*/
+/*IF genderList != null*/
+and  emp.gender  in  (?, ?)/*genderList*/
 /*END*/
 ```
 
@@ -84,15 +85,15 @@ select
 from
   employee  emp
 where
-/*IF first_name != null*/
-and  emp.first_name like /*SF.contains(first_name)*/'' escape /*#ESC_CHAR*/'$'
+/*IF firstName != null*/
+and  emp.first_name like /*SF.contains(firstName)*/'' escape /*#ESC_CHAR*/'$'
 /*END*/
-/*IF last_name != null*/
-and  emp.last_name  like /*SF.startsWith(last_name)*/'' escape /*#ESC_CHAR*/'$'
+/*IF lastName != null*/
+and  emp.last_name  like /*SF.startsWith(lastName)*/'' escape /*#ESC_CHAR*/'$'
 /*END*/
 ```
 
-上の例で、バインドパラメータ `first_name`に`a`, `last_name`に`D`を指定した場合は以下のようになります。
+上の例で、バインドパラメータ `firstName`に`a`, `lastName`に`D`を指定した場合は以下のようになります。
 
 ```sql
 select
@@ -105,7 +106,7 @@ and emp.last_name  like 'D%' escape '$'
 /*END*/
 ```
 
-上の例で、ワイルドカードを含む例としてバインドパラメータ `first_name`に`a%`, `last_name`に`D_`を指定した場合は以下のようになります。
+上の例で、ワイルドカードを含む例としてバインドパラメータ `firstName`に`a%`, `lastName`に`D_`を指定した場合は以下のようになります。
 
 ```sql
 select
@@ -168,20 +169,20 @@ and emp.last_name  like 'D$_%' escape '$'  -- _がエスケープされる
 
 置換文字列を使うとSQLを動的に変更することができます。
 
-置換文字列は `/*$parameter name*/` もしくは `/*#parameter name*/`と記述します。  
- `/*#parameter name*/` と記述した場合は、置換文字列の前後を`'`(シングルクォート)で囲みます。
+置換文字列は `/*$parameterName*/` もしくは `/*#parameterName*/`と記述します。  
+ `/*#parameterName*/` と記述した場合は、置換文字列の前後を`'`(シングルクォート)で囲みます。
 
 ```sql
 select
   *
-from    /*$table_name*/
+from    /*$tableName*/
 where
   gender  =  /*#gender*/
 ```
 
-上の例では、`table_name`や`gender`に設定した値でSQLが置換されます。
+上の例では、`tableName`や`gender`に設定した値でSQLが置換されます。
 
-- `table_name`に`employee`, `gender`に`M`を設定した場合
+- `tableName`に`employee`, `gender`に`M`を設定した場合
 
 ```sql
 select
@@ -233,12 +234,12 @@ select
 from
   employee  emp
 where
-/*IF SF.isNotEmpty(birth_date_from) and SF.isNotEmpty(birth_date_to)*/
-and  emp.birth_date  between  /*birth_date_from*/'1990-01-01'  and  /*birth_date_to*/'1999-12-31'
-/*ELIF SF.isNotEmpty(birth_date_from)*/
-and  emp.birth_date  >=    /*birth_date_from*/'1990-01-01'
-/*ELIF SF.isNotEmpty(birth_date_to)*/
-and  emp.birth_date  <    /*birth_date_to*/'1999-12-31'
+/*IF SF.isNotEmpty(birthDateFrom) and SF.isNotEmpty(birthDateTo)*/
+and  emp.birth_date  between  /*birthDateFrom*/'1990-01-01'  and  /*birthDateTo*/'1999-12-31'
+/*ELIF SF.isNotEmpty(birthDateFrom)*/
+and  emp.birth_date  >=    /*birthDateFrom*/'1990-01-01'
+/*ELIF SF.isNotEmpty(birthDateTo)*/
+and  emp.birth_date  <    /*birthDateTo*/'1999-12-31'
 /*ELSE*/
 /*END*/
 ```
@@ -256,7 +257,7 @@ and  emp.birth_date  <    /*birth_date_to*/'1999-12-31'
 という書き方も出来ます。
 :::
 
-バインドパラメータとして`birth_date_from`に`2000-01-01`, `birth_date_to`に`2010-12-31`を指定した場合、生成されるSQLは以下のようになります。
+バインドパラメータとして`birthDateFrom`に`2000-01-01`, `birthDateTo`に`2010-12-31`を指定した場合、生成されるSQLは以下のようになります。
 
 ```sql
 select
@@ -264,7 +265,7 @@ select
 from
   employee  emp
 where
-  emp.birth_date  between  ?/*birth_date_from*/  and  ?/*birth_date_to*/
+  emp.birth_date  between  ?/*birthDateFrom*/  and  ?/*birthDateTo*/
 ```
 
 最後にバインドパラメータが評価され、実行されるSQLが以下になります。
@@ -275,7 +276,7 @@ select
 from
   employee  emp
 where
-  emp.birth_date  between  '2000-01-01'/*birth_date_from*/  and  '2010-12-31'/*birth_date_to*/
+  emp.birth_date  between  '2000-01-01'/*birthDateFrom*/  and  '2010-12-31'/*birthDateTo*/
 ```
 
 ここで`emp.birth_date`の前にあった`and`が消えていることに注目してください。
@@ -293,12 +294,12 @@ from
   employee  emp
 where
   1        =    1  // <-- 必ずtrueとなる評価を入れる
-/*IF SF.isNotEmpty(birth_date_from) and SF.isNotEmpty(birth_date_to)*/
-and  emp.birth_date  between  /*birth_date_from*/'1990-01-01'  and  /*birth_date_to*/'1999-12-31'
-/*ELIF SF.isNotEmpty(birth_date_from)*/
-and  emp.birth_date  >=    /*birth_date_from*/'1990-01-01'
-/*ELIF SF.isNotEmpty(birth_date_to)*/
-and  emp.birth_date  <    /*birth_date_to*/'1999-12-31'
+/*IF SF.isNotEmpty(birthDateFrom) and SF.isNotEmpty(birthDateTo)*/
+and  emp.birth_date  between  /*birthDateFrom*/'1990-01-01'  and  /*birthDateTo*/'1999-12-31'
+/*ELIF SF.isNotEmpty(birthDateFrom)*/
+and  emp.birth_date  >=    /*birthDateFrom*/'1990-01-01'
+/*ELIF SF.isNotEmpty(birthDateTo)*/
+and  emp.birth_date  <    /*birthDateTo*/'1999-12-31'
 /*ELSE*/
 /*END*/
 ```
@@ -315,16 +316,16 @@ from
   employee  emp
 /*BEGIN*/
 where
-/*IF SF.isNotEmpty(first_name)*/
-and  emp.first_name  =  /*first_name*/'Bob'
+/*IF SF.isNotEmpty(firstName)*/
+and  emp.first_name  =  /*firstName*/'Bob'
 /*END*/
-/*IF SF.isNotEmpty(last_name)*/
-and  emp.last_name  =  /*last_name*/'Smith'
+/*IF SF.isNotEmpty(lastName)*/
+and  emp.last_name  =  /*lastName*/'Smith'
 /*END*/
 /*END*/
 ```
 
-上の例で、バインドパラメータ `first_name`に`Willson`, `last_name`に`null`を指定した場合は以下のようになります。
+上の例で、バインドパラメータ `firstName`に`Willson`, `lastName`に`null`を指定した場合は以下のようになります。
 
 ```sql
 select
@@ -332,10 +333,10 @@ select
 from
   employee  emp
 where
-  emp.first_name  =  ?/*first_name*/
+  emp.first_name  =  ?/*firstName*/
 ```
 
-バインドパラメータ `first_name`, `last_name`ともに`null`を指定した場合は以下のようになります。
+バインドパラメータ `firstName`, `lastName`ともに`null`を指定した場合は以下のようになります。
 
 ```sql
 select
@@ -346,9 +347,64 @@ from
 
 `/*BEGIN*/`,`/*END*/`で囲まれた`where`が出力されていないことがわかります。
 
+## SQL_ID
+
+発行するSQLに `/* _SQL_ID_ */` という記述があると、そのSQLを発行する際に `_SQL_ID_` の部分をSQL名やEntityを特定するための文字列に置換します。  
+これにより、ログに出力されるSQLやDBに記録されるSQL発行結果を確認することで、どのSQLが発行されたのかを追跡しやすくなります。
+
+- employee/select_employee.sql
+
+```sql
+select /* _SQL_ID_ */
+  emp.emp_no        as  emp_no
+, emp.first_name    as  first_name
+, emp.last_name     as  last_name
+, emp.birth_date    as  birth_date
+, emp.gender        as  gender
+, emp.lock_version  as  lock_version
+from
+  employee  emp
+（以下略）
+```
+
+というSQLがあるとき、実際に発行されたSQLは以下のようになります。
+
+```sql
+select /* employee/select_employee */  -- _SQL_ID_ が SQL名に置換されている
+  emp.emp_no        as  emp_no
+, emp.first_name    as  first_name
+, emp.last_name     as  last_name
+, emp.birth_date    as  birth_date
+, emp.gender        as  gender
+, emp.lock_version  as  lock_version
+from
+  employee  emp
+（以下略）
+```
+
+::: tip SQL_IDの記述場所
+SQL_ID はSQL中のどこに記述しても問題ありません。  
+ただし、ログやSQL発行結果で確認することが目的であるため、SQLの最初の予約語の後に記述することが慣例となっています。  
+（文の先頭に記述した場合、DBの種類によっては不要なコメントとして除去されることがあるため、予約語の後ろに記述します）  
+具体的には `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `WITH` の後ろに記述します。
+
+```sql
+with /* _SQL_ID_ */
+    cte_name as (
+      ...
+    )
+select
+    *
+from cte_name;
+```
+
+:::
+
+エンティティクラスを指定したSQL発行では、エンティティクラス名がSQL名として使用されます。
+
 ## 不要なカンマの除去
 
-IF分岐を使って動的なSQLを構築する場合、カンマの有無が問題になる場合があります。  
+IF分岐を使って動的なSQLを構築する場合、カンマの有無が問題になる場合があります。
 以下のSQLを例として説明します。
 
 ```sql

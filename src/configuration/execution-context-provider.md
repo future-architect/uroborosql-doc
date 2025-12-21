@@ -2,15 +2,19 @@
 head:
   - - meta
     - name: og:title
-      content: "SqlContextFactory"
+      content: "ExecutionContextProvider"
   - - meta
     - name: og:url
-      content: "/uroborosql-doc/configuration/sql-context-factory.html"
+      content: "/uroborosql-doc/configuration/execution-context-provider.html"
 ---
 
-# SqlContextFactory
+# ExecutionContextProvider
 
-SQL構造を表現するクラスである`SqlContext`を生成するファクトリクラスです。生成されるSQLの挙動を変更するための設定が行えます。
+SQL構造を表現するクラスである`ExecutionContext`を生成するプロバイダクラスです。生成されるSQLの挙動を変更するための設定が行えます。
+
+::: tip クラス名の変更
+uroborosql v1.x で SqlContextFactory から ExecutionContextProviderにクラス名が変更されました。
+:::
 
 設定例
 
@@ -18,8 +22,8 @@ SQL構造を表現するクラスである`SqlContext`を生成するファク�
 // create SqlConfig
 SqlConfig config = UroboroSQL
   .builder(...)
-  // SqlContextFactoryの設定
-  .setSqlContextFactory(new SqlContextFactoryImpl()
+  // ExecutionContextProviderの設定
+  .setExecutionContextProvider(new ExecutionContextProviderImpl()
     // 定数クラス設定の追加
     .setConstantClassNames(Arrays.asList(TypeConstants.class.getName()))
     // 列挙型パッケージ設定の追加
@@ -27,10 +31,10 @@ SqlConfig config = UroboroSQL
      // 定数パラメータのプレフィックス指定(初期値 : CLS_)
     .setConstParamPrefix("CLS_")
     // query用自動パラメータバインド関数の登録
-    .addQueryAutoParameterBinder((ctx) -> ctx.paramIfAbsent("current_flg", true))
+    .addQueryAutoParameterBinder((ctx) -> ctx.paramIfAbsent("currentFlg", true))
     // update/batch/procedure用自動パラメータバインド関数の登録
-    .addUpdateAutoParameterBinder((ctx) -> ctx.paramIfAbsent("ins_datetime", LocalDateTime.now()))
-    .addUpdateAutoParameterBinder((ctx) -> ctx.paramIfAbsent("upd_datetime", LocalDateTime.now()))
+    .addUpdateAutoParameterBinder((ctx) -> ctx.paramIfAbsent("insDatetime", LocalDateTime.now()))
+    .addUpdateAutoParameterBinder((ctx) -> ctx.paramIfAbsent("updDatetime", LocalDateTime.now()))
     // パラメータ変換クラスの登録
     .addBindParamMapper(new CustomBindParamMapper())
     // ResultSetTypeの初期値
@@ -42,7 +46,7 @@ SqlConfig config = UroboroSQL
   ).build();
 ```
 
-## 区分値定数や列挙型の利用 ( `SqlContextFactory#setConstantClassNames` /`#setEnumConstantPackageNames`)
+## 区分値定数や列挙型の利用 ( `ExecutionContextProvider#setConstantClassNames` /`#setEnumConstantPackageNames`)
 
 これまでSQLの開発では、区分値や定数値などの固定値がマジックナンバーとしてSQL文内に埋め込まれていました。  
 しかしマジックナンバーの記述は可読性が悪く仕様変更時の影響調査が困難なため不具合の温床となっていました。
@@ -58,14 +62,14 @@ where emp_typ = '05' -- 05:従業員     <-- 従業員の区分が変わった�
 
 **uroboroSQL**はエンタープライズ分野での開発に利用されてきた経験から、SQL文の中でマジックナンバーの代わりに定数や列挙型を利用するための仕組みを提供しています。
 
-区分値定数/列挙型を利用するためには`SqlContextFactory`に以下の設定を追加します。
+区分値定数/列挙型を利用するためには`ExecutionContextProvider`に以下の設定を追加します。
 
 ```java
 // create SqlConfig
 SqlConfig config = UroboroSQL
   .builder(...)
-  // SqlContextFactoryの設定
-  .setSqlContextFactory(new SqlContextFactoryImpl()
+  // ExecutionContextProviderの設定
+  .setExecutionContextProvider(new ExecutionContextProviderImpl()
     // 定数クラス設定の追加
     .setConstantClassNames(Arrays.asList(TypeConstants.class.getName()))
     // 列挙型パッケージ設定の追加
@@ -163,7 +167,7 @@ public enum Gender {
 
 ::: tip
 ※定数パラメータプレフィックスの初期値は `CLS_`となっています。  
-`SqlContextFactory#setConstParamPrefix()`で変更することが可能です。
+`ExecutionContextProvider#setConstParamPrefix()`で変更することが可能です。
 :::
 
 実際に使用する際はSQL文の中で置換文字列として以下のように指定します
@@ -240,7 +244,7 @@ where
 /*END*/
 ```
 
-## 自動パラメータバインド関数の設定 ( `SqlContextFactory#addQueryAutoParameterBinder` /`#addUpdateAutoParameterBinder` ) <Badge text="0.6.1+" />
+## 自動パラメータバインド関数の設定 ( `ExecutionContextProvider#addQueryAutoParameterBinder` /`#addUpdateAutoParameterBinder` ) <Badge text="0.6.1+" />
 
 アプリケーションで使用する各テーブルに共通項目（登録日時、更新日時など）が定義されている場合、
 INSERT文やUPDATE文を実行する際には毎回これらの共通項目に対するパラメータを指定する必要が出てきます。  
@@ -256,23 +260,23 @@ INSERT文やUPDATE文を実行する際には毎回これらの共通項目に�
 ```java
 SqlConfig config = UroboroSQL
   .builder(...)
-  // SqlContextFactoryの設定
-  .setSqlContextFactory(new SqlContextFactoryImpl()
+  // ExecutionContextProviderの設定
+  .setExecutionContextProvider(new ExecutionContextProviderImpl()
     // query用自動パラメータバインド関数の登録
-    .addQueryAutoParameterBinder((ctx) -> ctx.paramIfAbsent("current_flg", true))
+    .addQueryAutoParameterBinder((ctx) -> ctx.paramIfAbsent("currentFlg", true))
     // update/batch/procedure用自動パラメータバインド関数の登録
-    .addUpdateAutoParameterBinder((ctx) -> ctx.paramIfAbsent("ins_datetime", LocalDateTime.now()))
-    .addUpdateAutoParameterBinder((ctx) -> ctx.paramIfAbsent("upd_datetime", LocalDateTime.now()))
+    .addUpdateAutoParameterBinder((ctx) -> ctx.paramIfAbsent("insDatetime", LocalDateTime.now()))
+    .addUpdateAutoParameterBinder((ctx) -> ctx.paramIfAbsent("updDatetime", LocalDateTime.now()))
   ).build();
 ```
 
-自動パラメータバインド関数は`SqlContext`を引数に受け取るので、関数内でパラメータの設定を行ってください。
+自動パラメータバインド関数は`ExecutionContext`を引数に受け取るので、関数内でパラメータの設定を行ってください。
 
 ::: tip
-関数の評価は、SQL生成処理（SQL文内の`/*IF*/`や`/*BEGIN*/`、`/*parameter_name*/`の評価）の直前に行われます。
+関数の評価は、SQL生成処理（SQL文内の`/*IF*/`や`/*BEGIN*/`、`/*parameterName*/`の評価）の直前に行われます。
 :::
 
-## バインドパラメータ変換クラスの設定 ( `SqlContextFactory#addBindParamMapper` ) <Badge text="0.6.1+" />
+## バインドパラメータ変換クラスの設定 ( `ExecutionContextProvider#addBindParamMapper` ) <Badge text="0.6.1+" />
 
 SQLを実行する際、独自に作成したクラスをバインドしたい場合があります。
 そういったケースに対応できるよう**uroboroSQL**ではバインドパラメータをJDBCが受け入れられる型に変換するためのクラスを
@@ -307,14 +311,14 @@ public class Name {
 }
 ```
 
-`SqlContextFactory`の設定
+`ExecutionContextProvider`の設定
 
 ```java
 // create SqlConfig
 SqlConfig config = UroboroSQL
 .builder(...)
-// SqlContextFactoryの設定
-.setSqlContextFactory(new SqlContextFactoryImpl()
+// ExecutionContextProviderの設定
+.setExecutionContextProvider(new ExecutionContextProviderImpl()
   // パラメータ変換クラスの登録
   .addBindParamMapper(new CustomBindParamMapper())
 ).build();
@@ -335,8 +339,8 @@ agent.update("insert_user").param("name", name).count();
 // create SqlConfig
 SqlConfig config = UroboroSQL
   .builder(...)
-  // SqlContextFactoryの設定
-  .setSqlContextFactory(new SqlContextFactoryImpl()
+  // ExecutionContextProviderの設定
+  .setExecutionContextProvider(new ExecutionContextProviderImpl()
     // ResultSetTypeの初期値
     // java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.TYPE_SCROLL_SENSITIVE のいづれか
     .setDefaultResultSetType(ResultSet.TYPE_FORWARD_ONLY)

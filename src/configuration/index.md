@@ -33,13 +33,12 @@ SqlConfig config = UroboroSQL
 
 上記APIで取得した`UroboroSQL.UroboroSQLBuilder`に対して下記の設定クラスを設定することで、設定変更ができます。
 
-| 設定するクラス                                                             | 説明                                                                           |
-| :------------------------------------------------------------------------- | :----------------------------------------------------------------------------- |
-| [ConnectionSupplier](./connection-supplier.md#connectionsupplier)          | JDBCコネクション提供クラス                                                     |
-| [SqlContextFactory](./sql-context-factory.md#sqlcontextfactory)            | SQLコンテキスト生成クラス                                                      |
-| [SqlAgentFactory](./sql-agent-factory.md#sqlagentfactory)                  | SQL実行クラス(`SqlAgent`)生成クラス                                            |
-| [SqlManager](./sql-manager.md#sqlmanager)                                  | SQLファイル管理クラス                                                          |
-| [SqlFilterManager](./sql-filter-manager.md#sqlfiltermanager)               | SQLフィルター管理クラス                                                        |
-| [EntityHandler](./entity-handler.md#entityhandler)                         | エンティティ処理クラス                                                         |
-| [Dialect](./dialect.md#dialect)                                            | Database方言を表すクラス                                                       |
-| [Clock](https://docs.oracle.com/javase/jp/8/docs/api/java/time/Clock.html) | タイムゾーンを使用して現在の時点、日付および時間へのアクセスを提供するクロック |
+| 設定するクラス                                                                        | 説明                                                                                                                                            |
+| :------------------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ConnectionSupplier](./connection-supplier.md#connectionsupplier)                     | JDBCコネクション提供クラス                                                                                                                      |
+| [SqlAgentProvider](./sql-agent-provider.md#sqlagentprovider)                          | SQL実行クラス(`SqlAgent`)生成クラス                                                                                                             |
+| [ExecutionContextProvider](./execution-context-provider.md#executioncontextprovider)  | SQL実行コンテキスト生成クラス                                                                                                                   |
+| [SqlResourceManager](./sql-resource-manager.md#sqlresourcemanager)                    | SQLリソース管理クラス                                                                                                                           |
+| [EventListenerHolder](./event-listener-holder.md#eventlistenerholder)                 | イベントリスナ格納クラス                                                                                                                        |
+| [Dialect](./dialect.md#dialect)                                                       | Database方言を表すクラス                                                                                                                        |
+| [Clock](https://docs.oracle.com/javase/jp/11/docs/api/java.base/java/time/Clock.html) | タイムゾーンを使用して現在の時点、日付および時間へのアクセスを提供するクロック<br>指定しない場合は `Clock.systemDefaultZone()` が設定されます。 |

@@ -12,21 +12,30 @@ head:
 
 複数のDBを対象とするアプリケーションを作成する場合、DB毎のSQL文法の差異を吸収するため
 アプリケーションで対象DBを判定し実行するSQLファイルを切り替える、といった対応が必要になります。
-**uroboroSQL**では、こういったDB毎のSQL文法の差異に対応するため、`Dialect`という仕組みを提供しています。  
+**uroboroSQL**では、こういったDB毎のSQL文法の差異に対応するため、`Dialect`という仕組みを提供しています。
+
+::: tip Dialectの自動判別
 `Dialect`は接続したDBから取得できる情報を元に自動で判別される為、通常は変更する必要はありません。
+:::
 
 現在、標準で以下のDBに対するDialectが提供されています。
 
-| DB名                 | Dialect                                                                                                                                            |
-| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
-| H2 DB                | [H2Dialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/H2Dialect.java)                 |
-| Microsoft SQL Server | [MsSqlDialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/MsSqlDialect.java)           |
-| MySQL                | [MySqlDialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/MySqlDialect.java)           |
-| Oracle10g以下        | [Oracle10Dialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/Oracle10Dialect.java)     |
-| Oracle11g            | [Oracle11Dialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/Oracle11Dialect.java)     |
-| Oracle12c以上        | [Oracle12Dialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/Oracle12Dialect.java)     |
-| Postgresql           | [PostgresqlDialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/PostgresqlDialect.java) |
-| その他               | [DefaultDialect](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/dialect/DefaultDialect.java)       |
+| DB名                 | Dialect                                                                                                                                              |
+| :------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
+| H2 DB                | [H2Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/H2Dialect.java)                 |
+| Microsoft SQL Server | [MsSqlDialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/MsSqlDialect.java)           |
+| MySQL                | [MySqlDialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/MySqlDialect.java)           |
+| MariaDB 5            | [MariaDb5Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/MariaDb5Dialect.java)     |
+| MariaDB 10           | [MariaDb10Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/MariaDb10Dialect.java)   |
+| Oracle10g以下        | [Oracle10Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/Oracle10Dialect.java)     |
+| Oracle11g            | [Oracle11Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/Oracle11Dialect.java)     |
+| Oracle12c〜17c       | [Oracle12Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/Oracle12Dialect.java)     |
+| Oracle18c            | [Oracle18Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/Oracle18Dialect.java)     |
+| Oracle19c            | [Oracle19Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/Oracle19Dialect.java)     |
+| Oracle21c            | [Oracle21Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/Oracle21Dialect.java)     |
+| Oracle23ai以上       | [Oracle23Dialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/Oracle23Dialect.java)     |
+| Postgresql           | [PostgresqlDialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/PostgresqlDialect.java) |
+| その他               | [DefaultDialect](https://github.com/future-architect/uroborosql/blob/master/src/main/java/jp/co/future/uroborosql/dialect/DefaultDialect.java)       |
 
 ::: warning
 該当するDBが見つからない場合は`DefaultDialect`が適用されます
@@ -65,6 +74,8 @@ public class SqliteDialect extends AbstractDialect {
 | メソッド名                                                                             | 戻り値        | 説明                                                                                         |
 | :------------------------------------------------------------------------------------- | :------------ | :------------------------------------------------------------------------------------------- |
 | supportsBulkInsert()                                                                   | boolean       | `BULK INSERT`をサポートするかどうか                                                          |
+| supportsEntityBulkUpdateOptimisticLock()                                               | boolean       | Entityバルクアップデートでの楽観ロックチェックをサポートしているか                           |
+| supportsUpdateChained() <Badge text="1.0.5+"/>                                         | boolean       | 複数SQLを指定された順で1つにつなげて更新処理を実行できるかどうか                             |
 | supportsLimitClause()                                                                  | boolean       | `LIMIT`句をサポートするかどうか                                                              |
 | supportsOptimizerHints() <Badge text="0.18.0+"/>                                       | boolean       | オプティマイザーヒントをサポートするかどうか                                                 |
 | supportsNullValuesOrdering()                                                           | boolean       | `SELECT`句の`ORDER BY`でNULL値の順序を指定できるか（NULLS FIRST/LAST）                       |
@@ -73,6 +84,8 @@ public class SqliteDialect extends AbstractDialect {
 | supportsForUpdate()                                                                    | boolean       | 明示的な行ロックをサポートしているか                                                         |
 | supportsForUpdateNoWait()                                                              | boolean       | 明示的な行ロック（待機なし）をサポートしているか                                             |
 | supportsForUpdateWait()                                                                | boolean       | 明示的な行ロック（待機あり）をサポートしているか                                             |
+| supportsBatchGeneratedKeys() <Badge text="1.0.9+"/>                                    | boolean       | バッチ処理での自動生成キーの取得をサポートしているか                                         |
+| needsStrictSqlTypeForNullSetting() <Badge text="1.0.4+"/>                              | boolean       | カラムにNULLを設定する際、カラムの厳密なSQLTypeを指定する必要があるか                        |
 | isRemoveTerminator()                                                                   | boolean       | 実行するSQLに記述されている終端文字(`;`)を削除するかどうか                                   |
 | isRollbackToSavepointBeforeRetry()                                                     | boolean       | リトライする前に設定したSavepointまでロールバックするかどうか                                |
 | getSequenceNextValSql(String sequenceName)                                             | String        | シーケンスを取得するためのSQL文を取得する                                                    |

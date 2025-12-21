@@ -51,12 +51,12 @@ SQLファイルのパスが重複している場合、クラスパス上で先�
 SQLファイルはjarの中にリソースとして含めることもできます。  
 その場合、リソースのルート直下のsqlフォルダをルートフォルダとした相対パスでSQLファイルを指定することができます。
 SQLファイルのルートフォルダ（初期値：sql)は変更することができます。  
-変更方法の詳細は [SQLファイルルートフォルダの設定](../configuration/sql-manager.md#sqlファイルルートフォルダの設定) を参照してください。
+変更方法の詳細は [SQLファイルルートフォルダの設定](../configuration/sql-resource-manager.md#sqlファイルルートフォルダの設定) を参照してください。
 
 ### Dialectによるファイルパスの切り替え
 
 `NioSqlManagerImpl`を`SqlManager`として指定した場合、Dialectによるファイルパスの切り替えが出来るようになります。
-詳しくは[DB種類毎のファイルパス切り替え](../configuration/sql-manager.md#db種類毎のファイルパス切り替え)を参照してください。
+詳しくは[DB種類毎のファイルパス切り替え](../configuration/sql-resource-manager.md#db種類毎のファイルパス切り替え)を参照してください。
 
 ## PostgreSQLのトランザクション内SQLエラー対応
 
@@ -68,7 +68,7 @@ PostgreSQLでは、１つのトランザクション内でSQLエラーが発生�
 :::
 
 これはPostgreSQL固有の動作であり、通常は問題ない動作なのですが、テーブルロックエラーなどリトライ処理を行うケースで問題になります。
-（SQLのリトライについては[SQL実行のリトライ](../configuration/sql-agent-factory.md#sql実行のリトライ)を参照）  
+（SQLのリトライについては[SQL実行のリトライ](../configuration/sql-agent-provider.md#sql実行のリトライ-sqlagentprovider-setsqlretrycodelist-setdefaultmaxretrycount-setdefaultsqlretrywaittime)を参照）  
 **uroboroSQL**ではリトライ指定のあるSQL実行、かつ、PostgreSQL（より正確には`Dialect#isRollbackToSavepointBeforeRetry()`が`true`の場合）の場合にsavepointを使った部分ロールバックを行うことで
 この問題に対応しています。  
 具体的にはリトライ指定のあるSQL実行、かつ、PostgreSQLの場合はSQL実行の直前にリトライ用のsavepointを設定し、SQL実行が成功すればsavepointの解放、SQL実行が失敗した場合はリトライ用のsavepointまでロールバックを行います。
@@ -84,21 +84,21 @@ agent.required(() -> { // トランザクション開始
   agent.savepointScope(() -> {
     // savepointScopeの開始
     agent.update("example/insert_product")
-      .param("product_id", 1)
+      .param("productId", 1)
       .count();
   });
   agent.savepointScope(() -> {
     // 後続処理
     int count = agent.update("department/insert_department")
-      .param("dept_no", 1)
-      .param("dept_name", "Sales")
+      .param("deptNo", 1)
+      .param("deptName", "Sales")
       .count();
       ・・・
   });
 });
 ```
 
-## 更新処理の委譲（SqlContext#setUpdateDelegate()）
+## 更新処理の委譲（ExecutionContext#setUpdateDelegate()）
 
 Webアプリケーションを作成する場合、以下のような流れで画面からの登録処理を行うことがあります。
 
@@ -125,29 +125,29 @@ if (request.isCheckMode()) {
 このような処理を個別実装で行うと実装漏れが起こりやすく、テストも大変になります。  
 このような場合に更新処理の委譲を利用することで、データ検証を行うモードの場合には更新処理をスキップする、といった動作を一律指定することが出来ます。
 
-更新処理の委譲を利用する場合、SqlContextに委譲用のFunctionを指定します。
+更新処理の委譲を利用する場合、ExecutionContextに委譲用のFunctionを指定します。
 
 - setUpdateDelegate 実装例
 
 ```java
 SqlUpdate update = agent.update("example/update_product")
-  .set("product_name", "new_name")
-  .set("jan_code", "1234567890123")
-  .equal("product_id", 1);
-SqlContext ctx = update.context();
-ctx.setUpdateDelegate(context -> 2); // 更新の委譲処理。登録する Function は 引数として SqlContext を受取り、int（更新件数）を返却する
+  .set("productName", "new_name")
+  .set("janCode", "1234567890123")
+  .equal("productId", 1);
+ExecutionContext ctx = update.context();
+ctx.setUpdateDelegate(context -> 2); // 更新の委譲処理。登録する Function は 引数として ExecutionContext を受取り、int（更新件数）を返却する
 update.count(); // SQLは発行されず、代わりに委譲用のFunctionが実行され戻り値 2 が返る
 ```
 
-SqlContext#setUpdateDelegate() は通常 [自動パラメータバインド関数の設定](../configuration/sql-context-factory.md#自動パラメータバインド関数の設定-sqlcontextfactory-addqueryautoparameterbinder-addupdateautoparameterbinder) と合わせて利用します。
+ExecutionContext#setUpdateDelegate() は通常 [自動パラメータバインド関数の設定](../configuration/execution-context-provider.md#自動パラメータバインド関数の設定-executioncontextprovider-addqueryautoparameterbinder-addupdateautoparameterbinder) と合わせて利用します。
 
-- SqlContextFactoryの設定例
+- ExecutionContextProviderの設定例
 
 ```java
 SqlConfig config = UroboroSQL
   .builder(...)
-  // SqlContextFactoryの設定
-  .setSqlContextFactory(new SqlContextFactoryImpl()
+  // ExecutionContextProviderの設定
+  .setExecutionContextProvider(new ExecutionContextProviderImpl()
     // update/batch/procedure用自動パラメータバインド関数の登録
     .addUpdateAutoParameterBinder((ctx) -> {
       if (チェックモードなら) {
@@ -191,7 +191,7 @@ SQLカバレッジを有効にするとアプリケーションが実行して�
 
 出力された`sql-cover.xml`をJenkinsのCobertura pluginなどのXMLレポートとして読み込むとSQLファイルのカバレッジレポートが参照できるようになります。
 
-![カバレッジレポート例](./cobertura.png "Jenkins Cobertura Report")
+![カバレッジレポート例](./cobertura.png "Jenkins Cobertura Report"){width=600px}
 
 また<Badge text="0.2.0+" vertical="middle"/>より、**uroboroSQL**のみでHTMLレポートを出力することができるようになりました。  
 起動時オプションに
@@ -215,11 +215,11 @@ SQLカバレッジを有効にするとアプリケーションが実行して�
 
 ### サマリーページ
 
-![HTML Coverage Report Summary](./html_coverage_report_summary.png)
+![HTML Coverage Report Summary](./html_coverage_report_summary.png){width=800px}
 
 ### 詳細ページ
 
-![HTML Coverage Report](./html_coverage_report.png)
+![HTML Coverage Report](./html_coverage_report.png){width=800px}
 
 <a :href="withBase('/sample/testReport/index.html')" target="_blank" style="font-size:20px;"><i class="fa fa-external-link" aria-hidden="true"></i>出力サンプル</a>
 
@@ -228,17 +228,16 @@ SQLカバレッジを有効にするとアプリケーションが実行して�
 **uroboroSQL**ではログ出力ライブラリとしてSLF4Jを使用しています。SLF4Jの詳細は[公式のドキュメント](https://www.slf4j.org/)を参照して下さい。  
 **uroboroSQL**で出力されるログ内容は以下表の通りです。
 
-|       クラス名        |             TRACE             |                             DEBUG                             | INFO |              WARN              |                                     ERROR                                     | FATAL |
-| :-------------------: | :---------------------------: | :-----------------------------------------------------------: | :--: | :----------------------------: | :---------------------------------------------------------------------------: | :---: |
-|     AbstractAgent     |           変換前SQL           |                           実行時SQL                           |  -   |               -                |                                       -                                       |   -   |
-|    DebugSqlFilter     |               -               |          パラメーター/<br>対象データ数/<br>実行結果           |  -   |               -                |                                       -                                       |   -   |
-|        IfNode         |               -               |             評価式/<br>判定結果/<br>パラメーター              |  -   |               -                |                                       -                                       |   -   |
-|       Parameter       |               -               |                      パラメーターの設定                       |  -   | サブパラメーター値にNULLを設定 |                                       -                                       |   -   |
-| SecretColumnSqlFilter |               -               |  バッチ処理追加件数/<br>ストアドプロシージャ出力パラメーター  |  -   |               -                |                                       -                                       |   -   |
-|       SqlAgent        |   ステートメントのクローズ    | 処理実行アナウンス/<br>リトライ実行アナウンス/<br>SQL実行時間 |  -   |               -                |                               エラーメッセージ                                |   -   |
-|      SqlContext       |               -               |  バッチ処理追加件数/<br>ストアドプロシージャ出力パラメーター  |  -   |               -                |                                       -                                       |   -   |
-|   SqlContextFactory   |               -               |                       定数パラメーター                        |  -   |          定数名の重複          |                               エラーメッセージ                                |   -   |
-|       SqlLoader       | SQL定義ファイルの読み込み完了 |           SQL定義ファイルの読み込み開始/読み込み中            |  -   |               -                | デフォルトファイルパスの設定/<br>デフォルト拡張子/<br>空のSQLキャッシュの返却 |   -   |
+| ログ名                              | 説明               | TRACE                                  | DEBUG                       | INFO | WARN | ERROR          | FATAL |
+| :---------------------------------- | :----------------- | :------------------------------------- | :-------------------------- | :--- | :--- | :------------- | :---- |
+| jp.co.future.uroborosql.log         | サービスログ       | SQLロード時情報                        | 実行SQL名<br/>リトライ情報  | -    | -    | エラーログ     | -     |
+| jp.co.future.uroborosql.sql         | SQLログ            | テンプレートSQL<br/>バインドパラメータ | SQLファイルパス<br/>実行SQL | -    | -    | -              | -     |
+| jp.co.future.uroborosql.setting     | 設定ログ           | -                                      | 設定時情報                  | -    | -    | -              | -     |
+| jp.co.future.uroborosql.performance | パフォーマンスログ | -                                      | SQL実行時間                 | -    | -    | -              | -     |
+| jp.co.future.uroborosql.event       | イベントログ       | -                                      | イベント処理内容            | -    | -    | -              | -     |
+| jp.co.future.uroborosql.parser      | パーサーログ       | -                                      | IF文評価結果                | -    | -    | -              | -     |
+| jp.co.future.uroborosql.coverage    | SQLカバレッジログ  | カバレッジデータダンプ                 | -                           | -    | -    | -              | -     |
+| jp.co.future.uroborosql.repl        | REPLログ           | -                                      | -                           | -    | -    | REPLエラーログ | -     |
 
 ## システムプロパティ
 
