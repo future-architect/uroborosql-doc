@@ -99,7 +99,7 @@ public class SqliteDialect extends AbstractDialect {
 | addForUpdateClause(StringBuilder sql, ForUpdateType forUpdateType, int waitSeconds)    | StringBuilder | `FOR UPDATE`句の文字列をSQLに追加する                                                        |
 | addOptimizerHints(StringBuilder sql, List&lt;String&gt; hints) <Badge text="0.18.0+"/> | StringBuilder | 引数で渡したSQLにオプティマイザーヒントを付与する                                            |
 | getModLiteral(final String dividend, final String divisor) <Badge text="0.17.0+"/>     | StringBuilder | 乗除を行うためのSQL文字列を取得する                                                          |
-| getPessimisticLockingErrorCodes() <Badge text="0.18.2+"/>                              | Set<String>   | 悲観ロックのErrorCode もしくは SqlStateを取得する                                            |
+| getPessimisticLockingErrorCodes() <Badge text="0.18.2+"/>                              | Set\<String\> | 悲観ロックのErrorCode もしくは SqlStateを取得する                                            |
 
 `Dialect`インタフェースのデフォルト実装や`AbstractDialect`クラスを参考に、上記のメソッドのうち変更が必要なメソッドの実装を行ってください。
 
