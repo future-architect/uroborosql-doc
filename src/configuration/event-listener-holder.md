@@ -174,13 +174,13 @@ public class CustomEventSubscriber extends EventSubscriber {
     @Override
     public void initialize() {
         // EventSubscriberが提供する各イベントのリスナー登録用メソッドにリスナーを登録
-		afterSqlQueryListener(this::afterSqlQuery);
+		    afterSqlQueryListener(this::afterSqlQuery);
         // 初期化処理
         LOG.info("CustomEventSubscriber initialized");
     }
 
     void afterSqlQuery(final AfterSqlQueryEvent evt) {
-            LOG.debug("Execute Query - sqlName:{} executed.", evt.getExecutionContext().getSqlName());
+        LOG.debug("Execute Query - sqlName:{} executed.", evt.getExecutionContext().getSqlName());
     }
 }
 ```

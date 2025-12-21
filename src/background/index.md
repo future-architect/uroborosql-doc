@@ -356,14 +356,14 @@ from
 
 ```sql
 select /* _SQL_ID_ */
-	emp.emp_no			as	emp_no
-,	emp.first_name		as	first_name
-,	emp.last_name		as	last_name
-,	emp.birth_date		as	birth_date
-,	emp.gender			as	gender
-,	emp.lock_version	as	lock_version
+  emp.emp_no        as  emp_no
+, emp.first_name    as  first_name
+, emp.last_name     as  last_name
+, emp.birth_date    as  birth_date
+, emp.gender        as  gender
+, emp.lock_version  as  lock_version
 from
-	employee	emp
+  employee  emp
 （以下略）
 ```
 
@@ -371,14 +371,14 @@ from
 
 ```sql
 select /* employee/select_employee */  -- _SQL_ID_ が SQL名に置換されている
-	emp.emp_no			as	emp_no
-,	emp.first_name		as	first_name
-,	emp.last_name		as	last_name
-,	emp.birth_date		as	birth_date
-,	emp.gender			as	gender
-,	emp.lock_version	as	lock_version
+  emp.emp_no        as  emp_no
+, emp.first_name    as  first_name
+, emp.last_name     as  last_name
+, emp.birth_date    as  birth_date
+, emp.gender        as  gender
+, emp.lock_version  as  lock_version
 from
-	employee	emp
+  employee  emp
 （以下略）
 ```
 
