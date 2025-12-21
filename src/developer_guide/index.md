@@ -72,11 +72,7 @@ Import project from external model でMavenを選択してください。
 
 ## Continuous Integration
 
-Continuous Integration(CI)は[Travis CI](https://travis-ci.org/future-architect/uroborosql)で行っています。
-
-CIの状況確認は以下で行います。
-
-- [https://travis-ci.org/future-architect/uroborosql](https://travis-ci.org/future-architect/uroborosql)
+Continuous Integration(CI)はGitHub Actionsで行っています。
 
 また、CIと合わせてカバレッジレポートを[Coveralls](https://coveralls.io/github/future-architect/uroborosql)で公開しています。
 

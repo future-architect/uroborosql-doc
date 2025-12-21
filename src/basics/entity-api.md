@@ -114,16 +114,25 @@ Optional<Employee> employee = agent.find(Employee.class, 1);
 
 ```java
 // emp_no = 1 のレコードをList<Employee>で取得
-agent.query(Employee.class).equal("emp_no", 1).collect();
+agent.query(Employee.class)
+    .equal("empNo", 1)
+    .collect();
 
 // emp_no = 10 又は 20 のレコードをList<Employee>で取得
-agent.query(Employee.class).in("emp_no", 10, 20).collect();
+agent.query(Employee.class)
+    .in("empNo", 10, 20)
+    .collect();
 
 // first_name like '%Bob%' のレコードをList<Employee>で取得
-agent.query(Employee.class).contains("first_name", "Bob").collect();
+agent.query(Employee.class)
+    .contains("firstName", "Bob")
+    .collect();
 
 // where句を直接記述(first_name = 'Bob' and last_name = 'Smith')した結果をList<Employee>で取得
-agent.query(Employee.class).where("first_name =''/*firstName*/", "firstName", "Bob").where("last_name = ''/*lastName*/", "lastName", "Smith").collect();
+agent.query(Employee.class)
+    .where("first_name =''/*firstName*/", "firstName", "Bob")
+    .where("last_name = ''/*lastName*/", "lastName", "Smith")
+    .collect();
 ```
 
 ::: warning 注意
@@ -131,8 +140,8 @@ agent.query(Employee.class).where("first_name =''/*firstName*/", "firstName", "B
 
 ```java
 agent.query(Employee.class)
-    .greaterThan("emp_no", 20)
-    .lessEqual("emp_no", 10)
+    .greaterThan("empNo", 20)
+    .lessEqual("empNo", 10)
     .collect();
 ```
 
@@ -150,11 +159,6 @@ where
   emp_no <= 10
 ```
 
-:::
-
-::: danger 警告
-`SqlEntityQuery`に対して抽出条件を指定する場合`param`メソッドは使用しないでください。
-`SqlEntityQuery#param()`には`@Deprecated`が付与されており、将来削除される予定です。
 :::
 
 ### ソート順(`SqlEntityQuery#asc` /`#desc`)や取得データの件数(`#limit`)、開始位置(`#offset`)、悲観ロック(`#forUpdate` /`#forUpdateNoWait` /`#forUpdateWait`)の指定 <Badge text="0.11.0+"/>
@@ -176,13 +180,22 @@ where
 
 ```java
 // birth_dateの降順、first_nameの昇順でソートした結果を List<Employee>で取得
-agent.query(Employee.class).desc("birth_date").asc("first_name").collect();
+agent.query(Employee.class)
+    .desc("birthDate")
+    .asc("firstName")
+    .collect();
 
 // emp_no の昇順でソートした結果の3行目から5件取得
-agent.query(Employee.class).asc("emp_no").offset(3).limit(5).collect();
+agent.query(Employee.class)
+    .asc("empNo")
+    .offset(3)
+    .limit(5)
+    .collect();
 
 // 明示的な行ロックを行う
-agent.query(Employee.class).forUpdate().collect();
+agent.query(Employee.class)
+    .forUpdate()
+    .collect();
 ```
 
 ### オプティマイザーヒントの指定(`SqlEntityQuery#hint`) <Badge text="0.18.0+"/>
@@ -191,7 +204,10 @@ agent.query(Employee.class).forUpdate().collect();
 
 ```java
 SqlAgent agent = ...
-agent.query(User.class).hint("ORDERED").lessThan("age", 30).collect();
+agent.query(User.class)
+    .hint("ORDERED")
+    .lessThan("age", 30)
+    .collect();
 ```
 
 出力されるSQL(Oracleの場合)
@@ -219,15 +235,19 @@ select /*+ ORDERED */ id, name, age, ... from user where age < 30
 
 ```java
 // List<Employee>で取得
-List<Employee> employees = agent.query(Employee.class).collect();
+List<Employee> employees = agent.query(Employee.class)
+    .collect();
 
 // 検索結果の先頭行を取得
-Optional<Employee> employee = agent.query(Employee.class).first();
+Optional<Employee> employee = agent.query(Employee.class)
+    .first();
 
 // 検索結果（カラム値）の取得
 String employeeName = agent.query(Employee.class)
     .equal("employeeId", 1)
-    .select("employeeName", String.class).findFirst().orElseThrow();
+    .select("employeeName", String.class)
+    .findFirst()
+    .orElseThrow();
 ```
 
 ### 取得するカラム/除外するカラムの指定(`#includeColumns` / `#excludeColumns`) <Badge text="0.23.0+"/>
@@ -268,24 +288,29 @@ List<Employee> employees = agent.query(Employee.class)
 
 ```java
 // 検索結果の件数を取得
-long count = agent.query(Employee.class).count();
+long count = agent.query(Employee.class)
+    .count();
 
 // 検索結果が1件以上の場合にログを出力する
-agent.query(Employee.class).greaterThan("emp_no", 10).exists(() -> {
-  log.info("Employee(emp_no > 10) exists.");
-});
+agent.query(Employee.class)
+    .greaterThan("empNo", 10)
+    .exists(() -> {
+      log.info("Employee(emp_no > 10) exists.");
+    });
 ```
 
 ::: tip
 集約関数を使用すると、検索結果からEntityオブジェクトを生成しないためメモリ効率が良くなります。
-以下２つの処理結果は同じですが、メモリの使い方が違います。
+以下２つの処理結果は同じですが、countメソッドのほうがEmployeeインスタンスを生成しない分メモリ効率が良いです。
 
 ```java
 // collect()を使用すると、検索結果がエンティティに変換されるためメモリを使用する
-long count = agent.query(Employee.class).collect().size();
+long count = agent.query(Employee.class)
+    .collect().size();
 
 // count()を使用すると件数のみ取得できる（エンティティは生成されない）
-long count = agent.query(Employee.class).count();
+long count = agent.query(Employee.class)
+    .count();
 ```
 
 :::
@@ -417,7 +442,7 @@ agent.inserts(employees, InsertsType.BATCH);
 ```
 
 ::: tip
-`InsertsType`は、[初期値設定](../configuration/sql-agent-factory.md#複数件挿入時の挿入方法の初期値設定)が可能です。  
+`InsertsType`は、[初期値設定](../configuration/sql-agent-provider.md#複数件挿入時の挿入方法の初期値設定)が可能です。  
 :::
 
 ::: warning BATCH と BULK の選択について
@@ -443,7 +468,7 @@ agent.inserts(employees, InsertsType.BATCH);
 ### 挿入条件（InsertsCondition）の指定
 
 挿入用SQLの実行条件を指定します。  
-`InsertsCondition<E>#test(SqlContext ctx, int count, E entity)`の戻り値が`true`の場合に挿入用SQLを実行します。  
+`InsertsCondition<E>#test(ExecutionContext ctx, int count, E entity)`の戻り値が`true`の場合に挿入用SQLを実行します。  
 `InsertsCondition`はFunctionalInterfaceのためlambda式が利用できます。
 
 ```java
@@ -556,7 +581,7 @@ agent.updates(agent.query(Employee.class)
 ### 更新条件（UpdatesCondition）の指定
 
 更新用SQLの実行条件を指定します。  
-`UpdatesCondition<E>#test(SqlContext ctx, int count, E entity)`の戻り値が`true`の場合に更新用SQLを実行します。  
+`UpdatesCondition<E>#test(ExecutionContext ctx, int count, E entity)`の戻り値が`true`の場合に更新用SQLを実行します。  
 `UpdatesCondition`はFunctionalInterfaceのためlambda式が利用できます。
 
 ```java
@@ -597,11 +622,12 @@ agent.updates(employees, (ctx, count, entity) -> count == 10);
 #### mergeメソッドを使用しない場合
 
 ```java
-agent.find(Employee.class, 1).ifPresentOrElse(employee -> {
-  employee.setLastName("Wilson");
+agent.find(Employee.class, 1)
+    .ifPresentOrElse(employee -> {
+      employee.setLastName("Wilson");
 
-  // エンティティの更新
-  agent.update(employee);
+      // エンティティの更新
+      agent.update(employee);
 }, () -> {
   Employee employee = new Employee();
   employee.setFirstName("Susan");
@@ -756,6 +782,21 @@ WHERE emp_no = /*empNo*/1
 
 uroborosql で指定できるシステムプロパティについては [システムプロパティ](../advanced/#システムプロパティ) を参照してください
 :::
+
+## リトライ(`SqlFluent#retry`)
+
+SQLを実行した際、タイミングによって発生する例外（テーブルロックエラーなど）の場合はリトライを行い、できるだけ正常に処理を終了させたい場合があります。  
+uroboroSQLでは、`retry` メソッドにより簡潔で確実なリトライ処理が行えるよう工夫されています。
+
+```java
+try (SqlAgent agent = config.agent()) {
+  // リトライ対象エラーコードの場合、5回のリトライを20ms間隔で行う
+  agent.query(Employee.class)
+    .equal("empNo", 1)
+    .retry(5, 20)
+    .collect();
+}
+```
 
 ## Entityアノテーション
 

@@ -32,13 +32,11 @@ SqlConfig config = UroboroSQL.builder("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa"
 // create SqlConfig
 SqlConfig config = UroboroSQL
     .builder("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", "")
-    // SqlContextFactoryの設定（Enum定数パッケージ設定の追加）
-    .setSqlContextFactory(new SqlContextFactoryImpl()
+    // ExecutionContextProviderの設定（Enum定数パッケージ設定の追加）
+    .setExecutionContextProvider(new ExecutionContextProviderImpl()
     .setEnumConstantPackageNames(Arrays.asList(Gender.class.getPackage().getName())))
-    // SqlAgentFactoryの設定（Queryの戻り値のMapのキー文字列のデフォルトCaseFormat設定の追加）
-    .setSqlAgentFactory(new SqlAgentFactoryImpl().setDefaultMapKeyCaseFormat(CaseFormat.CAMEL_CASE))
-    // SqlManagerの設定（NioSqlManagerImplの指定）
-    .setSqlManager(new NioSqlManagerImpl(false))
+    // SqlAgentProviderの設定（Queryの戻り値のMapのキー文字列のデフォルトCaseFormat設定の追加）
+    .setSqlAgentProvider(new SqlAgentProviderImpl().setDefaultMapKeyCaseFormat(CaseFormat.CAMEL_CASE))
     .build();
 ```
 
@@ -106,15 +104,15 @@ erDiagram
 
 **SqlQuery**では検索結果をいくつかの形式で取得することができます。
 
-| メソッド             | 説明                                                                                                           |
-| :------------------- | :------------------------------------------------------------------------------------------------------------- |
-| SqlQuery#collect()   | 検索結果を`List<Map>`の形式で取得する                                                                          |
-| SqlQuery#stream()    | 検索結果を`java.util.Stream`の形式で取得する                                                                   |
-| SqlQuery#resultSet() | 検索結果の`ResultSet`を取得する                                                                                |
-| SqlQuery#first()     | 検索結果の１件目を取得する。取得できない場合は`RuntimeException`がスローされる                                 |
-| SqlQuery#findFirst() | 検索結果の１件目を取得する。戻り値は`Optional`                                                                 |
-| SqlQuery#one()       | 検索結果の１件目を取得する。取得できない場合、もしくは２件以上取得出来た場合は`RuntimeException`がスローされる |
-| SqlQuery#findOne()   | 検索結果の１件目を取得する。戻り値は`Optional`。２件以上取得出来た場合は`RuntimeException`がスローされる       |
+| メソッド             | 説明                                                                                                                |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------ |
+| SqlQuery#collect()   | 検索結果を`List<Map>`の形式で取得する                                                                               |
+| SqlQuery#stream()    | 検索結果を`java.util.Stream<Map>`の形式で取得する                                                                   |
+| SqlQuery#resultSet() | 検索結果の`ResultSet`を取得する                                                                                     |
+| SqlQuery#first()     | 検索結果の１件目を取得する。取得できない場合は`DataNotFoundException`がスローされる                                 |
+| SqlQuery#findFirst() | 検索結果の１件目を取得する。戻り値は`Optional`                                                                      |
+| SqlQuery#one()       | 検索結果の１件目を取得する。取得できない場合、もしくは２件以上取得出来た場合は`DataNotFoundException`がスローされる |
+| SqlQuery#findOne()   | 検索結果の１件目を取得する。戻り値は`Optional`。２件以上取得出来た場合は`DataNotFoundException`がスローされる       |
 
 以下のように呼び出します。
 

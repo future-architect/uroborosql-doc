@@ -28,15 +28,15 @@ head:
 ```java
 agent.required(() -> {
   // トランザクション開始
-  agent.updateWith("insert into employee (emp_no) values (/*emp_no*/1001)")
-    .param("emp_no", 1)
+  agent.updateWith("insert into employee (emp_no) values (/*empNo*/1001)")
+    .param("empNo", 1)
     .count();
 
   agent.requiresNew(() -> {
     // 新しい トランザクション開始
-    agent.updateWith("insert into department (dept_no, dept_name) values (/*dept_no*/1111, /*dept_name*/'Sales')")
-      .param("dept_no", 2)
-      .param("dept_name", "export")
+    agent.updateWith("insert into department (dept_no, dept_name) values (/*deptNo*/1111, /*deptName*/'Sales')")
+      .param("deptNo", 2)
+      .param("deptName", "export")
       .count();
     // 新しい トランザクション終了 commit
   });
@@ -46,7 +46,7 @@ agent.required(() -> {
 
 ::: tip
 設定によりDB更新処理の実行をトランザクション内で行うことを強制することができます。詳しくは
-[DB更新処理をトランザクション内のみに強制](../configuration/sql-agent-factory.md#db更新処理をトランザクション内のみに強制)を参照してください。
+[DB更新処理をトランザクション内のみに強制](../configuration/sql-agent-provider.md#db更新処理をトランザクション内のみに強制)を参照してください。
 :::
 
 ## コミットとロールバック ( `SqlAgent#commit` /`#setRollbackOnly` )
@@ -59,22 +59,22 @@ agent.required(() -> {
 ```java
 agent.required(() -> {
   // トランザクション開始
-  agent.updateWith("insert into employee (emp_no) values (/*emp_no*/1001)")
-    .param("emp_no", 1)
+  agent.updateWith("insert into employee (emp_no) values (/*empNo*/1001)")
+    .param("empNo", 1)
     .count();
 
   // 新しい トランザクション開始
   agent.requiresNew(() -> {
-    agent.updateWith("insert into department (dept_no, dept_name) values (/*dept_no*/1, /*dept_name*/'')")
-      .param("dept_no", 2)
-      .param("dept_name", "Production")
+    agent.updateWith("insert into department (dept_no, dept_name) values (/*deptNo*/1, /*deptName*/'')")
+      .param("deptNo", 2)
+      .param("deptName", "Production")
       .count();
     // 明示的なcommit
     agent.commit();
 
-    agent.updateWith("insert into department (dept_no, dept_name) values (/*dept_no*/1, /*dept_name*/'')")
-      .param("dept_no", 3)
-      .param("dept_name", "export")
+    agent.updateWith("insert into department (dept_no, dept_name) values (/*deptNo*/1, /*deptName*/'')")
+      .param("deptNo", 3)
+      .param("deptName", "export")
       .count();
     // 明示的なrollback
     agent.setRollbackOnly();
@@ -92,13 +92,13 @@ agent.required(() -> {
 agent.required(() -> {
   // トランザクション開始
   agent.update("employee/insert_employee")
-    .param("emp_no", 1001)
+    .param("empNo", 1001)
     .count();
 
   // セーブポイント(名前:sp)の設定
   agent.setSavepoint("sp");
   agent.update("employee/insert_employee")
-    .param("emp_no", 1002)
+    .param("empNo", 1002)
     .count();
 
   assertThat(agent.query("employee/select_employee").collect().size(), 2);
@@ -119,13 +119,13 @@ agent.required(() -> {
 agent.required(() -> {
   // トランザクション開始
   agent.update("employee/insert_employee")
-    .param("emp_no", 1001)
+    .param("empNo", 1001)
     .count();
 
   // セーブポイントスコープの開始
   agent.savepointScope(() -> {
     agent.update("employee/insert_employee")
-      .param("emp_no", 1002)
+      .param("empNo", 1002)
       .count();
 
     assertThat(agent.query("employee/select_employee").collect().size(), 2);
@@ -165,7 +165,7 @@ agent.required(() -> {
   }
 
   agent.update("employee/insert_employee")
-    .param("emp_no", 1001)
+    .param("empNo", 1001)
     .count(); // この段階で更新がコミットされる
 
   // AutoCommitの終了
@@ -190,7 +190,7 @@ agent.required(() -> {
   // AutoCommitの開始
   agent.autoCommitScope(() -> {
     agent.update("employee/insert_employee")
-      .param("emp_no", 1001)
+      .param("empNo", 1001)
       .count(); // この段階で更新がコミットされる
 
     assertThat(agent.query("employee/select_employee").collect().size(), 1);
@@ -218,9 +218,9 @@ SqlConfig config = UroboroSQL.builder(...).build();
 
 try (SqlAgent agent = config.agent()) {
   // INSERT文の実行
-  // insert into product (product_id) values (/*product_id*/0);
+  // insert into product (product_id) values (/*productId*/0);
   agent.update("example/insert_product")
-    .param("product_id", 1)
+    .param("productId", 1)
     .count();
 } catch (UroborosqlSQLException ex) {
   // SQLExceptionが発生した際に行う処理を実装

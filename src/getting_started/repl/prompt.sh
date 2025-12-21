@@ -5,7 +5,7 @@
 | |_| | | | (_) | |_) | (_) | | | (_) |__) | |_| | |___
  \__,_|_|  \___/|_.__/ \___/|_|  \___/____/ \__\_\_____|
 
-uroboroSQL SQL REPL ver.0.25.0
+uroboroSQL SQL REPL ver.1.0.10
 ===========================================================
 
 Commands :
@@ -34,15 +34,9 @@ Commands :
         exit    : exit SQL REPL. `CTRL+C` is an alias.
 Properties file path:REPL\repl.properties
 [Properties]
-db.password=
-sql.additionalClassPath=src/test/resources;target/test-classes;${user.home}/.m2/repository/com/h2database/h2/1.4.199/h2-1.4.199.jar
-sql.encoding=UTF-8
 db.user=sa
-sql.versionColumnName=lock_no
-sql.optimisticLockSupplier=jp.co.future.uroborosql.mapping.FieldIncrementOptimisticLockSupplier
-db.url=jdbc:h2:mem:repldb;DB_CLOSE_DELAY=-1;
-sqlContextFactory.enumConstantPackageNames=jp.co.future.uroborosql.context.test
-sqlContextFactory.constantClassNames=jp.co.future.uroborosql.context.test.TestConsts
-initialize.
+db.password=
+db.url=jdbc:h2:file:./target/db/repldb;
 
+initialize.
 uroborosql >

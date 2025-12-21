@@ -43,11 +43,11 @@ from
   department  dept
 where
   1        =  1
-/*IF SF.isNotEmpty(dept_no)*/
-and  dept.dept_no  =  /*dept_no*/1
+/*IF SF.isNotEmpty(deptNo)*/
+and  dept.dept_no  =  /*deptNo*/1
 /*END*/
-/*IF SF.isNotEmpty(dept_name)*/
-and  dept.dept_name  =  /*dept_name*/'sample'
+/*IF SF.isNotEmpty(deptName)*/
+and  dept.dept_name  =  /*deptName*/'sample'
 /*END*/
 ```
 
@@ -70,7 +70,8 @@ Mapには`キー：カラムラベル名`、`値：カラムの値`の形で1行
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  List<Map<String, Object>> departments = agent.query("department/select_department").collect();
+  List<Map<String, Object>> departments = agent.query("department/select_department")
+      .collect();
 }
 // 結果(departments)
 [
@@ -89,7 +90,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  List<Map<String, Object>> departments = agent.query("department/select_department").collect(CaseFormat.CAMEL_CASE);
+  List<Map<String, Object>> departments = agent.query("department/select_department")
+      .collect(CaseFormat.CAMEL_CASE);
 }
 // 結果(departments) のキーが"deptNo", "deptName"となる
 [
@@ -102,7 +104,7 @@ try (SqlAgent agent = config.agent()) {
 
 `CaseFormat`の指定がない場合はデフォルトの`CaseFormat`（初期設定では`UPPER_SNAKE_CASE`）で加工した値になります。  
 デフォルトの`CaseFormat`はSqlConfig生成時に変更することができます。
-デフォルト`CaseFormat`の設定の詳細は [CaseFormatの初期値設定](../configuration/sql-agent-factory.md#caseformatの初期値設定) を参照してください
+デフォルト`CaseFormat`の設定の詳細は [CaseFormatの初期値設定](../configuration/sql-agent-provider.md#caseformatの初期値設定) を参照してください
 
 #### `SqlQuery#collect(Class<T>)` 型指定
 
@@ -127,11 +129,12 @@ public class Department {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  List<Department> departments = agent.query("department/select_department").collect(Department.class);
+  List<Department> departments = agent.query("department/select_department")
+      .collect(Department.class);
 }
 ```
 
-引数に以下のクラスを指定すると、検索結果の先頭項目を指定したクラスのインスタンスの形で取得することができます。 <Badge text="0.25.0+"/>
+引数に以下のクラスを指定すると、検索結果の `先頭項目` を指定したクラスのインスタンスの形で取得することができます。 <Badge text="0.25.0+"/>
 
 ::: details 引数に指定可能な型
 
@@ -218,7 +221,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Map<String, Object> department = agent.query("department/select_department").first();
+  Map<String, Object> department = agent.query("department/select_department")
+      .first();
 } catch (DataNotFoundException ex) {
   ex.printStackTrace();
 }
@@ -235,7 +239,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Map<String, Object> department = agent.query("department/select_department").first(CaseFormat.CAMEL_CASE);
+  Map<String, Object> department = agent.query("department/select_department")
+      .first(CaseFormat.CAMEL_CASE);
 } catch (DataNotFoundException ex) {
   ex.printStackTrace();
 }
@@ -251,7 +256,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Department department = agent.query("department/select_department").first(Department.class);
+  Department department = agent.query("department/select_department")
+      .first(Department.class);
 } catch (DataNotFoundException ex) {
   ex.printStackTrace();
 }
@@ -261,7 +267,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  long deptNo = agent.query("department/select_department").first(long.class);
+  long deptNo = agent.query("department/select_department")
+      .first(long.class);
 } catch (DataNotFoundException ex) {
   ex.printStackTrace();
 }
@@ -282,7 +289,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Optional<Map<String, Object>> department = agent.query("department/select_department").findFirst();
+  Optional<Map<String, Object>> department = agent.query("department/select_department")
+      .findFirst();
 }
 // 結果(department)
  {"DEPT_NO"=1, "DEPT_NAME"="sales"}
@@ -296,7 +304,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Optional<Map<String, Object>> departmentOpt = agent.query("department/select_department").findFirst(CaseFormat.CAMEL_CASE);
+  Optional<Map<String, Object>> departmentOpt = agent.query("department/select_department")
+      .findFirst(CaseFormat.CAMEL_CASE);
 }
 // 結果(department)
  {"deptNo"=1, "deptName"="sales"}
@@ -310,7 +319,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Optional<Department> departmentOpt = agent.query("department/select_department").findFirst(Department.class);
+  Optional<Department> departmentOpt = agent.query("department/select_department")
+      .findFirst(Department.class);
 }
 ```
 
@@ -318,7 +328,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Optional<Long> deptNoOpt = agent.query("department/select_department").findFirst(Long.class);
+  Optional<Long> deptNoOpt = agent.query("department/select_department")
+      .findFirst(Long.class);
 }
 ```
 
@@ -342,7 +353,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Map<String, Object> department = agent.query("department/select_department").one();
+  Map<String, Object> department = agent.query("department/select_department")
+      .one();
 } catch (DataNotFoundException | DataNotUniqueException ex) {
   ex.printStackTrace();
 }
@@ -359,7 +371,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Map<String, Object> department = agent.query("department/select_department").one(CaseFormat.CAMEL_CASE);
+  Map<String, Object> department = agent.query("department/select_department")
+      .one(CaseFormat.CAMEL_CASE);
 } catch (DataNotFoundException | DataNotUniqueException ex) {
   ex.printStackTrace();
 }
@@ -375,7 +388,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Department department = agent.query("department/select_department").one(Department.class);
+  Department department = agent.query("department/select_department")
+      .one(Department.class);
 } catch (DataNotFoundException | DataNotUniqueException ex) {
   ex.printStackTrace();
 }
@@ -385,7 +399,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  long deptNo = agent.query("department/select_department").one(long.class);
+  long deptNo = agent.query("department/select_department")
+      .one(long.class);
 } catch (DataNotFoundException | DataNotUniqueException ex) {
   ex.printStackTrace();
 }
@@ -407,7 +422,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Optional<Map<String, Object>> departmentOpt = agent.query("department/select_department").findOne();
+  Optional<Map<String, Object>> departmentOpt = agent.query("department/select_department")
+      .findOne();
 } catch (DataNotUniqueException ex) {
   ex.printStackTrace();
 }
@@ -423,7 +439,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Optional<Map<String, Object>> departmentOpt = agent.query("department/select_department").findOne(CaseFormat.CAMEL_CASE);
+  Optional<Map<String, Object>> departmentOpt = agent.query("department/select_department")
+      .findOne(CaseFormat.CAMEL_CASE);
 } catch (DataNotUniqueException ex) {
   ex.printStackTrace();
 }
@@ -439,7 +456,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Optional<Department> departmentOpt = agent.query("department/select_department").findOne(Department.class);
+  Optional<Department> departmentOpt = agent.query("department/select_department")
+      .findOne(Department.class);
 } catch (DataNotUniqueException ex) {
   ex.printStackTrace();
 }
@@ -449,7 +467,8 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Optional<Long> deptNoOpt = agent.query("department/select_department").findOne(Long.class);
+  Optional<Long> deptNoOpt = agent.query("department/select_department")
+      .findOne(Long.class);
 } catch (DataNotUniqueException ex) {
   ex.printStackTrace();
 }
@@ -472,7 +491,8 @@ Streamによる順次読み込みと終端操作までの遅延処理により�
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Stream<Long> deptNoStream = agent.query("department/select_department").select(Long.class);
+  Stream<Long> deptNoStream = agent.query("department/select_department")
+      .select(Long.class);
 }
 ```
 
@@ -482,7 +502,7 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 try (SqlAgent agent = config.agent()) {
-  Stream<String> deptNameStream = agent.query("department/select_department").select("dept_name", String.class);
+  Stream<String> deptNameStream = agent.query("department/select_department").select("deptName", String.class);
 }
 ```
 
@@ -650,21 +670,21 @@ DB更新処理(登録/変更/削除)やDDLの実行も検索処理と同様`SQL�
 ```java
 // １件挿入(SQL名指定)
 int count = agent.update("department/insert_department")
-  .param("dept_no", 1)
-  .param("dept_name", "Sales")
+  .param("deptNo", 1)
+  .param("deptName", "Sales")
   .count();
 
 // 更新(SQL文字列指定)
-int count = agent.updateWith("update employee set first_name = /*first_name*/ where emp_no = /*emp_no*/")
-  .param("emp_no", 1)
-  .param("first_name", "Bob")
+int count = agent.updateWith("update employee set first_name = /*firstName*/ where emp_no = /*empNo*/")
+  .param("empNo", 1)
+  .param("firstName", "Bob")
   .count();
 
 // 複数SQL名指定
 int count = agent.updateChained("department/insert_department", "department/update_department")
-  .param("dept_no", 1)
-  .param("dept_name", "Sales")
-  .param("upd_dept_name", "HR")
+  .param("deptNo", 1)
+  .param("deptName", "Sales")
+  .param("updDeptName", "HR")
   .count();
 
 ```
@@ -679,7 +699,7 @@ into
   dept_name
 , lock_version
 ) values (
-  /*dept_name*/'sample'
+  /*deptName*/'sample'
 ,  0
 )
 ```
@@ -688,9 +708,9 @@ department/update_department.sql
 
 ```sql
 update /* _SQL_ID_ */ department
-set dept_name =  /*upd_dept_name*/'sample'
+set dept_name =  /*updDeptName*/'sample'
 where
-dept_name = /*dept_name*/
+dept_name = /*deptName*/
 ```
 
 `SqlUpdate`インタフェースの主なAPIは以下になります。
@@ -707,22 +727,28 @@ dept_name = /*dept_name*/
 try (SqlAgent agent = config.agent()) {
   // insert
   agent.update("department/insert_department")
-    .param("dept_no", 1)
-    .param("dept_name", "sales")
+    .param("deptNo", 1)
+    .param("deptName", "sales")
     .count();
   // update
   agent.update("department/update_department")
-    .param("dept_no", 1)
-    .param("dept_name", "HR")
+    .param("deptNo", 1)
+    .param("deptName", "HR")
     .count();
   // delete
   agent.update("department/delete_department")
-    .param("dept_no", 1)
+    .param("deptNo", 1)
     .count();
 }
 ```
 
-::: warning updateChained で返却されるcount() の値
+::: warning updateChained の利用について
+updateChainedメソッドは内部で指定された複数のSQLを1つに結合したうえで一度のDB間通信でまとめてSQLの発行を行います。  
+大量のSQL更新があり、都度DB通信することによるオーバーヘッドが問題になる場合に有効です。  
+ただし、内部で行われるSQL文の結合処理のオーバーヘッドもあるため、このメソッドを利用する場合は必ず実際に計測して効果があることを確認してください。
+:::
+
+::: danger updateChained で返却されるcount() の値
 
 JDBCでは 1つのPreparedStatementで複数のSQLを実行した結果について明確に規定していません。そのため利用するDBによって結果が変わります。  
 updateChainedを利用する場合はDB毎にどういう結果が返却されるかを理解したうえでご利用ください。
@@ -842,7 +868,7 @@ private Stream<Map<String, Object>> getDataByFile(final Path filePath) {
 data/department.tsv　の内容
 
 ```yaml
-dept_no  dept_name
+deptNo  deptName
 1  sales
 2  export
 3  accounting
@@ -870,11 +896,11 @@ int updateCount = agent.batch("department/update_department")
 
 `SqlBatch`インタフェースにはバッチSQL実行時の動作を変更するためのAPIが提供されています。
 
-| メソッド                                                  | 説明                                                                                      | デフォルト値                             |
-| :-------------------------------------------------------- | :---------------------------------------------------------------------------------------- | :--------------------------------------- |
-| by(BiPredicate\<SqlContext, Map\<String, Object\>\>)      | バッチSQLの実行条件を指定します。`BiPredicate`の結果がtrueの場合にバッチSQLを実行します。 | 1000件毎                                 |
-| batchWhen(BiConsumer\<SqlAgent, SqlContext\>)             | バッチSQLの実行タイミングで行う操作を指定します。                                         | 何もしない                               |
-| errorWhen(TriConsumer\<SqlAgent, SqlContext, Exception\>) | バッチSQLの実行時に例外が発生した時の動作を指定します。                                   | `UroborosqlRuntimeException`をスローする |
+| メソッド                                                        | 説明                                                                                      | デフォルト値                             |
+| :-------------------------------------------------------------- | :---------------------------------------------------------------------------------------- | :--------------------------------------- |
+| by(BiPredicate\<ExecutionContext, Map\<String, Object\>\>)      | バッチSQLの実行条件を指定します。`BiPredicate`の結果がtrueの場合にバッチSQLを実行します。 | 1000件毎                                 |
+| batchWhen(BiConsumer\<SqlAgent, ExecutionContext\>)             | バッチSQLの実行タイミングで行う操作を指定します。                                         | 何もしない                               |
+| errorWhen(TriConsumer\<SqlAgent, ExecutionContext, Exception\>) | バッチSQLの実行時に例外が発生した時の動作を指定します。                                   | `UroborosqlRuntimeException`をスローする |
 
 これらのAPIを利用することでより柔軟なSQL実行が可能になります。
 
@@ -926,10 +952,27 @@ try (SqlAgent agent = config.agent()) {
 
 ```java
 // Procedureインタフェースのインスタンスを取得
-Map<String, Object> result = agent.procWith("{call product_id_exist_check(/*product_id*/, /*check_out*/)}")
-  .param("product_id", 0)
-  .outParam("check_out", java.sql.JDBCType.NUMERIC)
+Map<String, Object> result = agent.procWith("{call product_id_exist_check(/*productId*/, /*checkOut*/)}")
+  .param("productId", 0)
+  .outParam("checkOut", java.sql.JDBCType.NUMERIC)
   .call();
 // outParamメソッドで指定したパラメータの値(戻り値)を取得
-BigDecimal checkOut = (BigDecimal)result.get("check_out");
+BigDecimal checkOut = (BigDecimal)result.get("checkOut");
+```
+
+## リトライ(`SqlFluent#retry`)
+
+SQLを実行した際、タイミングによって発生する例外（テーブルロックエラーなど）の場合はリトライを行い、できるだけ正常に処理を終了させたい場合があります。  
+uroboroSQLでは、`retry` メソッドにより簡潔で確実なリトライ処理が行えるよう工夫されています。
+
+```java
+try (SqlAgent agent = config.agent()) {
+  // INSERT文の実行
+  // insert into product (product_id) values (/*productId*/0);
+  // リトライ対象エラーコードの場合、5回のリトライを20ms間隔で行う
+  agent.update("example/insert_product")
+    .param("productId", 1)
+    .retry(5, 20)
+    .count();
+}
 ```

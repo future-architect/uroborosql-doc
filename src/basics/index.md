@@ -79,7 +79,7 @@ src
 
 ::: tip
 SQLファイルのルートフォルダ（初期値：`sql`)は変更することができます。  
-変更方法の詳細は [SQLファイルルートフォルダの設定](../configuration/sql-manager.md#sqlファイルルートフォルダの設定) を参照してください。
+変更方法の詳細は [SQLファイルルートフォルダの設定](../configuration/sql-resource-manager.md#sqlファイルルートフォルダの設定) を参照してください。
 :::
 
 ### SQL名
@@ -107,23 +107,25 @@ SQLファイルの配置は設定によりカスタマイズが可能です。SQ
 
 ```java
 Map<String, Object> department = agent.query("department/select_department")
-  .param("dept_no", 1)
-  .param("dept_name", "sales")
+  .param("deptNo", 1)
+  .param("deptName", "sales")
   .first();
 ```
 
-| 主なメソッド                                                         | 説明                                                                                                                                                                                                   |
-| :------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <V&gt; SqlFluent#param(String key, V value)                          | バインドパラメータや置換文字列として使用するキーと値のセットを設定する                                                                                                                                 |
-| <V&gt; SqlFluent#param(String key, V value, SQLType sqlType)         | SQLTypeを指定して値を設定する                                                                                                                                                                          |
-| <V&gt; SqlFluent#param(String key, V value, int sqlType)             | SQLTypeを表すint型を指定して値を設定する                                                                                                                                                               |
-| <V&gt; SqlFluent#param(String key, Supplier<V&gt; supplier)          | supplierの評価結果をキーの値としてパラメータに設定する <Badge text="0.10.1+"/>                                                                                                                         |
-| <V&gt; SqlFluent#paramIfAbsent(String key, V value)                  | 指定したキーがまだ登録されていない場合に値を設定する                                                                                                                                                   |
-| <V&gt; SqlFluent#paramIfAbsent(String key, V value, SQLType sqlType) | 指定したキーがまだ登録されていない場合にSQLTypeを指定して値を設定する                                                                                                                                  |
-| <V&gt; SqlFluent#paramIfAbsent(String key, V value, int sqlType)     | 指定したキーがまだ登録されていない場合にSQLTypeを表すint型を指定して値を設定する                                                                                                                       |
-| ~~<V&gt; SqlFluent#paramList(String key, V... value)~~               | IN句のバインドパラメータに使用するキーと値のセットを設定する。<br><Badge text="0.14.0+" /> から非推奨。かわりに`param()`に`Arrays.asList()`もしくは`List.of()`を使って`List型`に詰めて設定してください |
-| SqlFluent#paramMap(Map<String, ?&gt; paramMap)                       | 引数のMapのKey/Valueのセットをパラメータに設定する                                                                                                                                                     |
-| <V&gt; SqlFluent#paramBean(V bean)                                   | 引数として渡されたbeanのフィールド名と値のセットをパラメータに設定する                                                                                                                                 |
+| 主なメソッド                                                           | 説明                                                                                   |
+| :--------------------------------------------------------------------- | :------------------------------------------------------------------------------------- |
+| <V&gt; SqlFluent#param(String key, V value)                            | バインドパラメータや置換文字列として使用するキーと値のセットを設定する                 |
+| <V&gt; SqlFluent#param(String key, V value, SQLType sqlType)           | SQLTypeを指定して値を設定する                                                          |
+| <V&gt; SqlFluent#param(String key, V value, int sqlType)               | SQLTypeを表すint型を指定して値を設定する                                               |
+| <V&gt; SqlFluent#param(String key, Supplier<V&gt; supplier)            | supplierの評価結果をキーの値としてパラメータに設定する <Badge text="0.10.1+"/>         |
+| <V&gt; SqlFluent#paramIfAbsent(String key, V value)                    | 指定したキーがまだ登録されていない場合に値を設定する                                   |
+| <V&gt; SqlFluent#paramIfAbsent(String key, V value, SQLType sqlType)   | 指定したキーがまだ登録されていない場合にSQLTypeを指定して値を設定する                  |
+| <V&gt; SqlFluent#paramIfAbsent(String key, V value, int sqlType)       | 指定したキーがまだ登録されていない場合にSQLTypeを表すint型を指定して値を設定する       |
+| <V&gt; SqlFluent#paramIfNotEmpty(String key, V value)                  | 指定した値が空文字、空配列、空List以外の場合に値を設定する                             |
+| <V&gt; SqlFluent#paramIfNotEmpty(String key, V value, SQLType sqlType) | 指定した値が空文字、空配列、空List以外の場合にSQLTypeを指定して値を設定する            |
+| <V&gt; SqlFluent#paramIfNotEmpty(String key, V value, int sqlType)     | 指定した値が空文字、空配列、空List以外の場合にSQLTypeを表すint型を指定して値を設定する |
+| SqlFluent#paramMap(Map<String, ?&gt; paramMap)                         | 引数のMapのKey/Valueのセットをパラメータに設定する                                     |
+| <V&gt; SqlFluent#paramBean(V bean)                                     | 引数として渡されたbeanのフィールド名と値のセットをパラメータに設定する                 |
 
 他にもパラメータの型に応じたパラメータ設定メソッドが提供されています。
 
@@ -135,7 +137,7 @@ DBの種類によっては配列型をサポートしています。（postgresq
 
 ```java
 agent.query("select_with_array")
-  .param("array_values", new String[] {"1", "2"})
+  .param("arrayValues", new String[] {"1", "2"})
   .first();
 ```
 
@@ -146,7 +148,7 @@ select
   st.val
 from sample_table st
 where 1 = 1
-and st.val = ANY(/*array_values*/)
+and st.val = ANY(/*arrayValues*/)
 ```
 
 :::
