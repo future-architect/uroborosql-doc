@@ -144,7 +144,8 @@ AuditLogEventSubscriber で件数を取得するためにはResultSetの種類�
 
 ::: warning 注意事項
 DumpResultEventSubscriber によるクエリ結果の取得にはResultSetの種類が `ResultSet#TYPE_SCROLL_INSENSITIVE` または `ResultSet#TYPE_SCROLL_SENSITIVE` である必要があります。  
-`ResultSet#TYPE_FORWARD_ONLY` の場合は クエリ結果は出力されますが、カーソルを戻せないため検索後の動作が変わります。
+`ResultSet#TYPE_FORWARD_ONLY` の場合もクエリ結果は出力されますが、このサブスクライバーが結果セットを先頭から最後まで読み進めるため、
+処理後にはカーソルが末尾に到達し、アプリケーション側で同じ `ResultSet` を使った後続の検索・取得処理は行えなくなります（結果セットが消費されます）
 :::
 
 ### ReplCommandLogEventSubscriber

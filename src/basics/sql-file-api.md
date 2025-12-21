@@ -824,10 +824,10 @@ insert into person (
 
 `SqlBatch`インタフェースでは、`SqlFluent`インタフェースによるバインドパラメータの設定とは別に`java.util.stream.Stream`を用いたバッチパラメータの設定を行うAPIが提供されています。
 
-| メソッド                                              | 説明                                                                                                                                     |
-| :---------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
-| SqlBatch#paramStream(Stream\<Map\<String, Object\>\>) | バインドパラメータや置換文字列として使用するキーと値のセットを`java.util.stream.Stream`で設定する。<Badge text="0.5.0+"/>                |
-| SqlBatch#paramStream(Stream\<E\>)                     | バインドパラメータや置換文字列として使用するエンティティクラスインスタンスを`java.util.stream.Stream`で設定する。<Badge text="0.10.0+"/> |
+| メソッド                                          | 説明                                                                                                                                     |
+| :------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| SqlBatch#paramStream(Stream<Map<String, Object>>) | バインドパラメータや置換文字列として使用するキーと値のセットを`java.util.stream.Stream`で設定する。<Badge text="0.5.0+"/>                |
+| SqlBatch#paramStream(Stream<E\>)                  | バインドパラメータや置換文字列として使用するエンティティクラスインスタンスを`java.util.stream.Stream`で設定する。<Badge text="0.10.0+"/> |
 
 ### バッチ更新の実行(`SqlBatch#count`)
 
@@ -896,11 +896,11 @@ int updateCount = agent.batch("department/update_department")
 
 `SqlBatch`インタフェースにはバッチSQL実行時の動作を変更するためのAPIが提供されています。
 
-| メソッド                                                        | 説明                                                                                      | デフォルト値                             |
-| :-------------------------------------------------------------- | :---------------------------------------------------------------------------------------- | :--------------------------------------- |
-| by(BiPredicate\<ExecutionContext, Map\<String, Object\>\>)      | バッチSQLの実行条件を指定します。`BiPredicate`の結果がtrueの場合にバッチSQLを実行します。 | 1000件毎                                 |
-| batchWhen(BiConsumer\<SqlAgent, ExecutionContext\>)             | バッチSQLの実行タイミングで行う操作を指定します。                                         | 何もしない                               |
-| errorWhen(TriConsumer\<SqlAgent, ExecutionContext, Exception\>) | バッチSQLの実行時に例外が発生した時の動作を指定します。                                   | `UroborosqlRuntimeException`をスローする |
+| メソッド                                                      | 説明                                                                                      | デフォルト値                             |
+| :------------------------------------------------------------ | :---------------------------------------------------------------------------------------- | :--------------------------------------- |
+| by(BiPredicate<ExecutionContext, Map<String, Object>>)        | バッチSQLの実行条件を指定します。`BiPredicate`の結果がtrueの場合にバッチSQLを実行します。 | 1000件毎                                 |
+| batchWhen(BiConsumer<SqlAgent, ExecutionContext>)             | バッチSQLの実行タイミングで行う操作を指定します。                                         | 何もしない                               |
+| errorWhen(TriConsumer<SqlAgent, ExecutionContext, Exception>) | バッチSQLの実行時に例外が発生した時の動作を指定します。                                   | `UroborosqlRuntimeException`をスローする |
 
 これらのAPIを利用することでより柔軟なSQL実行が可能になります。
 
