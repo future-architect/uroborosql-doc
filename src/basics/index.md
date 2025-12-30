@@ -82,7 +82,7 @@ SQLファイルのルートフォルダ（初期値：`sql`)は変更するこ�
 変更方法の詳細は [SQLファイルルートフォルダの設定](../configuration/sql-resource-manager.md#sqlファイルルートフォルダの設定) を参照してください。
 :::
 
-### SQL名
+## SQL名
 
 SQLファイルの指定する際のファイルパスを`SQL名`といいます。  
 上記フォルダ構成の場合、それぞれのSQLファイルは以下のような`SQL名`となります。
@@ -96,7 +96,7 @@ SQLファイルの指定する際のファイルパスを`SQL名`といいます
 
 SQLファイルの配置は設定によりカスタマイズが可能です。SQLファイル配置のカスタマイズについては [SQLファイルの解決ルール](../advanced/#sqlファイルの解決ルール) を参照してください。
 
-### 共通API
+## 共通API
 
 検索([SqlQuery](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/fluent/SqlQuery.java))、更新([SqlUpdate](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/fluent/SqlUpdate.java))、バッチ更新([SqlBatch](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/fluent/SqlBatch.java))、ストアドプロシージャ実行([Procedure](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/fluent/Procedure.java))を行うクラスは、バインドパラメータや置換文字列の設定を行うためのAPI([SqlFluent](https://github.com/future-architect/uroborosql/blob/main/src/main/java/jp/co/future/uroborosql/fluent/SqlFluent.java))を実装しています。
 
