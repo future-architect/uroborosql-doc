@@ -30,11 +30,6 @@ SqlConfig config = UroboroSQL
     .setEnumConstantPackageNames(Arrays.asList(Gender.class.getPackage().getName()))
      // 定数パラメータのプレフィックス指定(初期値 : CLS_)
     .setConstParamPrefix("CLS_")
-    // query用自動パラメータバインド関数の登録
-    .addQueryAutoParameterBinder((ctx) -> ctx.paramIfAbsent("currentFlg", true))
-    // update/batch/procedure用自動パラメータバインド関数の登録
-    .addUpdateAutoParameterBinder((ctx) -> ctx.paramIfAbsent("insDatetime", LocalDateTime.now()))
-    .addUpdateAutoParameterBinder((ctx) -> ctx.paramIfAbsent("updDatetime", LocalDateTime.now()))
     // パラメータ変換クラスの登録
     .addBindParamMapper(new CustomBindParamMapper())
     // ResultSetTypeの初期値
@@ -243,38 +238,6 @@ where
   emp.gender    =  /*#CLS_GENDER_FEMALE*/'F'  -- 列挙型定数パラメータの指定
 /*END*/
 ```
-
-## 自動パラメータバインド関数の設定 ( `ExecutionContextProvider#addQueryAutoParameterBinder` /`#addUpdateAutoParameterBinder` ) <Badge text="0.6.1+" />
-
-アプリケーションで使用する各テーブルに共通項目（登録日時、更新日時など）が定義されている場合、
-INSERT文やUPDATE文を実行する際には毎回これらの共通項目に対するパラメータを指定する必要が出てきます。  
-このような共通項目へのパラメータ設定を個別に行うと実装が煩雑になり、
-どうしても実装漏れや記述ミスにより正しく値が設定されない、といったことが起こります。
-
-**uroboroSQL**ではこのような共通項目に対して自動的にパラメータをバインドする仕組みを提供しています。  
-自動パラメータバインド関数を設定することで、SQLの実行のたびに自動パラメータバインド関数が呼び出され、
-関数内で指定したパラメータがSQLにバインドされることになります。
-
-設定例
-
-```java
-SqlConfig config = UroboroSQL
-  .builder(...)
-  // ExecutionContextProviderの設定
-  .setExecutionContextProvider(new ExecutionContextProviderImpl()
-    // query用自動パラメータバインド関数の登録
-    .addQueryAutoParameterBinder((ctx) -> ctx.paramIfAbsent("currentFlg", true))
-    // update/batch/procedure用自動パラメータバインド関数の登録
-    .addUpdateAutoParameterBinder((ctx) -> ctx.paramIfAbsent("insDatetime", LocalDateTime.now()))
-    .addUpdateAutoParameterBinder((ctx) -> ctx.paramIfAbsent("updDatetime", LocalDateTime.now()))
-  ).build();
-```
-
-自動パラメータバインド関数は`ExecutionContext`を引数に受け取るので、関数内でパラメータの設定を行ってください。
-
-::: tip
-関数の評価は、SQL生成処理（SQL文内の`/*IF*/`や`/*BEGIN*/`、`/*parameterName*/`の評価）の直前に行われます。
-:::
 
 ## バインドパラメータ変換クラスの設定 ( `ExecutionContextProvider#addBindParamMapper` ) <Badge text="0.6.1+" />
 

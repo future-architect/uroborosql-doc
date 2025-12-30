@@ -856,12 +856,12 @@ public class Employee {
 
 独自に作成した型(ドメインクラス)やEnumのフィールドにカラムをマッピングする場合に指定します。
 
-| 属性名        | 型       | 必須 | 説明                                                                                     | 初期値     |
-| :------------ | :------- | :--: | :--------------------------------------------------------------------------------------- | :--------- |
-| valueType     | Class<?> |  〇  | ドメインクラスを生成するのに必要な値の型                                                 | なし       |
-| factoryMethod | String   |  -   | ドメインクラスを生成・取得するメソッド名。指定しない場合はコンストラクタが呼び出される。 | ""         |
-| toJdbcMethod  | String   |  -   | JDBCが受け付けられる値に変換するメソッド名                                               | "getValue" |
-| nullable      | boolean  |  -   | null可かどうかの指定                                                                     | false      |
+| 属性名        | 型       | 必須 | 説明                                                                                                   | 初期値     |
+| :------------ | :------- | :--: | :----------------------------------------------------------------------------------------------------- | :--------- |
+| valueType     | Class<?> |  〇  | ドメインクラスを生成するのに必要な値の型                                                               | なし       |
+| factoryMethod | String   |  -   | ドメインクラスを生成・取得するメソッド名。指定しない場合は値を引数としたコンストラクタが呼び出される。 | ""         |
+| toJdbcMethod  | String   |  -   | JDBCが受け付けられる値に変換するメソッド名                                                             | "getValue" |
+| nullable      | boolean  |  -   | null可かどうかの指定                                                                                   | false      |
 
 例
 
@@ -975,6 +975,81 @@ public class Employee {
 
   // 以下略
 }
+```
+
+#### カスタムサプライヤの追加
+
+独自のバージョン管理ロジックが必要な場合は、`OptimisticLockSupplier`インターフェースを実装したカスタムサプライヤを作成して利用することができます。
+
+カスタムサプライヤを作成するには以下の手順を実施します。
+
+1. `jp.co.future.uroborosql.mapping.OptimisticLockSupplier`クラスを継承したクラスを作成
+2. ServiceLoader用の設定ファイル `META-INF/services/jp.co.future.uroborosql.mapping.OptimisticLockSupplier` を作成し、実装クラスの完全修飾名を記述
+3. エンティティクラスの`@Version`アノテーションのsupplier属性に作成したカスタムサプライヤを指定
+
+#### 実装例（UUIDを使用した楽観ロックのサプライヤ）
+
+1. `UuidOptimisticLockSupplier`クラスを作成
+
+```java
+package com.example.custom;
+
+import java.util.UUID;
+import jp.co.future.uroborosql.mapping.OptimisticLockSupplier;
+import jp.co.future.uroborosql.mapping.TableMetadata;
+
+/**
+ * カスタム楽観ロックサプライヤ（UUIDベース）
+ */
+public class UuidOptimisticLockSupplier extends OptimisticLockSupplier {
+
+  @Override
+	public String getPart(TableMetadata.Column versionColumn, SqlConfig sqlConfig) {
+    // バージョンカラムの設定を行うためのSQLパーツを作成して返却する
+    // UUID文字列を生成して設定
+		return versionColumn.getColumnIdentifier() + " = '" + UUID.randomUUID().toString() + "'";
+	}
+}
+```
+
+2. ServiceLoader用設定ファイル `src/main/resources/META-INF/services/jp.co.future.uroborosql.mapping.OptimisticLockSupplier` の作成
+
+```
+com.example.custom.UuidOptimisticLockSupplier
+```
+
+3. エンティティクラスでの使用例
+
+```java
+import jp.co.future.uroborosql.mapping.annotations.Table;
+import jp.co.future.uroborosql.mapping.annotations.Version;
+import com.example.custom.UuidOptimisticLockSupplier;
+
+@Table
+public class Employee {
+  private long empNo;
+  private String firstName;
+  private String lastName;
+
+  // カスタムサプライヤを使用したバージョン管理
+  @Version(supplier = UuidOptimisticLockSupplier.class)
+  private String lockUuid;
+
+  // 以下略
+}
+```
+
+この実装により、UPDATE実行時には以下のようなSQLが生成されます:
+
+```sql
+UPDATE employee
+SET
+  first_name = /*firstName*/'John',
+  last_name = /*lastName*/'Doe',
+  lock_uuid = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'  -- UUIDが自動生成される
+WHERE
+  emp_no = /*empNo*/1
+  AND lock_uuid = /*lockUuid*/'previous-uuid-value'  -- 前回のUUID値で検証
 ```
 
 ### `@Id` /`@GeneratedValue` /`@SequenceGenerator` <Badge text="0.12.0+"/>

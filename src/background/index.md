@@ -382,8 +382,13 @@ from
 （以下略）
 ```
 
-::: tip SQL_IDの記述場所
-SQL_ID はSQL中のどこに記述しても問題ありません。  
+::: tip `SQL_ID`の置換文字列指定
+`SQL_ID` の置換文字列のデフォルト設定は`_SQL_ID_`ですが、これは SqlAgentProviderの設定で変更することができます。  
+設定方法については [SQL_IDの置換文字列設定](../configuration/sql-agent-provider.html#sql-id%E3%81%AE%E7%BD%AE%E6%8F%9B%E6%96%87%E5%AD%97%E5%88%97%E8%A8%AD%E5%AE%9A-sqlagentprovider-setsqlidkeyname) を参照してください。
+:::
+
+::: tip `SQL_ID`の記述場所
+`SQL_ID` はSQL中のどこに記述しても問題ありません。  
 ただし、ログやSQL発行結果で確認することが目的であるため、SQLの最初の予約語の後に記述することが慣例となっています。  
 （文の先頭に記述した場合、DBの種類によっては不要なコメントとして除去されることがあるため、予約語の後ろに記述します）  
 具体的には `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `WITH` の後ろに記述します。

@@ -50,6 +50,11 @@ const links = {
       ],
     },
     {
+      text: "ベストプラクティス",
+      collapsed: true,
+      items: [getLinkItem("/best_practices/")],
+    },
+    {
       text: "設定",
       collapsed: true,
       items: [
@@ -65,7 +70,16 @@ const links = {
     {
       text: "高度な操作",
       collapsed: true,
-      items: [getLinkItem("/advanced/")],
+      items: [
+        getLinkItem("/advanced/"),
+        getLinkItem("/advanced/in-transaction-exception-handling.html"),
+        getLinkItem("/advanced/cache-metadata.html"),
+        getLinkItem("/advanced/parameter-mapping.html"),
+        getLinkItem("/advanced/update-delegate.html"),
+        getLinkItem("/advanced/sql-coverage.html"),
+        getLinkItem("/advanced/logging.html"),
+        getLinkItem("/advanced/system-properties.html"),
+      ],
     },
     getLinkItem("/developer_tools/"),
     getLinkItem("/developer_guide/"),
@@ -146,6 +160,7 @@ export default defineConfig({
       { text: "Home", link: "/" },
       { text: "Getting Started", link: "/getting_started/" },
       { text: "基本操作", link: "/basics/" },
+      { text: "ベストプラクティス", link: "/best_practices/" },
       { text: "設定", link: "/configuration/" },
       { text: "高度な操作", link: "/advanced/" },
       { text: "Developer Tools", link: "/developer_tools/" },

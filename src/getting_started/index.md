@@ -24,7 +24,7 @@ head:
 ```
 
 また、<Badge text="0.18.0+" vertical="middle" /> より式言語ライブラリの選択が可能になりました。  
-以下の2つのライブラリのうち、どちらかを選択してライブラリ依存関係に追加して下さい。
+以下の2つのライブラリのうち、**どちらか** を選択してライブラリ依存関係に追加して下さい。
 
 [Spring Expression Language(SpEL)](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#expressions)を利用する場合 <Badge text="推奨" vertical="middle"/>
 
@@ -78,6 +78,11 @@ compile group: 'org.fusesource.jansi', name: 'jansi', version: '2.4.0'
 
 ::: tip
 uroboroSQLを利用するためには、Java11以上の環境が必要です。
+:::
+
+::: warning ライブラリ依存関係指定時の注意
+Spring Expression Language(SpEL) や OGNL をライブラリ依存関係に追加する際は、**かならず** どちらか一方のみを指定するようにしてください。  
+両方のライブラリを依存に追加すると予期しない動作を発生させ、不具合の原因になります。
 :::
 
 ## 事前準備

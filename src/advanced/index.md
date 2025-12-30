@@ -8,11 +8,9 @@ head:
       content: "/uroborosql-doc/advanced/"
 ---
 
-# 高度な操作
+# SQLファイルの解決ルール
 
-## SQLファイルの解決ルール
-
-### 複数フォルダの指定
+## 複数フォルダの指定
 
 sqlフォルダはクラスパスから参照することが出来れば複数指定することが出来ます。
 
@@ -46,211 +44,44 @@ SQLファイルのパスが重複している場合、クラスパス上で先�
 
 上記のフォルダ構成の場合、`src/main/resources/sql/employee/select_employee.sql` と `src/test/resources/sql/employee/select_employee.sql` がともに `employee/select_employee` として解決されますが、クラスパスとして`src/test/resources`が先に指定されているため、`src/test/resources/sql/employee/select_employee.sql`が使用されます。
 
-### jarファイルの指定
+## jarファイルの指定
 
 SQLファイルはjarの中にリソースとして含めることもできます。  
 その場合、リソースのルート直下のsqlフォルダをルートフォルダとした相対パスでSQLファイルを指定することができます。
 SQLファイルのルートフォルダ（初期値：sql)は変更することができます。  
 変更方法の詳細は [SQLファイルルートフォルダの設定](../configuration/sql-resource-manager.md#sqlファイルルートフォルダの設定) を参照してください。
 
-### Dialectによるファイルパスの切り替え
+## DB種類毎のファイルパス切り替え
 
-`NioSqlManagerImpl`を`SqlManager`として指定した場合、Dialectによるファイルパスの切り替えが出来るようになります。
-詳しくは[DB種類毎のファイルパス切り替え](../configuration/sql-resource-manager.md#db種類毎のファイルパス切り替え)を参照してください。
+[Dialect](./dialect.md#dialect)を利用して、１つのSQL名に対してDB種類毎にファイルパスを切り替えることが出来ます。  
+この機能により、接続先のDB種類が複数ある場合に発生するSQL構文の差異を吸収することができます。
 
-## PostgreSQLのトランザクション内SQLエラー対応
+以下のようなファイル構成を例として説明します。
 
-PostgreSQLでは、１つのトランザクション内でSQLエラーが発生した場合、後続するSQL文はすべて無条件でエラーとなります。
-この状態はトランザクションに対して`commit`もしくは`rollback`を実行するまで続きます。
-
-::: warning
-エラーが発生している状態で`commit`を実行しても実際には`rollback`されます
-:::
-
-これはPostgreSQL固有の動作であり、通常は問題ない動作なのですが、テーブルロックエラーなどリトライ処理を行うケースで問題になります。
-（SQLのリトライについては[SQL実行のリトライ](../configuration/sql-agent-provider.md#sql実行のリトライ-sqlagentprovider-setsqlretrycodelist-setdefaultmaxretrycount-setdefaultsqlretrywaittime)を参照）  
-**uroboroSQL**ではリトライ指定のあるSQL実行、かつ、PostgreSQL（より正確には`Dialect#isRollbackToSavepointBeforeRetry()`が`true`の場合）の場合にsavepointを使った部分ロールバックを行うことで
-この問題に対応しています。  
-具体的にはリトライ指定のあるSQL実行、かつ、PostgreSQLの場合はSQL実行の直前にリトライ用のsavepointを設定し、SQL実行が成功すればsavepointの解放、SQL実行が失敗した場合はリトライ用のsavepointまでロールバックを行います。
-
-::: warning
-リトライ指定のないSQL実行の場合はsavepointの設定は行われません。
-:::
-
-リトライ指定のないSQLで上記と同様の動作を行う場合は以下のように実装してください。
-
-```java
-agent.required(() -> { // トランザクション開始
-  agent.savepointScope(() -> {
-    // savepointScopeの開始
-    agent.update("example/insert_product")
-      .param("productId", 1)
-      .count();
-  });
-  agent.savepointScope(() -> {
-    // 後続処理
-    int count = agent.update("department/insert_department")
-      .param("deptNo", 1)
-      .param("deptName", "Sales")
-      .count();
-      ・・・
-  });
-});
+```txt
+sql
+  ├─employee
+  │    └─select_employee.sql  -- Oracle, postgresql以外のDB用SQL
+  ├─oracle
+  │   └─employee
+  │        └─select_employee.sql  -- oracle DB用SQL
+  └─postgresql
+      └─employee
+           └─select_employee.sql  -- postgresql DB用SQL
 ```
 
-## 更新処理の委譲（ExecutionContext#setUpdateDelegate()）
+SQL名として`employee/select_employee`を指定した場合、  
+Oracle DBの場合は`sql/oracle/employee/select_employee.sql`が読み込まれます。  
+同様にPostgresql DBの場合は`sql/postgresql/employee/select_employee.sql`が読み込まれます。  
+DBに対するDialect用のフォルダがない場合は通常通り`sql/employee/select_employee.sql`が読み込まれます。
 
-Webアプリケーションを作成する場合、以下のような流れで画面からの登録処理を行うことがあります。
+DB毎のフォルダ名
 
-1. データ検証（データの存在有無や重複チェック、データの整合性チェックなど）
-2. 登録、更新処理
-
-その際、より厳密に一度 1. のデータ検証だけを実施し、問題がなければ再度1. と 2. を合わせて処理を行うことがあります。  
-この場合 1. のデータ検証だけを行うモードかどうかをフロントエンドから渡し、それによって 1. と 2. を実行するか分岐することになります。
-
-- 個別処理での実装イメージ
-
-```java
-if (request.isCheckMode()) {
-  // 1. データ検証（データ検証用のQuery発行）
-  validateData(request);
-} else {
-  // 1. データ検証（データ検証用のQuery発行）
-  validateData(request);
-  // 2. 登録、更新処理
-  createData(request);
-}
-```
-
-このような処理を個別実装で行うと実装漏れが起こりやすく、テストも大変になります。  
-このような場合に更新処理の委譲を利用することで、データ検証を行うモードの場合には更新処理をスキップする、といった動作を一律指定することが出来ます。
-
-更新処理の委譲を利用する場合、ExecutionContextに委譲用のFunctionを指定します。
-
-- setUpdateDelegate 実装例
-
-```java
-SqlUpdate update = agent.update("example/update_product")
-  .set("productName", "new_name")
-  .set("janCode", "1234567890123")
-  .equal("productId", 1);
-ExecutionContext ctx = update.context();
-ctx.setUpdateDelegate(context -> 2); // 更新の委譲処理。登録する Function は 引数として ExecutionContext を受取り、int（更新件数）を返却する
-update.count(); // SQLは発行されず、代わりに委譲用のFunctionが実行され戻り値 2 が返る
-```
-
-ExecutionContext#setUpdateDelegate() は通常 [自動パラメータバインド関数の設定](../configuration/execution-context-provider.md#自動パラメータバインド関数の設定-executioncontextprovider-addqueryautoparameterbinder-addupdateautoparameterbinder) と合わせて利用します。
-
-- ExecutionContextProviderの設定例
-
-```java
-SqlConfig config = UroboroSQL
-  .builder(...)
-  // ExecutionContextProviderの設定
-  .setExecutionContextProvider(new ExecutionContextProviderImpl()
-    // update/batch/procedure用自動パラメータバインド関数の登録
-    .addUpdateAutoParameterBinder((ctx) -> {
-      if (チェックモードなら) {
-        ctx.setUpdateDelegate(context -> 1);
-      }
-    })
-  ).build();
-```
-
-- setUpdateDelegateを利用した実装イメージ
-
-```java
-// 1. データ検証（データ検証用のQuery発行）
-validateData(request);
-// 2. 登録、更新処理　（チェックモードの場合はsetUpdateDelegateにより更新SQLの発行が行われない）
-createData(request);
-```
-
-## SQLカバレッジ ( `uroborosql.sql.coverage` )
-
-これまでアプリケーション上の条件分岐はカバレッジツールを利用して網羅率を確認することができました。  
-しかし、SQL文の条件分岐は実際にその分岐が通っているかどうかを確認する手段がなく、リリース後に初めて通った条件で不具合を発生させることがありました。  
-この問題を解決するために**uroboroSQL**では、SQL文の条件分岐を集計してカバレッジレポートを行う機能を提供します。
-
-SQLカバレッジは**uroboroSQL**を利用するアプリケーションの起動時オプションに
-
-```md
--Duroborosql.sql.coverage=true
-```
-
-を追加することで有効になります。  
-SQLカバレッジを有効にするとアプリケーションが実行している間に実行されるSQLについて、カバレッジ情報が収集されます。  
-カバレッジ情報の収集結果は標準では`target/coverage/sql-cover.xml`に出力されます。  
-このファイルの場所や名前を変更したい場合は、起動時オプションに
-
-```md
--Duroborosql.sql.coverage.file=[出力ファイルパス]
-```
-
-を指定してください。
-
-出力された`sql-cover.xml`をJenkinsのCobertura pluginなどのXMLレポートとして読み込むとSQLファイルのカバレッジレポートが参照できるようになります。
-
-![カバレッジレポート例](./cobertura.png "Jenkins Cobertura Report"){width=600px}
-
-また<Badge text="0.2.0+" vertical="middle"/>より、**uroboroSQL**のみでHTMLレポートを出力することができるようになりました。  
-起動時オプションに
-
-```md
--Duroborosql.sql.coverage=jp.co.future.uroborosql.coverage.reports.html.HtmlReportCoverageHandler
-```
-
-を指定することで本機能を利用することができます。
-
-カバレッジ情報はデフォルトでは`target/coverage/sql`フォルダ配下に出力されます。  
-出力先フォルダを変更した場合は、起動時オプションに
-
-```md
--Duroborosql.sql.coverage.dir=[出力フォルダパス]
-```
-
-を指定してください。
-
-出力されたレポートのサンプルは下記を参照してください。
-
-### サマリーページ
-
-![HTML Coverage Report Summary](./html_coverage_report_summary.png){width=800px}
-
-### 詳細ページ
-
-![HTML Coverage Report](./html_coverage_report.png){width=800px}
-
-<a :href="withBase('/sample/testReport/index.html')" target="_blank" style="font-size:20px;"><i class="fa fa-external-link" aria-hidden="true"></i>出力サンプル</a>
-
-## ログ出力
-
-**uroboroSQL**ではログ出力ライブラリとしてSLF4Jを使用しています。SLF4Jの詳細は[公式のドキュメント](https://www.slf4j.org/)を参照して下さい。  
-**uroboroSQL**で出力されるログ内容は以下表の通りです。
-
-| ログ名                              | 説明               | TRACE                                  | DEBUG                       | INFO | WARN | ERROR          | FATAL |
-| :---------------------------------- | :----------------- | :------------------------------------- | :-------------------------- | :--- | :--- | :------------- | :---- |
-| jp.co.future.uroborosql.log         | サービスログ       | SQLロード時情報                        | 実行SQL名<br/>リトライ情報  | -    | -    | エラーログ     | -     |
-| jp.co.future.uroborosql.sql         | SQLログ            | テンプレートSQL<br/>バインドパラメータ | SQLファイルパス<br/>実行SQL | -    | -    | -              | -     |
-| jp.co.future.uroborosql.setting     | 設定ログ           | -                                      | 設定時情報                  | -    | -    | -              | -     |
-| jp.co.future.uroborosql.performance | パフォーマンスログ | -                                      | SQL実行時間                 | -    | -    | -              | -     |
-| jp.co.future.uroborosql.event       | イベントログ       | -                                      | イベント処理内容            | -    | -    | -              | -     |
-| jp.co.future.uroborosql.parser      | パーサーログ       | -                                      | IF文評価結果                | -    | -    | -              | -     |
-| jp.co.future.uroborosql.coverage    | SQLカバレッジログ  | カバレッジデータダンプ                 | -                           | -    | -    | -              | -     |
-| jp.co.future.uroborosql.repl        | REPLログ           | -                                      | -                           | -    | -    | REPLエラーログ | -     |
-
-## システムプロパティ
-
-**uroboroSQL**ではシステムプロパティを指定することで動作を変更することができます。
-
-| プロパティ名                        | 説明                                                                                                                                                                                                                                                 | 初期値                          |
-| :---------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------ |
-| uroborosql.sql.coverage             | SQLカバレッジを出力するかどうかのフラグ。`true`の場合はSQLカバレッジを出力します。<br>文字列として`jp.co.future.uroborosql.coverage.CoverageHandler`インタフェースの<br>実装クラスが設定された場合はそのクラスを利用してカバレッジの収集を行います。 | なし                            |
-| uroborosql.sql.coverage.file        | 指定されたPATH(ファイル)に SQLカバレッジのCobertura形式のxmlレポートを出力します。                                                                                                                                                                   | ./target/coverage/sql-cover.xml |
-| uroborosql.sql.coverage.dir         | 指定されたPATH(フォルダ)にSQLカバレッジのHTMLレポートを出力します。                                                                                                                                                                                  | ./target/coverage/sql           |
-| uroborosql.entity.cache.size        | Entityクラス情報のキャッシュサイズを指定します。<br>キャッシュサイズを超えるEntityクラスの読み込みがあった場合は古い情報から破棄されます。                                                                                                           | 30                              |
-| uroborosql.use.qualified.table.name | DAOインタフェースで生成するSQLにスキーマ名で修飾したテーブル名を出力(`true`)するか、テーブル名のみを出力(`false`)するかを指定                                                                                                                        | true                            |
-
-<script setup>
-import { withBase } from 'vitepress'
-</script>
+| DB名                 | フォルダ名 |
+| :------------------- | :--------- |
+| H2 DB                | h2         |
+| Microsoft SQL Server | mssql      |
+| MySQL                | mysql      |
+| Oracle               | oracle     |
+| Postgresql           | postgresql |
+| その他               | default    |
