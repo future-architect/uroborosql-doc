@@ -33,10 +33,10 @@ SqlConfig config = UroboroSQL
     // パラメータ変換クラスの登録
     .addBindParamMapper(new CustomBindParamMapper())
     // ResultSetTypeの初期値
-    // java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.TYPE_SCROLL_SENSITIVE のいづれか
+    // java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.TYPE_SCROLL_SENSITIVE のいずれか
     .setDefaultResultSetType(ResultSet.TYPE_FORWARD_ONLY)
     // ResultSetConcurrencyの初期値
-    // java.sql.ResultSet.CONCUR_READ_ONLY, java.sql.ResultSet.CONCUR_UPDATABLE のいづれか
+    // java.sql.ResultSet.CONCUR_READ_ONLY, java.sql.ResultSet.CONCUR_UPDATABLE のいずれか
     .setDefaultResultSetConcurrency(ResultSet.CONCUR_READ_ONLY)
   ).build();
 ```
@@ -305,10 +305,10 @@ SqlConfig config = UroboroSQL
   // ExecutionContextProviderの設定
   .setExecutionContextProvider(new ExecutionContextProviderImpl()
     // ResultSetTypeの初期値
-    // java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.TYPE_SCROLL_SENSITIVE のいづれか
+    // java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.TYPE_SCROLL_SENSITIVE のいずれか
     .setDefaultResultSetType(ResultSet.TYPE_FORWARD_ONLY)
     // ResultSetConcurrencyの初期値
-    // java.sql.ResultSet.CONCUR_READ_ONLY, java.sql.ResultSet.CONCUR_UPDATABLE のいづれか
+    // java.sql.ResultSet.CONCUR_READ_ONLY, java.sql.ResultSet.CONCUR_UPDATABLE のいずれか
     .setDefaultResultSetConcurrency(ResultSet.CONCUR_READ_ONLY)
   ).build();
 ```
