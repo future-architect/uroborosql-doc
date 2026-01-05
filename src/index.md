@@ -5,7 +5,7 @@ hero:
   name: uroboroSQL
   text: '<span style="white-space: nowrap">Java製のシンプルな<wbr>SQL実行ライブラリ</span>'
   image:
-    src: /images/logo.png
+    src: https://future-architect.github.io/uroborosql-doc/images/logo.png
     alt: uroboroSQL
   actions:
     - theme: brand

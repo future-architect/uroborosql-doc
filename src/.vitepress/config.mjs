@@ -139,7 +139,7 @@ export default defineConfig({
   base: "/uroborosql-doc/",
   themeConfig: {
     siteTitle: "", // ロゴがタイトルなのでテキストのタイトルは必要ありません。
-    logo: "images/logo.png",
+    logo: "https://future-architect.github.io/uroborosql-doc/images/logo.png",
     footer: {
       copyright: `MIT Licensed | ©2018-${new Date().getFullYear()} Future Corporation. All rights reserved.`,
     },
