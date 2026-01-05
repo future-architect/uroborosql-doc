@@ -164,7 +164,7 @@ agent.inserts(agent.query(SourceEntity.class) // 検索結果のStreamをTargetE
     .stream()
     .map(sourceEntity -> {
         // データ加工が可能
-        TargetEntity targetEntity = new targetEntity();
+        TargetEntity targetEntity = new TargetEntity();
         targetEntity.setCol1(sourceEntity.getCol1());
         targetEntity.setCol2(transform(sourceEntity.getCol2())); // 加工処理
         targetEntity.setCol3(sourceEntity.getCol3());
@@ -244,7 +244,7 @@ agent.query(SourceEntity.class)
 
 ### バッチ処理の特徴
 
-バッチ処理は、JDBCの `PreparedStatement.addBatch() や PreparedStatement.executeBatch()` を使用して、**更新コマンドと複数のパラメータ値のセットをまとめてデータベースに送信** する方式です。
+バッチ処理は、JDBC の `PreparedStatement.addBatch()` や `PreparedStatement.executeBatch()` を使用して、**更新コマンドと複数のパラメータ値のセットをまとめてデータベースに送信** する方式です。
 
 ```java
 // バッチINSERT（DAO API）

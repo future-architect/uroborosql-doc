@@ -368,7 +368,7 @@ public class User {
 }
 
 // バインドパラメータとして使用
-List<User> users agent.query("user/select_by_user_id")
+List<User> users = agent.query("user/select_by_user_id")
     .param("userId", new UserId("USER001"))  // 内部的に"USER001"がバインドされる
     .collect(User.class);
 ```
@@ -462,7 +462,7 @@ public class PhoneNumberPropertyMapper implements PropertyMapper<PhoneNumber> {
 
 ## ユーザ定義Mapperの登録
 
-ユーザ定義Mapperの登録は、以下のいづれかの方法で行います。
+ユーザ定義Mapperの登録は、以下のいずれかの方法で行います。
 
 ### 1. ServiceLoaderを使用した自動登録
 
