@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import { defineConfig as defineConfigBase } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
 import markdownItTaskLists from "markdown-it-task-lists";
+import llmstxt from 'vitepress-plugin-llms'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -109,6 +110,11 @@ export default defineConfig({
     config(md) {
       md.use(markdownItTaskLists);
     },
+  },
+  vite: {
+    plugins: [
+      llmstxt()
+    ]
   },
   locales: {
     root: {
