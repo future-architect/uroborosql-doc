@@ -1,6 +1,6 @@
 # uroboroSQL Documentation
 
-![uroborosql](public/images/logo.png)
+![uroborosql](blob/main/src/public/images/logo.png)
 
 ## uroboroSQL Documentation site
 
