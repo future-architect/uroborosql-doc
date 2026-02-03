@@ -1,5 +1,7 @@
 # uroboroSQL Documentation
 
+![uroborosql](public/images/logo.png)
+
 ## uroboroSQL Documentation site
 
 https://future-architect.github.io/uroborosql-doc/
@@ -10,4 +12,4 @@ https://future-architect.github.io/uroborosql/
 
 ---
 
- ©2018-2022 Future Corporation. All rights reserved.
+©2018-2022 Future Corporation. All rights reserved.
