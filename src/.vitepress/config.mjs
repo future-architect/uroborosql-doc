@@ -5,6 +5,7 @@ import { defineConfig as defineConfigBase } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
 import markdownItTaskLists from "markdown-it-task-lists";
 import llmstxt from "vitepress-plugin-llms";
+import { copyOrDownloadAsMarkdownButtons } from "vitepress-plugin-llms";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -109,6 +110,7 @@ export default defineConfig({
     lineNumbers: true,
     config(md) {
       md.use(markdownItTaskLists);
+      md.use(copyOrDownloadAsMarkdownButtons);
     },
   },
   vite: {
