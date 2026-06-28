@@ -84,6 +84,7 @@ public class SqliteDialect extends AbstractDialect {
 | supportsForUpdate()                                                                    | boolean       | 明示的な行ロックをサポートしているか                                                         |
 | supportsForUpdateNoWait()                                                              | boolean       | 明示的な行ロック（待機なし）をサポートしているか                                             |
 | supportsForUpdateWait()                                                                | boolean       | 明示的な行ロック（待機あり）をサポートしているか                                             |
+| supportsReleaseSavepoint() <Badge text="1.0.11+"/>                                     | boolean       | JDBCドライバーが`releaseSavepoint`をサポートしているか                                       |
 | supportsBatchGeneratedKeys() <Badge text="1.0.9+"/>                                    | boolean       | バッチ処理での自動生成キーの取得をサポートしているか                                         |
 | needsStrictSqlTypeForNullSetting() <Badge text="1.0.4+"/>                              | boolean       | カラムにNULLを設定する際、カラムの厳密なSQLTypeを指定する必要があるか                        |
 | isRemoveTerminator()                                                                   | boolean       | 実行するSQLに記述されている終端文字(`;`)を削除するかどうか                                   |
