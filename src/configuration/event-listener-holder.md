@@ -210,9 +210,11 @@ AuditLogEventSubscriber で件数を取得するためにはResultSetの種類�
 #### **主な機能:**
 
 - トランザクション開始・終了の表示（debug）
+- トランザクション終了時の処理結果件数（resultCount）の表示（debug）
 - バインドパラメータの詳細表示（debug）
 - 発行したSQL名の表示（debug）
 - 発行したSQL文の表示（trace）
+- トランザクション終了時の処理結果内容（result）の表示（trace）
 
 ### DumpResultEventSubscriber
 
