@@ -1,0 +1,60 @@
+# uroboroSQL
+
+> <span style="white-space: nowrap">Java製のシンプルな<wbr>SQL実行ライブラリ</span>
+
+## Table of Contents
+
+### Why uroboroSQL
+
+- [uroboroSQLとは](/uroborosql-doc/why_uroborosql.md)
+
+### Getting Started
+
+- [環境設定](/uroborosql-doc/getting_started.md)
+- [SQLファイルを使用したDBアクセス](/uroborosql-doc/getting_started/sql-file-access.md)
+- [エンティティクラスを使用したDBアクセス](/uroborosql-doc/getting_started/entity-access.md)
+- [SQL-REPL](/uroborosql-doc/getting_started/sql-repl.md)
+
+### 前提知識
+
+- [2WaySQL](/uroborosql-doc/background.md)
+- [式言語](/uroborosql-doc/background/el.md)
+
+### 基本操作
+
+- [事前準備](/uroborosql-doc/basics.md)
+- [SQLファイルインタフェース](/uroborosql-doc/basics/sql-file-api.md)
+- [DAOインタフェース](/uroborosql-doc/basics/entity-api.md)
+- [トランザクション](/uroborosql-doc/basics/transaction.md)
+
+### ベストプラクティス
+
+- [ベストプラクティス](/uroborosql-doc/best_practices.md)
+
+### 設定
+
+- [SqlConfigの生成](/uroborosql-doc/configuration.md)
+- [ConnectionSupplier](/uroborosql-doc/configuration/connection-supplier.md)
+- [SqlAgentProvider](/uroborosql-doc/configuration/sql-agent-provider.md)
+- [ExecutionContextProvider](/uroborosql-doc/configuration/execution-context-provider.md)
+- [SqlResourceManager](/uroborosql-doc/configuration/sql-resource-manager.md)
+- [EventListenerHolder と EventSubscriber](/uroborosql-doc/configuration/event-listener-holder.md)
+- [Dialect](/uroborosql-doc/configuration/dialect.md)
+
+### 高度な操作
+
+- [SQLファイルの解決ルール](/uroborosql-doc/advanced.md)
+- [PostgreSQLのトランザクション内SQLエラー対応](/uroborosql-doc/advanced/in-transaction-exception-handling.md)
+- [メタデータのキャッシュ](/uroborosql-doc/advanced/cache-metadata.md)
+- [JavaオブジェクトとJDBC型のパラメータマッピング](/uroborosql-doc/advanced/parameter-mapping.md)
+- [更新処理の委譲](/uroborosql-doc/advanced/update-delegate.md)
+- [SQLカバレッジ](/uroborosql-doc/advanced/sql-coverage.md)
+- [ログ出力](/uroborosql-doc/advanced/logging.md)
+- [システムプロパティ](/uroborosql-doc/advanced/system-properties.md)
+
+### Other
+
+- [Developer Tools](/uroborosql-doc/developer_tools.md)
+- [License](/uroborosql-doc/license.md)
+- [uroboroSQLについて](/uroborosql-doc/about.md)
+- [開発者ガイド](/uroborosql-doc/developer_guide.md)
